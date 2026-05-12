@@ -10,6 +10,7 @@ public class Problem1 {
     public static void main(String[] args)
     {
         // TODO
+        //테스트
         Scanner sc = new Scanner(System.in);
         try
         {
