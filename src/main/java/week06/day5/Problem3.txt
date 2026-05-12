@@ -1,0 +1,90 @@
+[문제]: Printable 인터페이스
+Printable을 구현하는 다양한 객체들을 통일된 방식으로 출력하게 해보세요.
+
+[사용자 작성 코드]:
+package week06.day5;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        Printable[] p = {new Document(), new Photo() };
+        for(Printable printable : p)
+            printable.print();
+    }
+
+    interface Printable
+    {
+        void print();
+    }
+
+    static class Document implements Printable
+    {
+        @Override
+        public void print()
+        {
+            System.out.println("문서를 출력합니다.");
+        }
+    }
+
+    static class Photo implements Printable
+    {
+        @Override
+        public void print()
+        {
+            System.out.println("사진을 출력합니다.");
+        }
+    }
+}
+
+[현재 코드 특징]:
+- 배열과 향상된 for문을 사용하여 다형성을 매우 효과적으로 활용했습니다.
+- 인터페이스를 타입으로 사용하는 표준적인 객체지향 설계 방식을 보여줍니다.
+
+[Better Code]:
+package week06.day5;
+
+public class Problem3 {
+    public static void main(String[] args) {
+        // 일괄 처리를 위한 인터페이스 배열 활용
+        Printable[] items = {
+            new Document("보고서.docx"), 
+            new Photo("가족사진.jpg") 
+        };
+
+        System.out.println("=== 출력 작업 시작 ===");
+        for (Printable item : items) {
+            item.print();
+        }
+    }
+
+    interface Printable {
+        void print();
+    }
+
+    static class Document implements Printable {
+        private String fileName;
+
+        Document(String fileName) { this.fileName = fileName; }
+
+        @Override
+        public void print() {
+            System.out.println("문서[" + fileName + "]를 잉크젯으로 출력합니다.");
+        }
+    }
+
+    static class Photo implements Printable {
+        private String photoName;
+
+        Photo(String photoName) { this.photoName = photoName; }
+
+        @Override
+        public void print() {
+            System.out.println("사진[" + photoName + "]을 고해상도로 인화합니다.");
+        }
+    }
+}
+
+[기술적 해설]:
+- 사용자의 코드는 요구사항을 완벽히 충족합니다.
+- 'Better Code'에서는 각 클래스에 필드(상태)를 추가하여, 동일한 `print()` 메서드 호출이지만 객체의 상태에 따라 다른 결과를 출력하도록 하여 다형성의 묘미를 더 살렸습니다.
+- 제어문 블록(`for`) 사용 시 중괄호 `{}`를 생략하지 않는 것이 유지보수와 가독성 측면에서 권장됩니다.

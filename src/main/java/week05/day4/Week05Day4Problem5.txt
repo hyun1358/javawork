@@ -1,0 +1,36 @@
+[Gemini CLI 학습 채점 및 '더 좋은 코드' 가이드]
+
+[문제]: private 생성자와 static 변수를 이용해 단 하나의 객체만 생성할 수 있는 클래스의 구조를 생각해보세요.
+
+[사용자 작성 코드]:
+static class Singleton {
+    private static final Singleton INSTANCE = new Singleton();
+    private Singleton() {
+        System.out.println("유일한 객체 생성 완료!");
+    }
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+}
+
+[현재 코드 특징]:
+- Eager Initialization(이른 초기화) 방식을 사용하여 매우 깔끔하고 안전하게 구현했습니다.
+- static final 키워드를 사용하여 인스턴스의 불변성을 보장한 점이 아주 훌륭합니다.
+
+[Better Code]:
+// 현재 코드가 이미 실무 수준의 완성도를 가지고 있어, 추가 개선보다는 '지연 초기화' 방식을 참고용으로 제시합니다.
+static class Singleton {
+    private static Singleton instance;
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+
+[기술적 해설]:
+- [Eager vs Lazy]: 사용자가 작성한 방식은 클래스가 로딩될 때 즉시 인스턴스를 생성합니다. 이는 가장 단순하고 스레드 안전(Thread-safe)하지만, 객체가 무겁고 사용되지 않을 경우 메모리 낭비가 있을 수 있습니다.
+- [Lazy Initialization]: 위 Better Code 예시처럼 필요한 시점에만 생성하는 방식을 '지연 초기화'라고 합니다. 다만, 멀티스레드 환경에서는 추가적인 동기화 처리가 필요하므로 현재 사용자가 작성한 방식이 가장 권장되는 기본 패턴 중 하나입니다.

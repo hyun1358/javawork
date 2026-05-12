@@ -1,0 +1,57 @@
+[문제]: catch한 예외를 원인(cause)으로 삼아 새로운 RuntimeException으로 감싸서 던져보세요. (예외 감싸기)
+
+[사용자 작성 코드]:
+public class Problem5
+{
+    public static void main(String[] args)
+    {
+        // TODO
+
+        try
+        {
+            String s  = null;
+            s.length();
+        }
+        catch (NullPointerException e)
+        {
+            throw new RuntimeException("문자열 길이 오류!" , e);
+        }
+    }
+}
+
+[현재 코드 특징]:
+- `NullPointerException`이라는 구체적인 에러를 잡아서 좀 더 포괄적이거나 의미 있는 `RuntimeException`으로 변환(Wrapping)하는 고급 기술을 잘 사용했습니다.
+- 생성자의 인자로 원인 예외(`e`)를 전달하여 스택 트레이스(Stack Trace)가 유지되도록 처리한 점이 훌륭합니다.
+
+[Better Code]:
+package week07.day3;
+
+public class BetterProblem5 {
+    public static void main(String[] args) {
+        try {
+            executeTask(null);
+        } catch (RuntimeException e) {
+            System.out.println("최종 에러 메시지: " + e.getMessage());
+            // getCause()를 통해 실제 발생했던 원인 에러를 추적할 수 있습니다.
+            System.out.println("실제 원인(Cause): " + e.getCause());
+        }
+    }
+
+    public static void executeTask(String input) {
+        try {
+            if (input == null) {
+                throw new NullPointerException("입력값이 null입니다.");
+            }
+            System.out.println("길이: " + input.length());
+        } catch (NullPointerException e) {
+            // 원인 예외를 생성자에 넘겨줌으로써 예외의 역사를 유지합니다.
+            throw new RuntimeException("비즈니스 로직 수행 중 오류 발생", e);
+        }
+    }
+}
+
+[기술적 해설]:
+1. 예외 감싸기(Chained Exception)의 이유:
+   - 특정 계층의 상세한 예외(예: SQL 연동 오류)를 상위 계층이 이해하기 쉬운 예외(예: 사용자 등록 오류)로 추상화하고 싶을 때 사용합니다.
+   - Checked Exception을 RuntimeException으로 감싸서 호출하는 쪽에서 불필요한 `try-catch`를 줄여줄 때도 자주 쓰입니다.
+2. 인자값의 중요성: `throw new RuntimeException("메시지", e)` 에서 `e`를 반드시 넣어줘야 나중에 에러가 터졌을 때 진짜 원인이 무엇인지 추적할 수 있습니다. 사용자가 이 부분을 정확히 구현했습니다.

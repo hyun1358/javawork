@@ -1,0 +1,79 @@
+[문제]: default 메서드
+인터페이스에 default 메서드를 추가하고, 자식에서 바로 사용해보세요.
+
+[사용자 작성 코드]:
+package week06.day5;
+
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        SmartPrinter sp = new SmartPrinter();
+        sp.PowerOn();
+        sp.print();
+        sp.PowerOff();
+    }
+
+    interface Machine
+    {
+        default void PowerOn()
+        {
+            System.out.println("전원을 킵니다.");
+        }
+
+        default void PowerOff()
+        {
+            System.out.println("전원을 끕니다.");
+        }
+
+        void print();
+    }
+
+    static class SmartPrinter implements Machine
+    {
+        public void print()
+        {
+            System.out.println("결과물을 출력합니다.");
+        }
+    }
+}
+
+[현재 코드 특징]:
+- Java 8 이후 추가된 `default` 메서드의 개념을 정확히 이해하고 사용했습니다.
+- 인터페이스가 공통된 구현 로직을 가질 수 있음을 잘 보여줍니다.
+
+[Better Code]:
+package week06.day5;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        Machine printer = new SmartPrinter();
+        printer.powerOn();  // 기본 구현 사용
+        printer.work();     // 추상 메서드 호출
+        printer.powerOff(); // 기본 구현 사용
+    }
+
+    interface Machine {
+        // 관례상 메서드 이름은 소문자로 시작하는 camelCase를 사용합니다.
+        default void powerOn() {
+            System.out.println("시스템 가동... 전원이 켜졌습니다.");
+        }
+
+        default void powerOff() {
+            System.out.println("시스템 종료... 전원을 안전하게 차단합니다.");
+        }
+
+        void work();
+    }
+
+    static class SmartPrinter implements Machine {
+        @Override
+        public void work() {
+            System.out.println("스마트 프린터가 고속 출력을 진행합니다.");
+        }
+    }
+}
+
+[기술적 해설]:
+- Java의 메서드 명명 규칙은 `camelCase`입니다. `PowerOn` 보다는 `powerOn`이 더 적절합니다.
+- `print`라는 이름도 좋지만, 상위 인터페이스인 `Machine` 관점에서는 `work`와 같이 범용적인 이름을 사용하는 것이 다른 기기(예: 로봇, 스캐너)로의 확장에 유리합니다.
+- `SmartPrinter` 객체를 생성할 때 상위 인터페이스 타입(`Machine`)으로 받는 것이 다형성 활용 측면에서 더 좋습니다.

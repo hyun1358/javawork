@@ -1,0 +1,79 @@
+[문제]: 다중 구현
+Swimable, Flyable을 동시에 구현하는 Duck 클래스를 만드세요.
+
+[사용자 작성 코드]:
+package week06.day5;
+
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        Duck d = new Duck();
+        d.swim();
+        d.fly();
+    }
+
+    interface Swimeable
+    {
+        void swim();
+    }
+
+    interface Flyable
+    {
+        void fly();
+    }
+
+    static class Duck implements Swimeable,Flyable
+    {
+        @Override
+        public void swim()
+        {
+            System.out.println("오리가 헤엄을 치다");
+        }
+        @Override
+        public void fly()
+        {
+            System.out.println("오리가 날다");
+        }
+    }
+}
+
+[현재 코드 특징]:
+- Java의 중요한 특징인 인터페이스 다중 구현을 정확히 수행했습니다.
+- 인터페이스 각각의 역할에 맞는 메서드를 잘 오버라이딩했습니다.
+
+[Better Code]:
+package week06.day5;
+
+public class Problem2 {
+    public static void main(String[] args) {
+        Duck d = new Duck();
+        d.swim();
+        d.fly();
+    }
+
+    // 표준 명명 규칙(Naming Convention)에 따라 'Swimeable' -> 'Swimable'로 수정
+    interface Swimable {
+        void swim();
+    }
+
+    interface Flyable {
+        void fly();
+    }
+
+    static class Duck implements Swimable, Flyable {
+        @Override
+        public void swim() {
+            System.out.println("오리가 물 위를 평화롭게 헤엄칩니다.");
+        }
+
+        @Override
+        public void fly() {
+            System.out.println("오리가 힘차게 날아오릅니다.");
+        }
+    }
+}
+
+[기술적 해설]:
+- 인터페이스 이름 정의 시 `Swimeable` 보다는 `Swimable`이 더 일반적인 스펠링이며, 명명 규칙에 부합합니다.
+- 다중 구현 시 클래스 선언부(`implements A, B`)에서 쉼표 뒤에 공백을 두어 가독성을 높이는 것이 관례입니다.
+- 기능적으로는 완벽하게 구현되었습니다.

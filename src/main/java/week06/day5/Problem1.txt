@@ -1,0 +1,83 @@
+[문제]: Flyable 인터페이스 구현
+Flyable 인터페이스를 만들고 Bird와 Airplane 클래스가 이를 구현하게 하세요.
+
+[사용자 작성 코드]:
+package week06.day5;
+
+public class Problem1 {
+    public static void main(String[] args)
+    {
+        Flyable f1 = new Bird();
+        Flyable f2 = new Airplane();
+
+        f1.fly();
+        f2.fly();
+    }
+
+    interface Flyable
+    {
+        void fly();
+    }
+
+    static class Bird implements Flyable
+    {
+        @Override
+        public void fly()
+        {
+            System.out.println("새가 날개로 날다");
+        }
+    }
+
+    static class Airplane implements Flyable
+    {
+        @Override
+        public void fly()
+        {
+            System.out.println("비행기가 날다");
+        }
+    }
+}
+
+[현재 코드 특징]:
+- 인터페이스와 내부 정적 클래스를 활용하여 구조화가 잘 되어 있습니다.
+- 다형성을 활용하여 Flyable 타입으로 객체를 생성하고 호출하는 방식이 적절합니다.
+
+[Better Code]:
+package week06.day5;
+
+/**
+ * 인터페이스와 구현 클래스를 분리하거나, 한 파일 내에서 관리할 때의 가독성을 고려한 구조입니다.
+ */
+public class Problem1 {
+    public static void main(String[] args) {
+        // 인터페이스 타입 배열을 활용한 일괄 처리 예시 (확장성 고려)
+        Flyable[] flyers = { new Bird(), new Airplane() };
+        
+        for (Flyable flyer : flyers) {
+            flyer.fly();
+        }
+    }
+
+    interface Flyable {
+        void fly();
+    }
+
+    static class Bird implements Flyable {
+        @Override
+        public void fly() {
+            System.out.println("새가 날개로 날다");
+        }
+    }
+
+    static class Airplane implements Flyable {
+        @Override
+        public void fly() {
+            System.out.println("비행기가 추진력을 얻어 비행합니다.");
+        }
+    }
+}
+
+[기술적 해설]:
+- 사용자의 코드는 이미 충분히 훌륭합니다.
+- 'Better Code'에서는 반복적인 호출을 배열과 루프를 이용해 처리하는 방식을 제안했습니다. 이는 추후 구현체가 늘어나더라도 메인 로직을 최소한으로 수정할 수 있게 해줍니다.
+- 출력 메시지를 클래스의 특성에 맞게 조금 더 구체화하여 객체지향적인 차이점을 두었습니다.

@@ -1,0 +1,104 @@
+[문제]
+[연습 문제 1] 사용자 정의 예외 클래스 만들기
+InsufficientBalanceException과 같은 커스텀 예외 클래스를 만들어 보세요.
+
+[사용자 작성 코드]
+package week07.day4;
+
+import java.util.Scanner;
+
+public class Problem1 {
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        try
+        {
+            System.out.print("돈: ");
+            int money = sc.nextInt();
+            sc.nextLine();
+            balanceMinus(money);
+        }
+        catch (InsufficientBalanceException e)
+        {
+            System.out.println("에러원인: "+e.getMessage());
+            System.out.println("에러코드: "+e.getErroCode());
+        }
+        finally
+        {
+            sc.close();
+        }
+    }
+
+    public static void balanceMinus(int money)
+    {
+        int balance = 100;
+        if(balance < money)
+        {
+            throw new InsufficientBalanceException("잔액부족",401);
+        }
+    }
+
+    static class InsufficientBalanceException extends RuntimeException
+    {
+        private int erroCode;
+        InsufficientBalanceException(String message, int errorCode)
+        {
+            super(message);
+            this.erroCode = errorCode;
+        }
+
+        public int getErroCode()
+        {
+            return erroCode;
+        }
+    }
+}
+
+[현재 코드 특징]
+- 예외 상황(잔액 부족)을 가정하여 하드코딩된 balance와 입력된 money를 비교하는 로직을 잘 구현했습니다.
+- RuntimeException 상속을 통해 언체크드 예외를 명확히 설계했습니다.
+- try-catch-finally 블록을 통해 정상적으로 리소스를 해제(sc.close())하는 모범적인 흐름을 가졌습니다.
+
+[Better Code]
+package week07.day4;
+
+import java.util.Scanner;
+
+public class Problem1 {
+    public static void main(String[] args) {
+        // try-with-resources 구문 사용: finally 블록 없이 자동으로 sc.close()가 호출됩니다.
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.print("돈: ");
+            int money = sc.nextInt();
+            sc.nextLine();
+            balanceMinus(money);
+        } catch (InsufficientBalanceException e) {
+            System.out.println("에러원인: " + e.getMessage());
+            System.out.println("에러코드: " + e.getErrorCode());
+        }
+    }
+
+    public static void balanceMinus(int money) {
+        int balance = 100;
+        if (balance < money) {
+            throw new InsufficientBalanceException("잔액부족", 401);
+        }
+    }
+
+    static class InsufficientBalanceException extends RuntimeException {
+        private int errorCode; // 오타 수정: erroCode -> errorCode
+
+        InsufficientBalanceException(String message, int errorCode) {
+            super(message);
+            this.errorCode = errorCode;
+        }
+
+        public int getErrorCode() {
+            return errorCode;
+        }
+    }
+}
+
+[기술적 해설]
+1. 오타 교정: `erroCode` -> `errorCode`로 변수 및 메서드명(`getErrorCode`)을 수정하여 코드의 전문성을 높였습니다. 프로그래밍에서 오타는 나중에 검색이나 리팩토링 시 장애물이 될 수 있습니다.
+2. try-with-resources 사용: Java 7부터 지원되는 try-with-resources 문법을 사용하면 `finally` 블록에서 명시적으로 `.close()`를 호출하지 않아도 자동으로 자원이 해제됩니다. 코드가 훨씬 간결해지고 안전해집니다.

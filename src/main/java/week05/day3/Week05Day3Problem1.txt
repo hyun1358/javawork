@@ -1,0 +1,36 @@
+[문제]: Dog 클래스에 private String name 필드를 만들고 이를 설정하고 가져오는 getter와 setter를 작성하세요.
+
+[사용자 작성 코드]:
+class Dog {
+    private String name;
+    
+    String getDogName() {
+        return this.name;
+    }
+
+    void setDogName(String name) {
+        this.name = name;
+    }
+}
+
+[현재 코드 특징]:
+- 캡슐화의 기본 원칙인 private 필드와 public(또는 package-private) 메서드를 잘 활용했습니다.
+- 필드명을 메서드 이름에 포함시켜 의도를 명확히 했습니다.
+
+[Better Code]:
+class Dog {
+    private String name;
+
+    // 관례적으로 필드명이 name이면 getName/setName으로 명명합니다.
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+[기술적 해설]:
+1. **자바 빈 규약(JavaBeans Convention)**: 자바에서는 getter/setter 이름을 지을 때 `get + 필드명`, `set + 필드명` 형식을 따르는 것이 관례입니다. 이는 많은 프레임워크와 라이브러리(Spring, Jackson 등)가 이 규칙을 기반으로 자동으로 데이터를 처리하기 때문입니다.
+2. **접근 제어자**: 외부 클래스에서 접근할 수 있도록 보통 `public`을 사용합니다.

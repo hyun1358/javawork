@@ -1,0 +1,47 @@
+[문제]
+크기가 2인 배열에 3번째 값을 넣으려 할 때 발생하는 예외를 잡으세요.
+
+[사용자 작성 코드]
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        // TODO
+        int arr[] = new int[2];
+        try
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                arr[i] = i;
+            }
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
+
+[현재 코드 특징]
+- 반복문을 통해 자연스럽게 인덱스 범위를 초과하도록 설계하여 예외 발생 상황을 잘 유도했습니다.
+
+[Better Code]
+package week07.day1;
+
+public class Problem2 {
+    public static void main(String[] args) {
+        int[] arr = new int[2];
+        try {
+            // 인덱스 0, 1은 가능하지만 2는 불가능
+            arr[2] = 10;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // 예외가 발생했을 때 사용자에게 상황을 알리는 최소한의 출력문이 필요합니다.
+            System.out.println("배열 범위 초과 발생!");
+            System.out.println("접근 시도한 인덱스: " + e.getMessage());
+        }
+    }
+}
+
+[기술적 해설]
+1. 가독성: 단순히 예외를 잡는 것(catch)에서 끝내지 말고, catch 블록 내부에서 이 상황이 왜 발생했는지 사용자에게 친절하게 알려주는 코드가 더 우수한 코드입니다.
+2. 예외 메시지 활용: ArrayIndexOutOfBoundsException의 getMessage()는 범위를 벗어난 인덱스 번호를 반환합니다. 이를 활용하면 디버깅이 훨씬 수월해집니다.
+3. 코드의 간결성: 예외 발생 테스트를 위해 복잡한 반복문을 쓰기보다 직접적인 인덱스 접근(arr[2])으로 명확하게 보여주는 것도 좋은 방법입니다.

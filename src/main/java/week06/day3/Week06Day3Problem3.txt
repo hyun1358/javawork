@@ -1,0 +1,101 @@
+[문제]: instanceof 키워드로 타입을 판별하여 다운캐스팅 후 자식 전용 메서드를 실행하세요.
+
+[사용자 작성 코드]:
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Parents p = new Child();
+        Instanceof(p);
+    }
+
+    static class Parents
+    {
+        void info() {
+            System.out.println("나는 부모입니다.");
+        }
+    }
+
+    static class Child extends Parents
+    {
+        @Override
+        void info()
+        {
+            System.out.println("나는 자식");
+        }
+    }
+
+    static void Instanceof(Object obj)
+    {
+        if(obj instanceof Child)
+        {
+            Child c = (Child)obj;
+            c.info();
+        }
+        else
+        {
+            System.out.println("부모 자식 관계가 아닙니다.");
+        }
+    }
+}
+
+[현재 코드 특징]:
+- `instanceof`를 사용하여 안전하게 타입을 체크한 뒤 다운캐스팅을 수행했습니다.
+- 부모 타입 변수로 전달된 객체가 실제 어떤 자식 타입인지 판별하는 로직을 잘 구현했습니다.
+
+[Better Code]:
+package week06.day3;
+
+public class BetterProblem3 {
+    public static void main(String[] args) {
+        Animal myAnimal = new Dog(); // 업캐스팅
+        
+        processAnimal(myAnimal);
+    }
+
+    static void processAnimal(Animal animal) {
+        animal.makeSound(); // 공통 메서드 (다형성)
+
+        // 다운캐스팅이 필요한 시점: 자식클래스에만 있는 기능을 써야 할 때
+        if (animal instanceof Dog) {
+            Dog dog = (Dog) animal;
+            dog.wagTail(); // 자식 전용 메서드 호출
+        } else if (animal instanceof Cat) {
+            Cat cat = (Cat) animal;
+            cat.scratch(); // 자식 전용 메서드 호출
+        }
+    }
+}
+
+class Animal {
+    void makeSound() {
+        System.out.println("동물이 소리를 냅니다.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("멍멍!");
+    }
+
+    void wagTail() { // 자식 전용 메서드
+        System.out.println("꼬리를 흔듭니다.");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("야옹~");
+    }
+
+    void scratch() { // 자식 전용 메서드
+        System.out.println("할큅니다.");
+    }
+}
+
+[기술적 해설]:
+1. 다운캐스팅의 목적: 부모 타입(`Animal`)으로 관리되는 객체가 자식 타입(`Dog`)에만 있는 특별한 기능(`wagTail()`)을 수행해야 할 때 다운캐스팅을 사용합니다.
+2. 다형성 vs 다운캐스팅: `makeSound()`처럼 부모/자식 모두에게 있는 메서드는 다운캐스팅 없이도 다형성에 의해 자식 것이 호출되지만, 자식에게만 새로 추가된 메서드는 반드시 형변환이 필요합니다.
+3. 명명 규칙: 메서드 이름은 소문자로 시작하는 것이 관례입니다 (`Instanceof` -> `instanceofCheck` 등).

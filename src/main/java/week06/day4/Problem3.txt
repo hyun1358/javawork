@@ -1,0 +1,36 @@
+[문제]
+추상 클래스로 new 생성 시도 시 발생하는 에러를 확인하고 주석으로 남기세요.
+
+[사용자 작성 코드]
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+
+        //추상클래스는 완성된 클래스가 아닌 미구현된 클래스여서 자식한테 구현을 맏기는 용도라 객체 생성이 불가능하다.
+    }
+}
+
+[현재 코드 특징]
+- 추상 클래스의 본질적인 특성(미완성 설계도)을 정확하게 파악하고 설명함.
+- 이론적인 답변으로는 완벽함.
+
+[Better Code]
+public class Problem3 {
+    public static void main(String[] args) {
+        // Shape s = new Shape(); 
+        // 에러 메시지: "Cannot instantiate the type Shape"
+        
+        System.out.println("추상 클래스 Shape는 미완성 설계도(abstract)이므로 직접 객체를 생성할 수 없습니다.");
+        System.out.println("반드시 자식 클래스(Circle, Rectangle 등)를 통해 실체화해야 합니다.");
+    }
+    
+    static abstract class Shape {
+        abstract double area();
+    }
+}
+
+[기술적 해설]
+1. 인스턴스화 불가: 추상 메서드가 하나라도 포함된 클래스는 '미완성' 상태이므로 JVM이 메모리에 객체를 생성하는 것을 허용하지 않습니다.
+2. 컴파일 타임 체크: 자바 컴파일러는 abstract 키워드가 붙은 클래스의 생성자 호출을 감지하면 즉시 에러를 발생시켜 안전성을 보장합니다.
+3. 존재 이유: 추상 클래스는 스스로 존재하기 위함이 아니라, 상속 계층 구조에서 '공통 규격'을 정의하고 자식 클래스에게 구현을 강제하는 '가이드라인' 역할을 합니다.

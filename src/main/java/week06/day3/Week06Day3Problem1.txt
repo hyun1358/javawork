@@ -1,0 +1,127 @@
+[문제]: Shape[] 배열에 Circle, Rectangle 객체를 담아 넓이를 출력하세요.
+
+[사용자 작성 코드]:
+public class Problem1 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Shape[] s = new Shape[4];
+        s[0] = new Circle(5);
+        s[1] = new Rectangle(5,10);
+        s[2] = new Circle(7);
+        s[3] = new Rectangle(3,5);
+
+        for(Shape S : s)
+            S.extent();
+    }
+
+    static class Shape
+    {
+        void extent() {}
+    }
+
+    static class Circle extends Shape
+    {
+        int radius;
+
+        Circle(int radius)
+        {
+            this.radius = radius;
+        }
+
+        @Override
+        void extent()
+        {
+            System.out.println( radius * radius * 3.14);
+        }
+    }
+
+    static class Rectangle extends Shape
+    {
+        int width;
+        int height;
+
+        Rectangle(int width, int height) { this.width = width; this.height = height;}
+
+        @Override
+        void extent()
+        {
+            System.out.println( width * height);
+        }
+    }
+}
+
+[현재 코드 특징]:
+- 다형성 배열을 활용하여 서로 다른 자식 객체들을 하나의 부모 타입 배열로 관리했습니다.
+- 오버라이딩을 통해 각 도형에 맞는 넓이 계산 로직을 성공적으로 구현했습니다.
+
+[Better Code]:
+package week06.day3;
+
+public class BetterProblem1 {
+    public static void main(String[] args) {
+        // 배열 선언과 동시에 초기화하여 가독성 향상
+        Shape[] shapes = {
+            new Circle(5),
+            new Rectangle(5, 10),
+            new Circle(7),
+            new Rectangle(3, 5)
+        };
+
+        for (Shape shape : shapes) {
+            // 출력 로직을 main에서 담당하게 하여 메서드 재사용성 증대
+            System.out.printf("%s의 넓이: %.2f\n", shape.getName(), shape.area());
+        }
+    }
+}
+
+abstract class Shape {
+    // 추상 메서드를 통해 자식 클래스에서 반드시 구현하도록 강제
+    abstract double area();
+    abstract String getName();
+}
+
+class Circle extends Shape {
+    private int radius;
+
+    Circle(int radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    double area() {
+        // 3.14 대신 정밀도가 높은 Math.PI 사용
+        return radius * radius * Math.PI;
+    }
+
+    @Override
+    String getName() {
+        return "원";
+    }
+}
+
+class Rectangle extends Shape {
+    private int width;
+    private int height;
+
+    Rectangle(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    double area() {
+        return (double) width * height;
+    }
+
+    @Override
+    String getName() {
+        return "사각형";
+    }
+}
+
+[기술적 해설]:
+1. 메서드 반환값 활용: 기존 `extent()`는 직접 출력(void)을 수행하지만, `area()`처럼 결과를 반환(double)하게 설계하면 해당 값을 다른 계산에 활용하거나 포맷팅하기 훨씬 유리합니다.
+2. Math.PI 사용: `3.14`는 근사치입니다. 자바에서 제공하는 `Math.PI`를 사용하면 더 정밀한 계산이 가능합니다.
+3. 추상 클래스(Abstract Class): 부모 클래스인 `Shape`에서 실제로 구현할 내용이 없다면 `abstract`로 선언하는 것이 구조적으로 더 명확합니다.
+4. printf 포맷팅: `%.2f`를 사용하면 소수점 자릿수를 깔끔하게 제한하여 출력할 수 있습니다.

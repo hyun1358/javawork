@@ -1,0 +1,30 @@
+[Gemini CLI 학습 채점 및 '더 좋은 코드' 가이드]
+
+[문제]: Circle 객체가 생성될 때마다 현재까지 생성된 원의 개수를 static 변수를 이용해 출력하세요.
+
+[사용자 작성 코드]:
+static class Circle {
+    static int count = 0;
+    Circle() {
+        this.count++;
+        System.out.println("현재 까지 만들어진 원의 갯수 : " + this.count);
+    }
+}
+
+[현재 코드 특징]:
+- static 변수(count)를 사용하여 모든 인스턴스가 공유하는 카운터를 잘 구현했습니다.
+- 생성자(Circle()) 내에서 증가와 출력을 동시에 수행하여 요구사항을 충족했습니다.
+
+[Better Code]:
+static class Circle {
+    static int count = 0;
+    Circle() {
+        Circle.count++; // 관습: 클래스명으로 static 멤버 접근
+        System.out.println("현재까지 생성된 원의 개수: " + Circle.count);
+    }
+}
+
+[기술적 해설]:
+- [static 멤버 접근 관습]: 자바에서 static 변수나 메서드는 클래스 수준의 멤버입니다. `this.count`처럼 인스턴스 참조를 통해서도 접근이 가능하지만, 
+   이는 해당 멤버가 인스턴스 소속인 것처럼 오해를 불러일으킬 수 있습니다. 따라서 `Circle.count`와 같이 **클래스명을 명시하여 접근**하는 것이 실무적인 관례이며 가독성 면에서 훨씬 좋습니다.
+- [가독성 향상]: 출력 문구의 맞춤법(갯수 -> 개수) 및 띄어쓰기를 정리하면 더 전문적인 코드가 됩니다.

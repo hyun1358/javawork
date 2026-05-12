@@ -1,0 +1,27 @@
+[Gemini CLI 학습 채점 및 '더 좋은 코드' 가이드]
+
+[문제]: 모든 메서드가 static인 MyMath 클래스를 만들고 절대값 구하기 abs(int n) 메서드를 구현하세요.
+
+[사용자 작성 코드]:
+static class MyMath {
+    static int abs(int n) {
+        return n < 0 ? -n : n;
+    }
+}
+
+[현재 코드 특징]:
+- MyMath 클래스의 모든 멤버를 static으로 선언하여 유틸리티 성격의 클래스를 잘 정의했습니다.
+- 삼항 연산자를 사용하여 abs(절대값) 로직을 간결하게 구현했습니다.
+
+[Better Code]:
+static class MyMath {
+    // Better: 유틸리티 클래스는 인스턴스화를 막기 위해 private 생성자를 추가합니다.
+    private MyMath() {}
+
+    static int abs(int n) {
+        return n < 0 ? -n : n;
+    }
+}
+
+[기술적 해설]:
+- [유틸리티 클래스 설계]: MyMath와 같이 모든 메서드가 static인 클래스는 객체를 생성(new MyMath())할 필요가 없습니다. 실무에서는 의도치 않게 객체가 생성되는 것을 방지하기 위해 **private 생성자**를 명시적으로 추가하여 외부에서의 인스턴스화를 원천적으로 차단합니다. 이는 Java의 `java.lang.Math` 클래스나 `java.util.Arrays` 클래스에서도 볼 수 있는 표준적인 설계 패턴입니다.

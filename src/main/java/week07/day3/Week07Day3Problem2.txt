@@ -1,0 +1,59 @@
+[문제]: Checked Exception 선언 - IOException을 throws 선언하고, 호출자(main)에서 catch하는 코드를 작성하세요.
+
+[사용자 작성 코드]:
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        // TODO
+        try
+        {
+            methodA();
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void methodA() throws IOException
+    {
+        throw new IOException("IOException발생!!");
+    }
+
+}
+
+[현재 코드 특징]:
+- `throws` 키워드를 사용하여 호출자에게 예외 처리 책임을 전가하는 흐름을 완벽하게 이해하고 구현했습니다.
+- Checked Exception의 특성에 맞게 `main`에서 `try-catch`로 예외를 잡아 프로그램이 안전하게 종료되지 않도록 처리했습니다.
+
+[Better Code]:
+package week07.day3;
+
+import java.io.IOException;
+
+public class BetterProblem2 {
+    public static void main(String[] args) {
+        try {
+            // 파일을 읽는 시뮬레이션
+            readFile("config.txt");
+        } catch (IOException e) {
+            // 예외의 상세 내용을 출력하거나 로깅
+            System.err.println("파일 로딩 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    // Checked Exception은 메서드 시그니처에 반드시 throws를 명시해야 합니다.
+    public static void readFile(String fileName) throws IOException {
+        // 실제 상황에서는 여기서 파일 입출력 로직이 들어갑니다.
+        boolean fileExists = false;
+        
+        if (!fileExists) {
+            throw new IOException("파일을 찾을 수 없습니다: " + fileName);
+        }
+    }
+}
+
+[기술적 해설]:
+1. 예외 전파(Exception Propagation): `methodA`에서 예외를 직접 처리하지 않고 `throws`를 통해 `main`으로 넘긴 것은 매우 올바른 선택입니다. 하위 메서드에서는 예외가 발생했다는 사실만 알리고, 최종 결정권자(주로 `main`이나 컨트롤러)가 어떻게 처리할지 결정하는 것이 일반적입니다.
+2. System.err 사용: 단순 알림이 아닌 에러 메시지는 `System.out` 대신 `System.err`를 사용하면 콘솔에서 붉은색으로 표시되어 더 직관적입니다.

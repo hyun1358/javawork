@@ -1,0 +1,62 @@
+[문제]: BankAccount 클래스에 private int balance(잔액) 필드를 만들고 deposit(입금), withdraw(출금) 메서드로만 잔액을 변경할 수 있게 하세요.
+
+[사용자 작성 코드]:
+static class BankAccount {
+    private int balance = 0;
+
+    void deposit(int money) {
+        this.balance += money;
+    }
+
+    void withdraw(int money) {
+        if (money <= 0) {
+            System.out.println("출금은 0보다 금액이 커야합니다.");
+        } else if (this.balance < money) {
+            System.out.println("출금 금액이 보유잔액보다 많습니다.");
+        } else {
+            this.balance -= money;
+        }
+    }
+
+    int getBalance() {
+        return this.balance;
+    }
+}
+
+[현재 코드 특징]:
+- 출금 시 잔액 부족 및 음수 금액 입력에 대한 예외 처리를 꼼꼼하게 구현했습니다.
+- balance 필드를 private으로 보호하여 직접 수정을 차단했습니다.
+
+[Better Code]:
+static class BankAccount {
+    private int balance = 0;
+
+    public void deposit(int money) {
+        // 입금할 때도 음수 금액이 들어오지 못하게 막아야 데이터의 무결성이 유지됩니다.
+        if (money <= 0) {
+            System.out.println("입금 금액은 0보다 커야 합니다.");
+            return;
+        }
+        this.balance += money;
+    }
+
+    public void withdraw(int money) {
+        if (money <= 0) {
+            System.out.println("출금 금액은 0보다 커야 합니다.");
+            return;
+        }
+        if (this.balance < money) {
+            System.out.println("잔액이 부족합니다.");
+            return;
+        }
+        this.balance -= money;
+    }
+
+    public int getBalance() {
+        return this.balance;
+    }
+}
+
+[기술적 해설]:
+1. **입금 유효성 검사**: 출금뿐만 아니라 입금 시에도 잘못된 값(음수)이 들어오는 것을 방지해야 합니다. 만약 음수 입금을 허용하면 입금 메서드를 통해 사실상 돈을 빼가는 버그가 발생할 수 있습니다.
+2. **Early Return**: `else` 블록을 사용하는 대신, 조건에 맞지 않을 때 즉시 `return`하는 방식을 사용하면 코드의 들여쓰기가 줄어들어 가독성이 좋아집니다.

@@ -1,0 +1,75 @@
+[Gemini CLI 가이드 - Week 05 Day 1 Problem 4]
+
+[문제]: 사각형의 넓이와 둘레를 계산하는 Rectangle 클래스를 만드세요.
+1. 필드: width(가로), height(세로)
+2. 메서드: 
+   - getArea(): 가로 * 세로 결과 반환
+   - getPerimeter(): 2 * (가로 + 세로) 결과 반환
+3. 메인 메서드: 가로 10, 세로 20 데이터를 넣어 출력
+
+[사용자 작성 코드]:
+public class Problem4 {
+    public static void main(String[] args) {
+        Rectangle rectangle = new Rectangle(10, 3);
+        System.out.println(rectangle.getArea());
+        System.out.println(rectangle.getPerimeter());
+    }
+
+    static class Rectangle {
+        int width, height;
+
+        Rectangle(int width, int height) {
+            this.width = width;
+            this.height = height;
+        }
+
+        int getArea() {
+            return this.width * this.height;
+        }
+
+        int getPerimeter() {
+            return 2 * (this.width * this.height);
+        }
+    }
+}
+
+[현재 코드 특징]:
+- 생성자를 통해 필드를 초기화하고, `getArea()`와 `getPerimeter()` 메서드를 잘 정의했습니다.
+- 내부 클래스(`static class`)를 활용하여 문제의 구조를 잘 잡았습니다.
+
+[Better Code]:
+package week05.day1;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        // 문제에서 제시한 데이터(가로 10, 세로 20)를 사용하여 객체 생성
+        Rectangle rectangle = new Rectangle(10, 20);
+        
+        System.out.println("사각형 넓이: " + rectangle.getArea());
+        System.out.println("사각형 둘레: " + rectangle.getPerimeter());
+    }
+
+    static class Rectangle {
+        int width, height;
+
+        Rectangle(int width, int height) {
+            this.width = width;
+            this.height = height;
+        }
+
+        // 넓이 계산: 가로 * 세로
+        int getArea() {
+            return this.width * this.height;
+        }
+
+        // 둘레 계산: 2 * (가로 + 세로) -> 기존 코드에서는 곱셈으로 잘못 작성되었습니다.
+        int getPerimeter() {
+            return 2 * (this.width + this.height);
+        }
+    }
+}
+
+[기술적 해설]:
+1. **둘레 계산식 오류 수정**: 사각형의 둘레는 `2 * (가로 + 세로)`입니다. 기존 코드에서는 `2 * (가로 * 세로)`를 사용하여 넓이의 두 배를 구하는 식이 되었습니다. 논리 연산에서 덧셈(`+`)과 곱셈(`*`)의 차이를 주의 깊게 확인해야 합니다.
+2. **요구 데이터 준수**: 문제에서 가로 10, 세로 20의 데이터를 넣어달라고 명시했으므로, 테스트 데이터보다는 문제의 요구 사항에 맞는 값을 입력하는 것이 실무에서 중요합니다.
+3. **가독성 향상**: 출력 시 단순히 숫자만 내보내는 것보다, 어떤 값(넓이, 둘레)인지 문자열을 함께 출력하면 사용자가 훨씬 이해하기 쉽습니다.

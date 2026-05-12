@@ -1,0 +1,33 @@
+[문제]: 앱의 최대 사용자 수(1000), 버전("1.0.0") 등을 상수로 관리하는 AppConfig 클래스를 만드세요.
+
+[사용자 작성 코드]:
+class AppConfig {
+    static final int MAX_USERS = 1000;
+    static final String VERSION = "1.0.0";
+}
+
+[현재 코드 특징]:
+- static final을 사용하여 전역적으로 접근 가능한 상수를 잘 정의했습니다.
+- 관례에 맞게 대문자 스네이크 케이스(VERSION)를 적용했습니다.
+
+[Better Code]:
+package week05.day5;
+
+/**
+ * 상수 관리 전용 클래스
+ */
+class AppConfig {
+    // 1. 상수 정의 (public을 추가하여 외부 어디서든 사용 가능하게 함)
+    public static final int MAX_USERS = 1000;
+    public static final String VERSION = "1.0.0";
+
+    // 2. private 생성자로 인스턴스화 방지
+    private AppConfig() {
+        // 이 클래스는 상수만 모아두는 용도이므로 객체 생성이 필요 없음
+    }
+}
+
+[기술적 해설]:
+1. **Utility Class 설계**: 상수나 static 메서드만 포함하는 클래스는 객체를 생성할 필요가 없습니다. 이때 `private 생성자`를 추가하면 다른 개발자가 실수로 `new AppConfig()`를 호출하는 것을 원천 차단할 수 있습니다.
+2. **접근 제어자(public)**: 설정 상수는 보통 프로젝트 전역에서 사용되므로 `public`을 붙여 다른 패키지에서도 접근할 수 있게 하는 것이 일반적입니다.
+3. **명확한 의도**: static과 final이 결합된 상수는 해당 클래스의 정체성을 명확히 해줍니다.

@@ -1,0 +1,39 @@
+[문제]: Animal 클래스(필드: 이름)를 만들고 이를 상속받는 Dog, Cat 클래스를 구현하세요.
+
+[사용자 작성 코드]:
+static class Aninal { // 오타: Aninal
+    String name;
+}
+static class Dog extends Animal { // Animal 클래스를 찾을 수 없음
+    Dog(String name) { this.name = name; }
+}
+
+[현재 코드 특징]:
+- 부모 클래스의 필드를 자식 클래스에서 활용하려고 시도했습니다.
+- 단순한 오타로 인해 상속 구조가 깨진 상태입니다.
+
+[Better Code]:
+package week06.day1;
+
+class Animal {
+    String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        // 부모 생성자를 호출하여 name 초기화
+        super(name);
+    }
+
+    void bark() {
+        System.out.println(name + "가 멍멍 짖습니다.");
+    }
+}
+
+[기술적 해설]:
+1. **정확한 클래스명**: 상속(`extends`) 뒤에 오는 이름은 반드시 정의된 클래스명과 대소문자까지 일치해야 합니다.
+2. **생성자 활용**: 자식 객체가 생성될 때 부모의 필드도 초기화되어야 합니다. `this.name = name;` 보다는 부모 생성자를 호출하는 `super(name);` 방식을 권장합니다.

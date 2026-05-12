@@ -1,0 +1,45 @@
+[문제]: 모든 필드가 final이고 setter가 없는 ImmutableBook 클래스를 작성하세요.
+
+[사용자 작성 코드]:
+class ImmutableBook {
+    final String title;
+    final int price;
+    ImmutableBook(String title, int price) {
+        this.title = title; this.price = price;
+    }
+}
+
+[현재 코드 특징]:
+- final 키워드를 사용하여 필드 값이 생성 후 변경되지 않도록 잘 보호했습니다.
+- 생성자를 통해 필수 값을 강제로 초기화하도록 구현되었습니다.
+
+[Better Code]:
+package week05.day5;
+
+/**
+ * 캡슐화가 적용된 완벽한 불변 객체
+ */
+class ImmutableBook {
+    // 1. private으로 외부 직접 접근 차단 (정보 은닉)
+    private final String title;
+    private final int price;
+
+    public ImmutableBook(String title, int price) {
+        this.title = title;
+        this.price = price;
+    }
+
+    // 2. Getter를 통해서만 값을 읽도록 제한
+    public String getTitle() {
+        return title;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+}
+
+[기술적 해설]:
+1. **정보 은닉 (Encapsulation)**: 필드를 `final`로 선언하여 수정을 막는 것도 중요하지만, `private`을 통해 외부에서 필드에 직접 접근하는 것을 막는 것이 객체지향 설계의 기본입니다. 
+2. **Getter 권장**: 필드에 직접 접근(`b.title`)하는 것보다 `getTitle()` 메서드를 사용하는 것이 향후 로직 추가(예: 제목 뒤에 [신간] 문구 추가 등) 시에 유지보수가 훨씬 유리합니다.
+3. **불변성의 완성**: 모든 필드가 `private final`이고 `setter`가 존재하지 않을 때, 우리는 이를 진정한 의미의 '불변 객체'라고 부릅니다.

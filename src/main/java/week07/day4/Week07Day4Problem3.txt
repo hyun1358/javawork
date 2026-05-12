@@ -1,0 +1,99 @@
+[문제]
+[연습 문제 3] 예외에 정보 담기
+Custom 예외에 int errorCode 필드를 추가하여 에러 발생 시 함께 던져주고, catch 블록에서 이를 출력하세요.
+
+[사용자 작성 코드]
+package week07.day4;
+
+import java.util.Scanner;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        try
+        {
+            System.out.print("아이디: ");
+            String id = sc.nextLine();
+            login(id);
+
+        }
+        catch (InvalidUserIdLengthExecption e)
+        {
+            System.out.println("에러메시지: " + e.getMessage());
+            System.out.println("에러코드: "+ e.getErrorCode());
+        }
+        finally
+        {
+            sc.close();
+        }
+    }
+
+    static void login(String id)
+    {
+        if(id.length() < 8)
+        {
+            throw new InvalidUserIdLengthExecption("사용자 아이디 길이 부족",200);
+        }
+    }
+
+    static class InvalidUserIdLengthExecption extends RuntimeException
+    {
+        private int errorCode;
+
+        InvalidUserIdLengthExecption(String message, int errorCode)
+        {
+            super(message);
+            this.errorCode = errorCode;
+        }
+
+        public int getErrorCode() { return this.errorCode; }
+    }
+}
+
+[현재 코드 특징]
+- 아이디 길이가 8글자 미만일 때 예외를 발생시키는 실무적인 로직을 훌륭하게 설계했습니다.
+- 예외 클래스에 errorCode 필드를 정상적으로 주입하고 활용하는 구조를 완벽하게 이해하고 있습니다.
+
+[Better Code]
+package week07.day4;
+
+import java.util.Scanner;
+
+public class Problem3 {
+    public static void main(String[] args) {
+        // try-with-resources 구문으로 자원 해제 간소화
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.print("아이디: ");
+            String id = sc.nextLine();
+            login(id);
+        } catch (InvalidUserIdLengthException e) {
+            System.out.println("에러메시지: " + e.getMessage());
+            System.out.println("에러코드: " + e.getErrorCode());
+        }
+    }
+
+    static void login(String id) {
+        if(id.length() < 8) {
+            throw new InvalidUserIdLengthException("사용자 아이디 길이 부족", 200);
+        }
+    }
+
+    // 오타 수정: Execption -> Exception
+    static class InvalidUserIdLengthException extends RuntimeException {
+        private int errorCode;
+
+        InvalidUserIdLengthException(String message, int errorCode) {
+            super(message);
+            this.errorCode = errorCode;
+        }
+
+        public int getErrorCode() { 
+            return this.errorCode; 
+        }
+    }
+}
+
+[기술적 해설]
+1. 네이밍 규칙(오타 수정): `Execption`을 올바른 철자인 `Exception`으로 수정했습니다. 예외 클래스는 이름 뒤에 'Exception'을 붙이는 것이 자바의 표준적인 약속이기 때문에 철자가 틀리지 않도록 주의해야 합니다.
+2. try-with-resources: 반복적으로 나타나는 `finally` 블록의 `sc.close()` 코드를 줄이고 코드 가독성을 개선했습니다.

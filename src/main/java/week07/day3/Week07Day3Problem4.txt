@@ -1,0 +1,70 @@
+[문제]: A()가 B()를, B()가 C()를 호출할 때, C()에서 예외를 던지고 A()에서 잡게 하세요. (3단계 예외 전파)
+
+[사용자 작성 코드]:
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        // TODO
+        A();
+    }
+
+    public static void A()
+    {
+        try
+        {
+            B();
+        }
+        catch (IOException e)
+        {
+            System.out.println("A에서 오류잡음: "+e.getMessage());
+        }
+    }
+
+    public static void B() throws IOException
+    {
+        C();
+    }
+
+    public static void C() throws IOException
+    {
+        throw new IOException("오류발생!!");
+    }
+}
+
+[현재 코드 특징]:
+- 예외가 발생한 지점(C)에서 호출 스택을 거슬러 올라가 처리 지점(A)까지 안전하게 전달되는 '예외 전파'의 원리를 정확하게 구현했습니다.
+- `throws` 키워드를 중간 단계인 B에서도 생략하지 않고 잘 작성했습니다.
+
+[Better Code]:
+package week07.day3;
+
+import java.io.IOException;
+
+public class BetterProblem4 {
+    public static void main(String[] args) {
+        // A가 예외를 처리하므로 main은 안전하게 실행을 마칠 수 있습니다.
+        methodA();
+    }
+
+    public static void methodA() {
+        try {
+            methodB();
+        } catch (IOException e) {
+            System.err.println("[로그] 상위 메서드 A에서 예외 처리: " + e.getMessage());
+        }
+    }
+
+    public static void methodB() throws IOException {
+        // B는 예외를 처리할 능력이 없으므로 다시 A에게 던집니다.
+        methodC();
+    }
+
+    public static void methodC() throws IOException {
+        // 실제 문제가 발생하는 하위 메서드
+        throw new IOException("데이터를 불러오는 중 네트워크 오류가 발생했습니다.");
+    }
+}
+
+[기술적 해설]:
+1. 책임의 전가: 모든 메서드가 예외를 처리(`try-catch`)할 필요는 없습니다. 해당 계층에서 처리할 수 없는 예외라면 `throws`를 통해 상위 계층으로 과감히 넘기는 것이 구조적으로 더 깔끔합니다.
+2. Checked Exception의 의무: `IOException`과 같은 Checked Exception은 전파되는 모든 경로(`methodB`, `methodC`)에 반드시 `throws` 선언이 있어야 컴파일이 됩니다. 사용자가 이 부분을 정확히 지켰습니다.

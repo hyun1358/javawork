@@ -1,0 +1,100 @@
+[문제]: Employee(부모)와 Manager, Developer(자식)를 배열에 넣고 총 급여 합계를 구하세요.
+
+[사용자 작성 코드]:
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Employee[] e = {new Manager(15000),new Developer(20000),new Manager(25000),new Developer(50000)};
+
+        int total_salary=0;
+
+        for(Employee employee : e)
+            total_salary+= employee.GetMoney();
+
+        System.out.println("총 급여: " + total_salary);
+    }
+
+    static class Employee
+    {
+        int money;
+        int GetMoney()
+        {
+           return money;
+        }
+    }
+
+    static class Manager extends Employee
+    {
+        Manager(int money)
+        {
+            this.money = money;
+        }
+    }
+
+    static class Developer extends Employee
+    {
+        Developer(int money)
+        {
+            this.money = money;
+        }
+    }
+
+}
+
+[현재 코드 특징]:
+- 다형성을 활용하여 `Employee` 배열 하나로 서로 다른 직군을 관리하고 급여 합계를 구했습니다.
+- 상속 관계를 명확히 설정하여 부모의 필드(`money`)와 메서드(`GetMoney`)를 잘 활용했습니다.
+
+[Better Code]:
+package week06.day3;
+
+public class BetterProblem5 {
+    public static void main(String[] args) {
+        Employee[] employees = {
+            new Manager(15000),
+            new Developer(20000),
+            new Manager(25000),
+            new Developer(50000)
+        };
+
+        int totalSalary = 0;
+        for (Employee emp : employees) {
+            totalSalary += emp.getSalary();
+        }
+
+        System.out.println("총 급여 합계: " + totalSalary + "원");
+    }
+}
+
+class Employee {
+    // 캡슐화를 위해 private 또는 protected 권장
+    protected int salary;
+
+    public Employee(int salary) {
+        this.salary = salary;
+    }
+
+    // 자바 관례: getter는 get+필드명(카멜케이스)
+    public int getSalary() {
+        return salary;
+    }
+}
+
+class Manager extends Employee {
+    public Manager(int salary) {
+        // 부모 생성자를 호출하여 중복 코드 방지 및 초기화 로직 집중
+        super(salary);
+    }
+}
+
+class Developer extends Employee {
+    public Developer(int salary) {
+        super(salary);
+    }
+}
+
+[기술적 해설]:
+1. super() 생성자 활용: 자식 클래스에서 직접 부모 필드에 접근하는 것보다 `super(salary)`를 통해 부모 생성자에게 초기화 책임을 맡기는 것이 훨씬 객체지향적입니다.
+2. 명명 규칙(Naming Convention): 메서드 이름은 `GetMoney()`보다는 `getSalary()` 또는 `getMoney()`처럼 소문자로 시작하는 카멜케이스(camelCase)를 사용하는 것이 자바의 표준입니다.
+3. 필드 접근 제어: 상속 관계에서만 공유하고 싶다면 `protected`를 사용하고, 그 외에는 `private`와 `getter`를 통해 필드 접근을 제어하는 것이 좋습니다.

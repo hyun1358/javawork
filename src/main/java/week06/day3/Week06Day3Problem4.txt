@@ -1,0 +1,71 @@
+[문제]: 잘못된 타입으로 다운캐스팅했을 때 발생하는 에러를 실습하세요.
+
+[사용자 작성 코드]:
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Parents p = new Parents();
+        Instanceof(p);
+    }
+
+    static class Parents
+    {
+        void info() {
+            System.out.println("나는 부모입니다.");
+        }
+    }
+
+    static class Child extends Parents
+    {
+        @Override
+        void info()
+        {
+            System.out.println("나는 자식");
+        }
+    }
+
+    static void Instanceof(Object obj)
+    {
+        Child c = (Child)obj;
+        c.info();
+    }
+}
+
+[현재 코드 특징]:
+- 부모 객체를 생성한 후 이를 자식 타입으로 강제 변환을 시도하여, 문제의 요구사항인 `ClassCastException`을 성공적으로 발생시켰습니다.
+
+[Better Code]:
+package week06.day3;
+
+public class BetterProblem4 {
+    public static void main(String[] args) {
+        Parents p = new Parents();
+        
+        // 에러 발생을 확인하기 위해 불필요한 메서드 분리 없이 main에서 바로 다운캐스팅을 시도합니다.
+        try {
+            Child c = (Child) p; // 여기서 ClassCastException 발생
+            c.info();
+        } catch (ClassCastException e) {
+            System.out.println("예외 발생 확인: " + e.getMessage());
+        }
+    }
+
+    static class Parents {
+        void info() {
+            System.out.println("나는 부모입니다.");
+        }
+    }
+
+    static class Child extends Parents {
+        @Override
+        void info() {
+            System.out.println("나는 자식");
+        }
+    }
+}
+
+[기술적 해설]:
+1. 직관적인 코드 구조: 예외가 터지는 과정을 실습하는 것이 목적이므로, 에러를 발생시키는 코드를 별도의 메서드로 빼는 것보다 `main` 내에서 직접 다운캐스팅을 시도하는 것이 문제 의도 파악에 더 직관적입니다.
+2. 메서드 네이밍 규칙: 자바의 예약어인 `instanceof`와 대소문자만 다른 `Instanceof`를 메서드 이름으로 사용하면 코드 리뷰나 유지보수 시 큰 혼란을 줄 수 있습니다. 메서드는 동사 형태(예: `checkType` 등)로 명명하는 것이 좋습니다.
+3. 예외 처리: 실습 시 `try-catch`를 사용하여 예외를 직접 잡아보면 프로그램이 비정상 종료되지 않고 흐름을 제어하는 방법도 함께 익힐 수 있습니다.
