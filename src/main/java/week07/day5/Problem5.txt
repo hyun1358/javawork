@@ -1,0 +1,64 @@
+[문제]: String.format을 사용하여 3명의 이름과 점수를 깔끔하게 줄을 맞춰 출력하세요.
+
+[사용자 작성 코드]:
+```java
+        Scanner sc = new Scanner(System.in);
+        String[][] strarr = new String[2][3];
+        for(int i = 0; i < 3; i++)
+        {
+            System.out.print("이름: ");
+            strarr[0][i] = sc.nextLine();
+        }
+
+        for(int i = 0; i < 3; i++)
+        {
+            System.out.print("점수: ");
+            strarr[1][i] = sc.nextLine();
+        }
+
+        for(int i = 0; i < 2; i++)
+        {
+            for(int j = 0; j < 3;j++)
+            {
+                System.out.print(String.format("%-3s\t",strarr[i][j]));
+            }
+            System.out.println();
+        }
+```
+
+[현재 코드 특징]:
+- 2차원 배열(`strarr[2][3]`)을 사용하여 이름 행과 점수 행을 따로 관리했습니다.
+- `String.format("%-3s\t", ...)`를 사용하여 왼쪽 정렬과 탭 문자로 간격을 맞췄습니다.
+- 입력과 출력을 반복문으로 처리하여 구조화하려고 노력했습니다.
+
+[Better Code]:
+```java
+        Scanner sc = new Scanner(System.in);
+        String[] names = new String[3];
+        int[] scores = new int[3];
+
+        // 1. 입력부: 한 사람씩 이름과 점수를 세트로 입력받는 것이 더 직관적입니다.
+        for (int i = 0; i < 3; i++) {
+            System.out.printf("[%d번] 이름: ", i + 1);
+            names[i] = sc.nextLine();
+            System.out.printf("[%d번] 점수: ", i + 1);
+            scores[i] = Integer.parseInt(sc.nextLine()); // 숫자형으로 관리
+        }
+
+        System.out.println("\n----------- 성적표 -----------");
+        System.out.println(String.format("%-10s | %s", "이름", "점수"));
+        System.out.println("-----------------------------");
+
+        // 2. 출력부: 한 행에 이름과 점수가 같이 나오도록 출력합니다.
+        for (int i = 0; i < 3; i++) {
+            // %-10s: 10칸 확보 후 왼쪽 정렬, %5d: 5칸 확보 후 오른쪽 정렬
+            String row = String.format("%-10s | %5d점", names[i], scores[i]);
+            System.out.println(row);
+        }
+        System.out.println("-----------------------------");
+```
+
+[기술적 해설]:
+1. **데이터 구조의 가독성**: 2차원 배열(`strarr[2][3]`)로 행 단위로 데이터를 쌓는 것보다, 이름 배열과 점수 배열을 분리하거나 클래스를 사용하는 것이 나중에 데이터를 가공(합계, 평균 등)하기 훨씬 편합니다.
+2. **입력 방식의 개선**: 이름 3개를 다 입력하고 다시 점수 3개를 입력하는 방식보다는, 한 사람의 정보를 한 번에 입력받는 것이 사용자 경험 측면에서 더 자연스럽습니다.
+3. **포맷팅 심화**: `String.format`의 숫자를 조절하여 이름은 왼쪽(`-`), 점수는 오른쪽(기본) 정렬을 섞어 쓰면 실제 표처럼 훨씬 깔끔하게 출력됩니다. `%s` 뿐만 아니라 점수는 `%d`를 사용하여 데이터 타입을 명확히 하는 것이 좋습니다.

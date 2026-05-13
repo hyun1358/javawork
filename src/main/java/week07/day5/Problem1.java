@@ -5,7 +5,26 @@ package week07.day5;
  * 문제: 문자열을 뒤집어서 원본과 똑같은지(회문) 판별하는 메서드를 구현하세요.
  */
 public class Problem1 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        String origin = "abcba";
+
+        String str = "";
+
+        for(int i = origin.length()-1 ; i >= 0; i--)
+        {
+            char c = origin.charAt(i);
+            str = str + c;
+        }
+
+        if(origin.equals(str))
+        {
+            System.out.println("회문수");
+        }
+        else
+        {
+            System.out.println("회문수아님");
+        }
     }
 }

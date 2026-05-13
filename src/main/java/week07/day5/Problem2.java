@@ -5,7 +5,23 @@ package week07.day5;
  * 문제: 문자열 안에 특정 단어가 몇 개 들어있는지 세어 출력하세요.
  */
 public class Problem2 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        String select = "c";
+
+        String str = "asdcdacdascdvasdxccsxcvfa";
+
+        int count = 0;
+
+        for(int i = 0; i < str.length() ;i ++)
+        {
+            char c = str.charAt(i);
+            if(select.equals(String.valueOf(c)))
+            {
+                count++;
+            }
+        }
+        System.out.println("갯수: "+ count);
     }
 }
