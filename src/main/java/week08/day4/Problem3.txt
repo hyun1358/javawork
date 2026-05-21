@@ -1,0 +1,61 @@
+[문제]
+LinkedHashMap에 여러 값을 넣고, 입력한 순서대로 출력됨을 확인하세요.
+
+[사용자 작성 코드]
+package week08.day4;
+
+import java.util.LinkedHashMap;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        LinkedHashMap<String,String> lhm = new LinkedHashMap<>();
+
+        lhm.put("고양이","야옹");
+        lhm.put("강아지","멍멍");
+        lhm.put("소","음머");
+        lhm.put("병아리","삐약삐약");
+
+        for(String s : lhm.keySet())
+        {
+            System.out.printf("%s의 울음소리 %s\n",s,lhm.get(s));
+        }
+    }
+}
+
+[현재 코드 특징]
+- LinkedHashMap을 생성하고 한글로 된 동물 이름(Key)과 울음소리(Value)를 매칭하여 훌륭한 예시 데이터를 작성했습니다.
+- keySet()을 반복문으로 순회하며, System.out.printf() 서식 지정자를 사용하여 가독성 높은 깔끔한 출력 포맷을 구현했습니다.
+- 코드의 논리적 흐름이 완벽하며 입력된 순서대로 정상 출력됩니다.
+
+[Better Code]
+package week08.day4;
+
+import java.util.LinkedHashMap;
+import java.util.Map; // Map 인터페이스 추가
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // 구현체 타입(LinkedHashMap) 대신 인터페이스 타입(Map)으로 변수를 선언합니다.
+        Map<String, String> lhm = new LinkedHashMap<>();
+
+        lhm.put("고양이", "야옹");
+        lhm.put("강아지", "멍멍");
+        lhm.put("소", "음머");
+        lhm.put("병아리", "삐약삐약");
+
+        for(String s : lhm.keySet())
+        {
+            System.out.printf("%s의 울음소리 %s\n", s, lhm.get(s));
+        }
+    }
+}
+
+[기술적 해설]
+1. 인터페이스를 통한 다형성 구현 (Coding to Interfaces):
+   - 현업 실무에서는 `LinkedHashMap<K, V>` 변수 타입보다는 부모 인터페이스인 `Map<K, V>` 인터페이스 타입으로 변수를 선언하는 것을 권장합니다.
+   - 이렇게 작성하면 추후 순서 유지가 필요 없어 성능이 더 빠른 `HashMap`으로 변경해야 하거나, 정렬이 필요해 `TreeMap`으로 교체해야 할 때 우측의 `new LinkedHashMap<>()` 부분만 수정하면 되므로 코드의 유연성과 유지보수성이 극대화됩니다.
+2. 일관된 코드 스타일:
+   - 가독성을 위해 코드 포맷팅을 일정하게 유지(콤마 뒤 공백 추가 등)하는 습관도 시니어 개발자로서 좋은 성장을 돕습니다.

@@ -15,10 +15,11 @@ import java.util.HashSet;
  * 
  * [언제 사용할까요?]
  * - 당첨자 명단에서 중복을 제거할 때
- * - 방문한 적이 있는 페이지 주소를 관리할 때
+ * - 로또 번호처럼 서로 겹치지 않는 무작위 수의 묶음을 만들 때 (.size() 이용)
  */
 public class Preview {
     public static void main(String[] args) {
+        System.out.println("=== Lab 1: HashSet의 기본 중복 제거 ===");
         // 문자열을 담는 집합 생성
         HashSet<String> set = new HashSet<>();
         
@@ -37,5 +38,21 @@ public class Preview {
         if (set.contains("Python")) {
             System.out.println("파이썬이 명단에 있습니다.");
         }
+
+        System.out.println("\n=== Lab 2: 중복 없이 N개 모으기 응용 ===");
+        // 예: 중복을 방지하면서 원하는 개수(예: 3개)만큼 무작위 숫자를 모으기
+        HashSet<Integer> randomNumbers = new HashSet<>();
+        
+        // 자바에서 난수(랜덤 숫자) 생성하기:
+        // Math.random()은 0.0 이상 1.0 미만의 소수를 반환합니다.
+        // 여기에 10을 곱하고 1을 더한 후 형변환하면 1~10 사이의 정수가 됩니다.
+        // 예: (int)(Math.random() * 10) + 1
+        
+        while (randomNumbers.size() < 3) {
+            int num = (int) (Math.random() * 10) + 1; // 1~10 사이 난수
+            randomNumbers.add(num); // 중복된 숫자는 어차피 무시되므로, Set의 크기는 진짜 겹치지 않는 숫자가 추가될 때만 늘어납니다!
+        }
+        
+        System.out.println("중복 없는 무작위 숫자 3개: " + randomNumbers);
     }
 }
