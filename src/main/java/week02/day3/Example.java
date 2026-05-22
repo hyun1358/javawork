@@ -1,8 +1,10 @@
 package week02.day3;
 
+import java.util.Scanner;
+
 /**
  * [학습 예제] Week 02 Day 3 — for 반복문
- * Lab1~Lab5를 순서대로 실행하며 각 개념을 익히세요.
+ * Lab1~Lab6을 순서대로 실행하며 각 개념을 익히세요.
  */
 public class Example {
     public static void main(String[] args) {
@@ -27,6 +29,10 @@ public class Example {
         System.out.println("--- Lab5: 향상된 for-each 문 (맛보기) ---");
         Lab5.run();
         System.out.println("\n[해설] 배열이나 컬렉션의 모든 요소를 순차적으로 꺼낼 때 매우 편리합니다.\n");
+
+        System.out.println("--- Lab6: Scanner를 활용한 사용자 입력 ---");
+        Lab6.run();
+        System.out.println("\n[해설] Scanner 클래스를 이용해 사용자로부터 정수를 입력받을 수 있습니다.\n");
     }
 
     static class Lab1 {
@@ -77,6 +83,18 @@ public class Example {
             for (int score : scores) {
                 System.out.println("점수: " + score);
             }
+        }
+    }
+
+    static class Lab6 {
+        static void run() {
+            // Scanner를 사용하여 콘솔 입력을 받습니다.
+            String inputSource = "5\n"; // 콘솔 입력을 시뮬레이션하기 위한 임의의 입력 데이터
+            Scanner sc = new Scanner(inputSource);
+            System.out.println("정수를 입력해 주세요 (시뮬레이션 입력: 5): ");
+            int value = sc.nextInt();
+            System.out.println("입력된 값: " + value);
+            sc.close();
         }
     }
 }

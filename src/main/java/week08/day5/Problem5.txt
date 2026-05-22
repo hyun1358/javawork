@@ -1,0 +1,40 @@
+[문제]
+K, V, T, E 각각이 보통 어떤 단어의 약자이고 어떤 용도로 쓰이는지 주석으로 적으세요.
+
+[사용자 작성 코드]
+package week08.day5;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // TODO
+        //k 이거는 모르겠음
+        //v value일거같음
+        //t type일거같음
+        //e element일것같음
+    }
+}
+
+[현재 코드 특징]
+- K를 제외한 세 개의 제네릭 타입 약어(V, T, E)가 무엇의 줄임말인지 정확하게 유추하셨습니다! 훌륭합니다.
+
+[Better Code]
+package week08.day5;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // [정확하게 완성된 제네릭 명명 관례 약어 모음]
+        
+        // K : Key (키) - 주로 Map 구조에서 데이터를 구별하는 식별 키의 타입으로 쓰입니다.
+        // V : Value (값) - 주로 Map 구조에서 키와 쌍을 이루어 저장되는 실제 데이터 값의 타입으로 쓰입니다.
+        // T : Type (타입) - 제네릭 클래스나 제네릭 메서드에서 가장 일반적으로 사용하는 대표 타입 파라미터입니다.
+        // E : Element (원소/요소) - ArrayList, HashSet 등 자바 컬렉션 프레임워크 내부 요소들의 타입을 정의할 때 관례적으로 쓰입니다.
+    }
+}
+
+[기술적 해설]
+1. **제네릭 명명 관례(Naming Convention)의 중요성**:
+   자바 제네릭에서는 임의의 문자(예: `A`, `B`, `C` 등)를 써도 문법적으로는 전혀 문제없습니다. 하지만 실무 개발자들 간의 명확한 약속이 정해져 있습니다. 한눈에 타입의 쓰임새를 파악할 수 있도록 관례적인 대문자 한 글자 약어를 채택하여 사용합니다.
+2. **K와 V의 밀접한 연관성**:
+   `K`와 `V`는 항상 바늘과 실처럼 쌍을 이루어 함께 등장하는 경우가 대다수입니다. 대표적으로 자바의 `Map<K, V>` 인터페이스나 `HashMap<K, V>` 클래스에서 많이 접할 수 있습니다. 예: `Map<String, Integer> phoneBook` 구조에서 `String`이 `K(Key)`, `Integer`가 `V(Value)` 역할을 담당합니다.

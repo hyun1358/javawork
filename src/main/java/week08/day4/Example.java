@@ -70,5 +70,9 @@ public class Example {
         for (Integer key : lmap.keySet()) {
             System.out.println(key + "번 데이터: " + lmap.get(key));
         }
+
+        System.out.println("\n=== Lab 3: TreeSet을 활용한 자동 오름차순 정렬 ===");
+        Set<Integer> sortedSet = new TreeSet<>(Arrays.asList(30, 10, 20));
+        System.out.println("TreeSet 결과 (자동 정렬): " + sortedSet); // [10, 20, 30]
     }
 }

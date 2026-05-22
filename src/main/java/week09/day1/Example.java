@@ -3,6 +3,7 @@ package week09.day1;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * [학습 예제] Week 09 Day 1 — 람다식 활용과 메서드 참조
@@ -18,5 +19,9 @@ public class Example {
         System.out.println("\n=== Lab2: Runnable 람다식 ===");
         Runnable r = () -> System.out.println("스레드 실행");
         r.run();
+
+        System.out.println("\n=== Lab3: Consumer와 메서드 참조(::) ===");
+        Consumer<String> printer = System.out::println;
+        printer.accept("Consumer 인터페이스와 double colon(::) 호출 방식 활용!");
     }
 }

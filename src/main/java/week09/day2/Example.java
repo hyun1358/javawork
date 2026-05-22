@@ -1,10 +1,11 @@
 package week09.day2;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * [학습 예제] Week 09 Day 2 — Consumer(소비자)와 Supplier(공급자)
+ * [학습 예제] Week 09 Day 2 — Consumer(소비자)와 Supplier(공급자) 및 BiFunction(두 매개변수 함수)
  * 
  * 1. Consumer<T> (소비자):
  *    - <T> 타입을 받아서 '사용'만 하고 아무것도 돌려주지 않습니다. (리턴값 없음)
@@ -15,6 +16,10 @@ import java.util.function.Supplier;
  *    - 아무것도 받지 않고(매개변수 없음), <T> 타입의 값을 '제공'만 합니다.
  *    - 실행 메서드: .get()
  *    - 용도: 랜덤값 생성, 현재 시간 가져오기, 초기 설정값 제공 등
+ * 
+ * 3. BiFunction<T, U, R> (두 개의 입력값을 가진 함수):
+ *    - <T> 타입과 <U> 타입 두 개를 받아서 가공한 뒤 <R> 타입을 리턴합니다.
+ *    - 실행 메서드: .apply(t, u)
  */
 public class Example {
     public static void main(String[] args) {
@@ -33,5 +38,9 @@ public class Example {
         // .get()을 호출할 때마다 새로운 값을 생성해서 가져옵니다.
         System.out.println("첫 번째 랜덤값: " + randomNum.get());
         System.out.println("두 번째 랜덤값: " + randomNum.get());
+
+        System.out.println("\n=== Lab 3: BiFunction (두 수의 곱 계산하기) ===");
+        BiFunction<Integer, Integer, Integer> multiply = (x, y) -> x * y;
+        System.out.println("10 * 20 = " + multiply.apply(10, 20));
     }
 }

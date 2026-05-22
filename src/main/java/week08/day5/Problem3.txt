@@ -1,0 +1,116 @@
+[문제]
+ArrayList를 감싸서 push(), pop() 기능을 제공하는 제네릭 Stack<T>를 구현하세요.
+
+[사용자 작성 코드]
+package week08.day5;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Stack<Integer> s = new Stack<>();
+        s.push(3);
+        s.push(4);
+        s.push(5);
+        s.push(6);
+
+        s.print();
+        s.pop();
+    }
+    static class Stack<T>
+    {
+        T item;
+        List<T> list = new ArrayList<>();
+
+        void push(T item)
+        {
+            list.add(item);
+        }
+
+        void pop()
+        {
+            int index = list.size()-1;
+            list.remove(index);
+        }
+
+        void print()
+        {
+            for(T item : list)
+            {
+                System.out.println(item);
+            }
+        }
+    }
+
+}
+
+[현재 코드 특징]
+- `List<T> list = new ArrayList<>()`를 활용하여 유연한 가변 크기의 데이터를 저장할 공간을 잘 마련했습니다.
+- `static class Stack<T>`의 형태로 외부 클래스(`Problem3`) 안에서 간결하게 사용할 수 있도록 정적 중첩 클래스로 영리하게 선언했습니다.
+- 스택의 맨 마지막 인덱스(`list.size() - 1`)를 구하여 `remove`를 적용하는 방식으로 후입선출(LIFO)의 뼈대를 아주 정확하게 구현했습니다.
+
+[Better Code]
+package week08.day5;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        Stack<Integer> s = new Stack<>();
+        s.push(3);
+        s.push(4);
+        s.push(5);
+        s.push(6);
+
+        System.out.println("=== 초기 스택 상태 ===");
+        s.print();
+
+        System.out.println("\n=== pop 실행 ===");
+        System.out.println("꺼낸 값: " + s.pop()); // pop의 리턴값을 바로 출력하여 활용 가능
+        System.out.println("꺼낸 값: " + s.pop());
+
+        System.out.println("\n=== pop 완료 후 스택 상태 ===");
+        s.print();
+    }
+    
+    static class Stack<T>
+    {
+        // 사용하지 않는 멤버 변수 'T item'을 제거하여 클래스를 깔끔하게 정돈했습니다.
+        private List<T> list = new ArrayList<>();
+
+        public void push(T item)
+        {
+            list.add(item);
+        }
+
+        // void 대신 꺼낸 값을 직접 반환하도록 T로 반환 타입을 선언했습니다.
+        public T pop()
+        {
+            // 빈 스택에서 pop을 할 때 IndexOutOfBoundsException 예외가 나는 문제를 방지합니다.
+            if (list.isEmpty()) {
+                System.out.println("[경고] 스택이 비어있습니다.");
+                return null;
+            }
+            int index = list.size() - 1;
+            return list.remove(index); // list.remove는 지워진 값을 직접 리턴해 줍니다!
+        }
+
+        public void print()
+        {
+            for(T item : list)
+            {
+                System.out.println(item);
+            }
+        }
+    }
+}
+
+[기술적 해설]
+1. **리턴 타입 `T` 정의**: 실무에서 사용되는 스택의 `pop()` 메서드는 단순히 값을 지우는 데 그치지 않고, 꺼낸 값을 상위 로직에 넘겨주어 활용하도록 리턴해 주는 구조가 표준입니다. `list.remove(index)`의 기본 반환값 활용 시 한 줄로 깔끔하게 원소 반환 처리가 끝납니다.
+2. **예외 안정성 보장**: 데이터가 없는 빈 스택 상태에서 누군가 `pop()`을 호출하면 `list.size() - 1`이 `-1`이 되어 치명적인 에러가 발생합니다. `list.isEmpty()` 메서드로 이를 미리 체크하는 예외 검증 흐름을 두는 습관이 매우 중요합니다.
+3. **불필요한 인스턴스 변수 정리**: `Stack` 내부에서 실제로 전혀 사용하지 않는 `T item;` 선언부를 지워 메모리 낭비를 줄이고 코드의 응집도를 향상시켰습니다.
