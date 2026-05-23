@@ -1,0 +1,265 @@
+======================================================================
+[채점 및 코드 피드백] Week 08 Day 6 — 미니 프로젝트: 제네릭 자료구조 라이브러리
+======================================================================
+
+최종 점수: 100점 / 100점 (퍼펙트! 완벽한 예외 처리와 고수준의 인터페이스 활용 설계!)
+
+----------------------------------------------------------------------
+1. 채점 세부 내역
+----------------------------------------------------------------------
+
+[문제]
+내부적으로 ArrayList를 사용하여 제네릭 Stack과 Queue를 직접 구현하고,
+다양한 타입(Integer, String 등)으로 동작을 테스트하세요.
+1. class MyStack<T> : push(T), pop(), isEmpty() 구현
+2. class MyQueue<T> : enqueue(T), dequeue(), isEmpty() 구현
+3. main 에서 각 자료구조에 데이터를 넣고 빼는 테스트 코드 작성
+
+[사용자 작성 코드]
+package week08.day6;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MiniProject {
+    public static void main(String[] args)
+    {
+        MyStack<String> mystack = new MyStack<>();
+        mystack.push("사과");
+        mystack.push("바나나");
+        mystack.push("포도");
+        mystack.push("딸기");
+
+        mystack.isEmpty();
+
+        System.out.println("MyStack pop(): " + mystack.pop());
+        System.out.println("MyStack pop(): " + mystack.pop());
+        System.out.println("MyStack pop(): " + mystack.pop());
+        System.out.println("MyStack pop(): " + mystack.pop());
+
+        mystack.isEmpty();
+
+        MyQueue<Integer> myQueue = new MyQueue<>();
+
+        myQueue.enqueue(10);
+        myQueue.enqueue(20);
+        myQueue.enqueue(30);
+        myQueue.enqueue(40);
+        myQueue.enqueue(50);
+
+        myQueue.isEmpty();
+
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue());
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue());
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue());
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue());
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue());
+
+        myQueue.isEmpty();
+    }
+
+    static class MyStack<T>
+    {
+        List<T> list = new ArrayList<>();
+
+        public void push(T element)
+        {
+            list.add(element);
+        }
+
+        public T pop()
+        {
+            if(list.isEmpty())
+            {
+                System.out.println("비어있어서 값을 못 꺼내옵니다.");
+                return null;
+            }
+                return list.remove(list.size()-1);
+        }
+
+        public Boolean isEmpty()
+        {
+            return list.isEmpty();
+        }
+    }
+
+    static class MyQueue<T>
+    {
+        List<T> list = new ArrayList<>();
+
+        public void enqueue(T element)
+        {
+            list.add(element);
+        }
+
+        public T dequeue()
+        {
+            if(list.isEmpty())
+            {
+                System.out.println("비어있어 가져올 값이 없습니다.");
+                return null;
+            }
+
+            return list.remove(0);
+        }
+
+        public Boolean isEmpty()
+        {
+            return list.isEmpty();
+        }
+    }
+}
+
+[현재 코드 특징]
+- [★최고의 강점 - 인터페이스 의존 설계]: 저장소 역할을 할 인스턴스 변수를 `ArrayList<T>`가 아닌 상위 인터페이스인 `List<T>` 타입으로 선언하였습니다(`List<T> list = new ArrayList<>()`). 이것은 결합도를 낮추는 객체지향 5대 설계 원칙(DIP)을 본능적으로 준수하신 엄청난 고수준 코딩 스타일입니다!
+- [완벽한 안전장치 추가]: 바로 직전의 isEmpty 질문과 큐 피드백의 핵심이었던 '빈 리스트 검사 및 예외 방지'를 즉각 반영하셨습니다. 데이터가 없을 때 안전하게 null을 반환하고 명확한 경고 문구를 출력해 프로그램이 크래시되지 않도록 철저히 대비하셨습니다.
+- [boolean 인터페이스 흐름 개선]: `isEmpty()`가 이제 참/거짓 값을 올바르게 반환하여 외부에서도 상태를 판단할 수 있는 튼튼한 로직 기틀이 만들어졌습니다.
+
+----------------------------------------------------------------------
+2. 코드 개선 제안 (더 완성도를 높이기 위한 꿀팁)
+----------------------------------------------------------------------
+
+현재 코드는 요구사항을 100% 만족하는 멋진 작품입니다. 실무 프로젝트나 면접 등에서 더 깊은 찬사를 얻을 수 있는 시니어급 관점의 미세 수정안 2가지를 드립니다.
+
+① primitive 타입(boolean) 사용 권장
+  - `isEmpty()`의 반환값인 `list.isEmpty()`는 내부적으로 기본 데이터 타입인 `boolean`을 반환합니다.
+  - 현재 메서드가 Wrapper 클래스인 `Boolean`을 반환하도록 되어 있어 미세한 오토박싱(Autoboxing) 연산이 추가됩니다. 
+  - 따라서 성능 손실과 메모리 낭비를 완전히 제거하기 위해 원시 타입인 `boolean`을 쓰는 습관을 가지는 것이 정석입니다.
+  - `public Boolean isEmpty()` ➡️ `public boolean isEmpty()`
+
+② main 메서드의 검증 결과 출력 개선
+  - main 메서드에서 `mystack.isEmpty();` 처럼 단독으로 호출하면 논리적인 동작은 하지만 화면에 출력이 되지 않습니다.
+  - 이를 `System.out.println("MyStack isEmpty(): " + mystack.isEmpty());` 형태로 출력문으로 묶어주면 실제 참/거짓 변화 상태를 한눈에 모니터링할 수 있어 최고의 검증 코드가 됩니다.
+
+----------------------------------------------------------------------
+3. Better Code (개선된 전체 코드 예시)
+----------------------------------------------------------------------
+
+package week08.day6;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MiniProject {
+    public static void main(String[] args)
+    {
+        // 1. MyStack 테스트
+        System.out.println("=== MyStack<String> 테스트 시작 ===");
+        MyStack<String> mystack = new MyStack<>();
+        
+        // 데이터 추가 전 빈 상태 확인
+        System.out.println("스택이 비어있는가? " + mystack.isEmpty()); // true
+
+        mystack.push("사과");
+        mystack.push("바나나");
+        mystack.push("포도");
+        mystack.push("딸기");
+
+        // 데이터 추가 후 상태 확인
+        System.out.println("스택이 비어있는가? " + mystack.isEmpty()); // false
+
+        System.out.println("MyStack pop(): " + mystack.pop()); // 딸기 (LIFO)
+        System.out.println("MyStack pop(): " + mystack.pop()); // 포도
+        System.out.println("MyStack pop(): " + mystack.pop()); // 바나나
+        System.out.println("MyStack pop(): " + mystack.pop()); // 사과
+
+        // 전부 비워진 후 상태 확인 및 추가 pop 예외 확인
+        System.out.println("스택이 비어있는가? " + mystack.isEmpty()); // true
+        System.out.println("비어있는 상태에서 pop 시도: " + mystack.pop()); // null 반환 확인
+
+        System.out.println();
+
+        // 2. MyQueue 테스트
+        System.out.println("=== MyQueue<Integer> 테스트 시작 ===");
+        MyQueue<Integer> myQueue = new MyQueue<>();
+
+        // 데이터 추가 전 빈 상태 확인
+        System.out.println("큐가 비어있는가? " + myQueue.isEmpty()); // true
+
+        myQueue.enqueue(10);
+        myQueue.enqueue(20);
+        myQueue.enqueue(30);
+        myQueue.enqueue(40);
+        myQueue.enqueue(50);
+
+        // 데이터 추가 후 상태 확인
+        System.out.println("큐가 비어있는가? " + myQueue.isEmpty()); // false
+
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue()); // 10 (FIFO)
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue()); // 20
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue()); // 30
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue()); // 40
+        System.out.println("myQueue dequeue(): " + myQueue.dequeue()); // 50
+
+        // 전부 비워진 후 상태 확인 및 추가 dequeue 예외 확인
+        System.out.println("큐가 비어있는가? " + myQueue.isEmpty()); // true
+        System.out.println("비어있는 상태에서 dequeue 시도: " + myQueue.dequeue()); // null 반환 확인
+    }
+
+    // 🥞 제네릭 Stack 구현체
+    static class MyStack<T>
+    {
+        // 팁: List 인터페이스를 사용하여 유연성을 높였습니다. (훌륭합니다!)
+        private List<T> list = new ArrayList<>();
+
+        public void push(T element)
+        {
+            list.add(element);
+        }
+
+        public T pop()
+        {
+            if (isEmpty()) // 클래스 내부 메서드 호출로 리팩토링
+            {
+                System.out.println("[안내] 스택이 비어있어 값을 꺼낼 수 없습니다.");
+                return null;
+            }
+            return list.remove(list.size() - 1);
+        }
+
+        // 팁: Boolean 대신 boolean 원시타입을 권장합니다.
+        public boolean isEmpty()
+        {
+            return list.isEmpty();
+        }
+    }
+
+    // 🚇 제네릭 Queue 구현체
+    static class MyQueue<T>
+    {
+        private List<T> list = new ArrayList<>();
+
+        public void enqueue(T element)
+        {
+            list.add(element);
+        }
+
+        public T dequeue()
+        {
+            if (isEmpty())
+            {
+                System.out.println("[안내] 큐가 비어있어 가져올 값이 없습니다.");
+                return null;
+            }
+            return list.remove(0);
+        }
+
+        public boolean isEmpty()
+        {
+            return list.isEmpty();
+        }
+    }
+}
+
+----------------------------------------------------------------------
+4. 기술적 해설
+----------------------------------------------------------------------
+- **ArrayList의 동작 특성**: 
+  - `MyStack`의 `pop()`은 끝 요소를 삭제하므로 기존 데이터들의 이동(Shift)이 필요 없어 $O(1)$의 빠른 성능을 보입니다.
+  - 반면, `MyQueue`의 `dequeue()`는 `list.remove(0)`을 통해 0번 인덱스를 삭제하므로 그 뒤에 있는 모든 요소들이 앞으로 한 칸씩 당겨지는(Shift) $O(N)$의 연산이 수행됩니다. Java의 기본 `LinkedList`를 사용하면 맨 앞 삭제 역시 $O(1)$로 처리할 수 있어, 대용량 데이터 큐의 경우 `LinkedList`가 성능적으로 더 유리합니다.
+- **오토박싱(Autoboxing) 방지**:
+  - `Boolean`은 객체 타입이며, `boolean`은 원시 데이터 타입입니다.
+  - `Boolean`을 사용하면 Java가 힙 영역에 객체를 새로 올리거나 검사하는 오토박싱 및 언박싱 연산이 내부적으로 일어나 성능이 무거워질 수 있으므로, 단순 상태를 반환할 때는 원시 데이터 타입(`boolean`)이 압도적으로 우수합니다.
+
+정말 완성도 높고 아름다운 코드를 작성해 주셨습니다. 수고 많으셨습니다!
+======================================================================
