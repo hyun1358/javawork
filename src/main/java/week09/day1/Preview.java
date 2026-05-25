@@ -18,7 +18,8 @@ package week09.day1;
 public class Preview {
     public static void main(String[] args) {
         // 1. 기존 익명 클래스 방식 (코드가 길고 복잡함)
-        MyFunc legacyFunc = new MyFunc() {
+        MyFunc legacyFunc = new MyFunc()
+        {
             @Override
             public int calc(int a, int b) {
                 return a + b;

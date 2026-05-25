@@ -7,7 +7,17 @@ package week09.day1;
  * @FunctionalInterface를 만들고 람다로 구현해 테스트하세요.
  */
 public class Problem1 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        MyFun myfun = (int a, int b) -> a > b ? a : b;
+        System.out.println(myfun.getMax(10,20));
     }
+
+}
+
+@FunctionalInterface
+interface MyFun
+{
+    int getMax(int a, int b);
 }
