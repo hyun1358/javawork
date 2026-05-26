@@ -1,0 +1,45 @@
+[문제]
+숫자가 양수인지 판별하는 Predicate를 작성하고 테스트하세요.
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.Predicate;
+
+public class Problem1 {
+    public static void main(String[] args)
+    {
+        Predicate<Integer> isPositive = n -> n > 0;
+        System.out.println(isPositive.test(5));
+        System.out.println(isPositive.test(6));
+    }
+}
+
+[현재 코드 특징]
+- 문제 요구사항에 따라 숫자가 양수(0보다 큰 수)인지 검사하는 람다식 `n -> n > 0`을 완벽하게 구현하셨습니다!
+- 변수명 또한 직관적인 `isPositive`로 적절히 설정되어 가독성이 뛰어납니다.
+
+[Better Code]
+package week09.day2;
+
+import java.util.function.Predicate;
+
+public class Problem1 {
+    public static void main(String[] args) {
+        // 숫자가 양수(0보다 큰 수)인지 판별하는 Predicate 작성
+        Predicate<Integer> isPositive = n -> n > 0;
+
+        // 테스트 수행
+        System.out.println("10은 양수인가요? " + isPositive.test(10)); // true
+        System.out.println("-5는 양수인가요? " + isPositive.test(-5)); // false
+        System.out.println("0은 양수인가요? " + isPositive.test(0));   // false
+    }
+}
+
+[기술적 해설]
+1. **Predicate<T> 인터페이스**:
+   - `Predicate<T>`는 자바 8에서 제공하는 함수형 인터페이스로, 임의의 타입 `T`의 객체를 인자로 받아 `boolean` 타입의 값을 반환합니다.
+   - 추상 메서드는 `boolean test(T t)` 형태로 제공되므로, 람다식의 결과가 `boolean` 타입이어야 합니다.
+2. **양수 판별 조건 설정**:
+   - 양수는 `0보다 큰 수`를 지칭하므로, 람다 조건식은 `n -> n > 0`이 가장 직관적이고 효율적입니다.
+   - 사용자가 재도전을 통해 완벽한 양수 판별 로직을 완성하였으므로 본 문제는 **합격(PASS)** 판정을 받았습니다.

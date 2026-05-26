@@ -1,0 +1,44 @@
+[문제]
+두 개의 실수를 받아 더한 값을 반환하는 BiFunction<Double, Double, Double>을 작성하세요.
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.BiFunction;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // TODO
+        BiFunction<Double,Double,Double> sum = (n1 , n2) -> n1+n2;
+        System.out.println(sum.apply(10.0,20.0));
+    }
+}
+
+[현재 코드 특징]
+- `BiFunction<Double, Double, Double>`을 활용해 두 인자를 더해주는 람다식을 알맞게 작성하셨습니다.
+- 자바 8에 추가된 `Double.sum` 정적 메서드를 이용하여 **메서드 참조(Double::sum)** 형식으로 리팩토링하면 코드가 훨씬 격조 있어집니다.
+
+[Better Code]
+package week09.day2;
+
+import java.util.function.BiFunction;
+
+public class Problem5 {
+    public static void main(String[] args) {
+        // Double 클래스의 sum 정적 메서드를 메서드 참조로 지정하여 극도로 간결하게 구현
+        BiFunction<Double, Double, Double> sum = Double::sum;
+
+        // 테스트 출력
+        System.out.println(sum.apply(10.0, 20.0)); // 30.0
+        System.out.println(sum.apply(3.5, 2.1));   // 5.6
+    }
+}
+
+[기술적 해설]
+1. **정적 메서드 참조(Static Method Reference)의 활용**:
+   - `Double` 클래스에는 이미 두 실수를 더해 반환하는 `public static double sum(double a, double b)` 정적 메서드가 정의되어 있습니다.
+   - 따라서 직접 연산자 `+`를 이용해 `(n1, n2) -> n1 + n2`와 같이 람다식을 구현하기보다, 기존의 잘 만들어진 자바 표준 라이브러리 메서드를 `Double::sum`으로 직접 참조하는 것이 객체지향 및 함수형 프로그래밍 관점에서 훨씬 권장되는 설계입니다.
+2. **BiFunction<T, U, R>**:
+   - 두 개의 인자(첫 번째 인자 `T`, 두 번째 인자 `U`)를 받아서 하나의 결과 `R`을 반환하는 함수형 인터페이스입니다.
+   - 여기서는 `Double`형 인자 2개를 받아서 `Double`형을 반환하므로 `Double::sum`이 이 시그니처와 완벽하게 일치하여 바로 대입할 수 있습니다.

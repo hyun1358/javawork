@@ -1,0 +1,46 @@
+[문제]
+문자열을 받아 대문자로 변환해주는 Function<String, String>을 작성하세요.
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.Function;
+
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        // TODO
+
+        Function<String,String> upercase = str -> str.toUpperCase();
+        System.out.println(upercase.apply("abs"));
+    }
+}
+
+[현재 코드 특징]
+- `Function<String, String>`을 잘 정의하여 문자열을 대문자로 올바르게 변환하고 출력하셨습니다.
+- 다만, 변수명에 오타(`upercase` -> `uppercase` 또는 `toUpper`)가 있습니다.
+- 자바 8부터 제공하는 **메서드 참조(Method Reference)** 기능을 적용하여 코드를 한층 더 정결하게 개선할 수 있습니다.
+
+[Better Code]
+package week09.day2;
+
+import java.util.function.Function;
+
+public class Problem2 {
+    public static void main(String[] args) {
+        // 1. 변수명 오타 수정
+        // 2. 람다식 대신 '메서드 참조(String::toUpperCase)' 활용
+        Function<String, String> toUpper = String::toUpperCase;
+
+        // 테스트 출력
+        System.out.println(toUpper.apply("abs"));  // ABS
+        System.out.println(toUpper.apply("java")); // JAVA
+    }
+}
+
+[기술적 해설]
+1. **메서드 참조(Method Reference) 도입**:
+   - `str -> str.toUpperCase()`처럼 람다식이 단순히 인자로 들어온 객체의 메서드를 대입 및 대리 호출하는 일만 할 경우, 자바 컴파일러는 이를 메서드 참조 형태로 간결하게 줄여 쓸 수 있도록 지원합니다.
+   - `String::toUpperCase` 형태로 변환하면 매개변수를 직접 나열하지 않아 가독성이 매우 높아지고 코드가 직관적으로 느껴집니다.
+2. **의미 있는 명명 규칙**:
+   - 변수나 메서드명을 지을 때는 철자 오류(Typo)를 최소화하는 것이 실무에서 협업할 때 매우 중요합니다. `upercase` 대신 직관적이고 표준 철자에 맞는 `toUpper`나 `uppercase`로 변수명을 수정하는 것을 권장합니다.
