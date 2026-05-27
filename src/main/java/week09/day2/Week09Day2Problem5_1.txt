@@ -1,0 +1,39 @@
+[문제]
+두 개의 실수를 받아 더 큰 값을 반환하는 BiFunction<Double, Double, Double>을 작성하세요.
+(단, Double 클래스의 max 메서드 참조를 적용하여 구현하세요.)
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.BiFunction;
+
+public class Problem5_1 {
+    public static void main(String[] args)
+    {
+        BiFunction<Double,Double,Double> max = Double::max;
+        System.out.println(max.apply(21.3,20.3));
+    }
+}
+
+[현재 코드 특징]
+- 실수의 최댓값을 판별하는 `Double.max(double a, double b)` 정적 메서드를 `Double::max` 정적 메서드 참조 형식으로 완벽히 설계하셨습니다.
+- 두 실수를 받아 최댓값을 출력하는 테스트 역시 정상 작동합니다.
+
+[Better Code]
+(사용자님의 코드가 완벽하므로 이를 모범 코드로 보존합니다.)
+package week09.day2;
+
+import java.util.function.BiFunction;
+
+public class Problem5_1 {
+    public static void main(String[] args) {
+        // Double::max 메서드 참조를 사용하여 최댓값 구하기 완성
+        BiFunction<Double, Double, Double> maxFinder = Double::max;
+
+        System.out.println("최댓값: " + maxFinder.apply(21.3, 20.3));
+    }
+}
+
+[기술적 해설]
+- `BiFunction<Double, Double, Double>`은 `Double` 타입 입력 2개와 `Double` 타입 반환 1개를 요구합니다.
+- `Double.max(double, double)`은 시그니처가 정확히 부합하며 정적(static) 메서드이므로, `Double::max` 형식으로 호출하여 고성능 래퍼 연산을 간결하게 구현할 수 있었습니다.

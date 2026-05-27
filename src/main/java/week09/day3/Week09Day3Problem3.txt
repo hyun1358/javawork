@@ -1,0 +1,52 @@
+[문제]
+[연습 문제 3] 필터 후 정렬 (sorted)
+문제: 점수 리스트 {50, 80, 90, 40, 100}에서 70점 이상인 사람만 골라 오름차순 정렬 후 출력하세요.
+
+[사용자 작성 코드]
+package week09.day3;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        List<Integer> nums = new ArrayList<>(Arrays.asList(50,80,90,40,100));
+        nums.stream().sorted().map(n -> n >= 70).forEach(n-> System.out.println(n));
+    }
+}
+
+[현재 코드 특징]
+- 스트림(Stream) API를 활용하여 정렬(sorted), 매핑(map), 순회(forEach)를 연속적인 메서드 체이닝으로 구현하려 시도했습니다.
+- 컬렉션을 스트림으로 다루는 기초적인 파이프라인 구조를 잘 파악하고 있습니다.
+
+[Better Code]
+package week09.day3;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Problem3 {
+    public static void main(String[] args) {
+        List<Integer> nums = new ArrayList<>(Arrays.asList(50, 80, 90, 40, 100));
+
+        nums.stream()
+            .filter(n -> n >= 70) // 70 이상인 요소만 필터링 (타입 및 값 유지)
+            .sorted()             // 오름차순 정렬
+            .forEach(System.out::println); // 메서드 참조를 이용한 출력
+    }
+}
+
+[기술적 해설]
+1. filter() vs map()의 차이:
+   - map()은 입력값을 다른 값이나 타입으로 '1:1 변환'합니다. `n -> n >= 70` 비교 연산식은 Boolean 결과를 반환하므로, Integer 스트림이 Boolean 스트림(true/false)으로 변환되어 의도치 않은 결과가 나옵니다.
+   - filter()는 조건식(Predicate)이 true인 요소만 남겨두고 나머지는 걸러내며, 기존 요소의 타입과 값을 그대로 유지합니다. 70점 이상인 '점수(숫자)'를 걸러내기 위해선 filter()를 사용해야 합니다.
+
+2. 스트림 파이프라인 최적화:
+   - 기존 코드는 sorted()를 먼저 호출한 뒤 map()을 수행했습니다.
+   - 개선 코드와 같이 filter()를 먼저 수행하면, 조건에 맞지 않는 데이터(40, 50)가 정렬 수행 전에 제거되므로 정렬해야 할 데이터의 양이 줄어들어 성능 면에서 이점이 생깁니다.
+
+3. 메서드 참조(Method Reference):
+   - `n -> System.out.println(n)` 람다식은 `System.out::println` 형태로 축약하여 가독성을 한층 더 높일 수 있습니다.

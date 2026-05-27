@@ -1,0 +1,40 @@
+[문제]
+문자열을 받아 그 길이를 반환하는 Function<String, Integer>를 작성하세요.
+(단, 람다 표현식이 아닌 '메서드 참조'를 적용하여 구현하세요.)
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.Function;
+
+public class Problem2_1 {
+    public static void main(String[] args)
+    {
+        Function<String,Integer> length = String::length;
+        System.out.println("문자의길이: "+ length.apply("asdasda"));
+        System.out.println("문자의길이: "+ length.apply("asdasdaㅁㅇㅁㅇㅁㅇㄴㅁㅇ"));
+    }
+}
+
+[현재 코드 특징]
+- 문자열의 길이를 측정하는 인스턴스 메서드인 `length()`를 `String::length` 메서드 참조 형식으로 극적으로 축약하여 우수하게 작성하셨습니다!
+- 함수형 프로그래밍 스타일을 완벽하게 체득하셨음을 증명하는 우아한 코드입니다.
+
+[Better Code]
+(사용자님의 코드가 완벽하므로 이를 모범 코드로 보존합니다.)
+package week09.day2;
+
+import java.util.function.Function;
+
+public class Problem2_1 {
+    public static void main(String[] args) {
+        // String::length 메서드 참조를 사용하여 완벽하게 구현
+        Function<String, Integer> stringLength = String::length;
+
+        System.out.println("길이 검사('asdasda'): " + stringLength.apply("asdasda"));
+    }
+}
+
+[기술적 해설]
+- `Function<String, Integer>`는 문자열(`String`)을 입력받아 정수(`Integer`)를 반환하는 시그니처를 가집니다.
+- `String` 클래스의 `length()` 메서드는 매개변수가 없고 `int`를 반환하므로, 해당 인스턴스의 형식을 컴파일러가 추론하여 `String::length`로 완벽하게 바인딩할 수 있습니다.

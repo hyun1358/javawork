@@ -1,0 +1,41 @@
+[문제]
+숫자가 음수(0보다 작은 수)인지 판별하는 Predicate를 작성하고 테스트하세요.
+
+[사용자 작성 코드]
+package week09.day2;
+
+import java.util.function.Predicate;
+
+public class Problem1_1 {
+    public static void main(String[] args)
+    {
+        Predicate<Integer> mius = n -> n < 0;
+        System.out.println(mius.test(-1));
+        System.out.println(mius.test(5));
+    }
+}
+
+[현재 코드 특징]
+- 앞선 문제 1의 피드백을 완벽하게 이해하시고, 0보다 작은 수를 비교하는 올바른 크기 비교 조건식 `n -> n < 0`을 완벽하게 적용하셨습니다.
+- 테스트 출력 결과 역시 음수와 양수를 각각 대입하여 예상한 참/거짓 값을 정확히 도출했습니다.
+
+[Better Code]
+(사용자님의 코드가 완벽하므로 이를 모범 코드로 보존합니다.)
+package week09.day2;
+
+import java.util.function.Predicate;
+
+public class Problem1_1 {
+    public static void main(String[] args) {
+        // 음수 판별용 Predicate 정의
+        Predicate<Integer> isNegative = n -> n < 0;
+
+        // 테스트
+        System.out.println("-1은 음수인가요? " + isNegative.test(-1)); // true
+        System.out.println("5는 음수인가요? " + isNegative.test(5));   // false
+    }
+}
+
+[기술적 해설]
+- `Predicate<Integer>`의 제네릭 타입에 부합하도록 정수값 `-1`과 `5`를 인자로 넘겨 `test()` 메서드를 올바르게 기동했습니다.
+- 이로써 Predicate의 조건 설정 방식을 완전하게 마스터하셨습니다.
