@@ -1,35 +1,55 @@
 package week12.day5;
 
-/**
- * [학습 예제] Week 12 Day 5 — Repository 패턴 실무 구현
- * 
- * [학습 핵심 이론: 영속성 저장 메커니즘 추상화]
- * 1. Repository 패턴:
- *    - 데이터 저장소의 구체적인 세부 구현(예: 메모리 맵에 저장하는지, 실제 MySQL에 접속하는지 등)을 비즈니스 로직(Service)에서 눈치채지 못하게 철저히 은닉하고, 인터페이스 뒤로 물리적 DB를 완전히 추상화하여 분리해내는 뛰어난 아키텍처 패턴입니다.
- *    - 메모리 맵 레포지토리와 실제 JDBC 레포지토리로의 유연한 부품 갈아끼우기 마법을 구현하고 그 강력한 유연성을 확인합니다.
- */
 public class Example {
     public static void main(String[] args) {
-        UserRepository repo = new MemoryUserRepository();
-        repo.save("홍길동");
-        System.out.println("저장된 이름: " + repo.find());
+        System.out.println("=== Lab 1~4: Repository 패턴 구조 ===");
+        
+        System.out.println("\n=== Lab 5: DI — File 버전으로 실행 ===");
+        DataRepository fileRepo = new FileDataRepository();
+        DataService serviceWithFile = new DataService(fileRepo); 
+        serviceWithFile.process("안녕하세요, 파일 저장!");
+
+        System.out.println("\n=== Lab 5: DI — DB 버전으로 교체하여 실행 ===");
+        DataRepository dbRepo = new DbDataRepository();
+        DataService serviceWithDb = new DataService(dbRepo); 
+        serviceWithDb.process("안녕하세요, DB 저장!");
+
+        System.out.println("\n=== Lab 5: DI — 테스트용 Mock 버전 ===");
+        DataRepository mockRepo = new MockDataRepository();
+        DataService serviceWithMock = new DataService(mockRepo); 
+        serviceWithMock.process("테스트 데이터");
     }
-}
 
-interface UserRepository {
-    void save(String name);
-
-    String find();
-}
-
-class MemoryUserRepository implements UserRepository {
-    String data;
-
-    public void save(String name) {
-        data = name;
+    interface DataRepository {
+        void save(String data);
+        String get();
     }
 
-    public String find() {
-        return data;
+    static class FileDataRepository implements DataRepository {
+        private String store = null;
+        @Override public void save(String data) { store = data; System.out.println("[File] '" + data + "' → 파일에 저장됨"); }
+        @Override public String get() { System.out.println("[File] 파일에서 데이터 읽기"); return store; }
+    }
+
+    static class DbDataRepository implements DataRepository {
+        private String store = null;
+        @Override public void save(String data) { store = data; System.out.println("[DB] '" + data + "' → DB에 저장됨 (INSERT)"); }
+        @Override public String get() { System.out.println("[DB] DB에서 데이터 읽기 (SELECT)"); return store; }
+    }
+
+    static class MockDataRepository implements DataRepository {
+        private String store = null;
+        @Override public void save(String data) { store = data; System.out.println("[Mock] '" + data + "' → 메모리에 저장 (테스트용)"); }
+        @Override public String get() { System.out.println("[Mock] 메모리에서 데이터 읽기"); return store; }
+    }
+
+    static class DataService {
+        private final DataRepository repository;
+        DataService(DataRepository repository) { this.repository = repository; }
+        public void process(String input) {
+            repository.save(input);
+            String result = repository.get();
+            System.out.println("  Service 처리 결과: " + result);
+        }
     }
 }

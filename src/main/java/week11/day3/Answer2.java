@@ -5,27 +5,27 @@ public class Answer2 {
         String sql = new SqlBuilder().select("*").from("users").where("id=1").build();
         System.out.println(sql);
     }
-}
 
-class SqlBuilder {
-    StringBuilder sb = new StringBuilder();
+    static class SqlBuilder {
+        StringBuilder sb = new StringBuilder();
 
-    public SqlBuilder select(String s) {
-        sb.append("SELECT ").append(s).append(" ");
-        return this;
-    }
+        public SqlBuilder select(String s) {
+            sb.append("SELECT ").append(s).append(" ");
+            return this;
+        }
 
-    public SqlBuilder from(String t) {
-        sb.append("FROM ").append(t).append(" ");
-        return this;
-    }
+        public SqlBuilder from(String t) {
+            sb.append("FROM ").append(t).append(" ");
+            return this;
+        }
 
-    public SqlBuilder where(String c) {
-        sb.append("WHERE ").append(c);
-        return this;
-    }
+        public SqlBuilder where(String c) {
+            sb.append("WHERE ").append(c);
+            return this;
+        }
 
-    public String build() {
-        return sb.toString();
+        public String build() {
+            return sb.toString();
+        }
     }
 }

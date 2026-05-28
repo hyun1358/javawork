@@ -3,14 +3,18 @@ package week12.day5;
 public class Answer2 {
     public static void main(String[] args) {
     }
-}
 
-class FileDataRepository implements DataRepository {
-    public void save(String data) {
-        System.out.println("파일에 저장: " + data);
+    interface DataRepository {
+        void save(String data);
+        String get();
     }
 
-    public String get() {
-        return "파일 데이터";
+    static class FileDataRepository implements DataRepository {
+        public void save(String data) {
+            System.out.println("파일에 저장: " + data);
+        }
+        public String get() {
+            return "파일 데이터";
+        }
     }
 }

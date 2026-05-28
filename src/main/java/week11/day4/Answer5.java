@@ -1,6 +1,7 @@
 package week11.day4;
 
 import java.lang.reflect.Field;
+import java.lang.annotation.*;
 
 public class Answer5 {
     public static void main(String[] args) {
@@ -10,10 +11,15 @@ public class Answer5 {
             }
         }
     }
-}
 
-class TestClass {
-    @NotNull
-    String name;
-    int age;
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface NotNull {
+    }
+
+    static class TestClass {
+        @NotNull
+        String name;
+        int age;
+    }
 }

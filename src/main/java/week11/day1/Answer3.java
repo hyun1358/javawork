@@ -5,12 +5,11 @@ public class Answer3 {
         Configuration config = Configuration.INSTANCE;
         config.printSettings();
     }
-}
 
-enum Configuration {
-    INSTANCE;
-
-    public void printSettings() {
-        System.out.println("설정 로드됨");
+    enum Configuration {
+        INSTANCE;
+        public void printSettings() {
+            System.out.println("설정 로드됨");
+        }
     }
 }

@@ -5,26 +5,24 @@ public class Answer4 {
         Command cmd = new LightOnCommand(new Light());
         cmd.execute();
     }
-}
 
-interface Command {
-    void execute();
-}
-
-class Light {
-    void on() {
-        System.out.println("불이 켜짐");
-    }
-}
-
-class LightOnCommand implements Command {
-    Light light;
-
-    LightOnCommand(Light l) {
-        light = l;
+    interface Command {
+        void execute();
     }
 
-    public void execute() {
-        light.on();
+    static class Light {
+        void on() {
+            System.out.println("불이 켜짐");
+        }
+    }
+
+    static class LightOnCommand implements Command {
+        Light light;
+        LightOnCommand(Light l) {
+            light = l;
+        }
+        public void execute() {
+            light.on();
+        }
     }
 }

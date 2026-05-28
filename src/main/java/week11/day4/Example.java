@@ -3,54 +3,101 @@ package week11.day4;
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
 
-/**
- * [학습 예제] Week 11 Day 4 — 커스텀 어노테이션과 Field 리플렉션
- * 
- * [학습 핵심 이론: 코드 위의 메타데이터와 자동 처리]
- * 1. 어노테이션 (Annotation):
- *    - 컴파일러나 프레임워크에게 이 코드(클래스, 메소드, 필드)가 어떤 용도인지, 런타임에 어떻게 처리해야 하는지 알려주는 골뱅이(`@`) 표식 메타데이터입니다.
- * 
- * 2. 커스텀 어노테이션과 리플렉션 시너지:
- *    - `@Retention(RetentionPolicy.RUNTIME)`을 사용하여 런타임까지 마크 정보를 보존합니다.
- *    - 리플렉션을 통해 객체 내부를 샅샅이 파고들어, 내가 만든 커스텀 어노테이션이 붙어 있는 필드들만 골라내 특수 유효성 검증을 일괄 자동 수행하는 스프링 프레임워크식 마법을 구현해 봅니다.
- */
 public class Example {
     public static void main(String[] args) {
-        System.out.println("=== Lab 1: 어노테이션과 메서드 리플렉션 ===");
-        // Item 클래스의 메서드 중 @Important가 붙은 메서드 찾기
-        java.lang.reflect.Method[] methods = Item.class.getDeclaredMethods();
-        for (java.lang.reflect.Method m : methods) {
-            if (m.isAnnotationPresent(Important.class)) {
-                System.out.println("중요한 메서드 발견: " + m.getName());
-            }
+
+        System.out.println("=== Lab 1: Enum — 요일 ===");
+        for (DayOfWeek day : DayOfWeek.values()) {
+            System.out.println(day.name() + " → " + day.getKoreanName());
         }
 
-        System.out.println("\n=== Lab 2: 어노테이션과 필드(Field) 리플렉션 ===");
-        Field[] fields = Item.class.getDeclaredFields();
+        DayOfWeek today = DayOfWeek.MONDAY;
+        System.out.println("오늘: " + today + " (" + today.getKoreanName() + ")");
+
+        System.out.println("\n=== Lab 2: Enum 상태 머신 — OrderStatus ===");
+        OrderStatus status = OrderStatus.PENDING;
+        System.out.println("초기 상태: " + status);
+
+        status = status.next(); // PENDING → PAID
+        System.out.println("다음 상태: " + status);
+
+        status = status.next(); // PAID → SHIPPED
+        System.out.println("다음 상태: " + status);
+
+        status = status.next(); // SHIPPED → 더 이상 없음 (자기 자신 유지)
+        System.out.println("다음 상태: " + status);
+
+        System.out.println("\n=== Lab 3 & 5: @NotNull 어노테이션 + 리플렉션 검사 ===");
+        Field[] fields = Member.class.getDeclaredFields();
+        System.out.println("Member 클래스의 @NotNull 필드:");
         for (Field f : fields) {
-            if (f.isAnnotationPresent(Important.class)) {
-                System.out.println("중요한 필드 발견: " + f.getName() + " (타입: " + f.getType().getSimpleName() + ")");
+            if (f.isAnnotationPresent(NotNull.class)) {
+                System.out.println("  → @NotNull 필드: " + f.getName() + " (타입: " + f.getType().getSimpleName() + ")");
+            }
+        }
+
+        Member m = new Member(null, "test@test.com");
+        validateNotNull(m);
+
+        System.out.println("\n=== Lab 4: @Deprecated ===");
+        LegacyService service = new LegacyService();
+        service.newMethod(); 
+
+        @SuppressWarnings("deprecation")
+        String result = service.oldMethod();
+        System.out.println("구형 메서드 결과: " + result);
+    }
+
+    static void validateNotNull(Object obj) {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            if (f.isAnnotationPresent(NotNull.class)) {
+                f.setAccessible(true);
+                try {
+                    if (f.get(obj) == null) {
+                        System.out.println("검증 실패: '" + f.getName() + "' 필드는 null이면 안 됩니다!");
+                    } else {
+                        System.out.println("검증 통과: '" + f.getName() + "' = " + f.get(obj));
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
-}
 
-// 나만의 어노테이션 정의 (메서드와 필드 둘 다 사용 가능하도록 설정)
-@Retention(RetentionPolicy.RUNTIME) // 런타임까지 살아남음
-@Target({ElementType.METHOD, ElementType.FIELD})
-@interface Important {
-}
-
-class Item {
-    @Important
-    private String id;
-    
-    private int price;
-
-    public void normalMethod() {
+    enum DayOfWeek {
+        MONDAY("월요일"), TUESDAY("화요일"), WEDNESDAY("수요일"),
+        THURSDAY("목요일"), FRIDAY("금요일"), SATURDAY("토요일"), SUNDAY("일요일");
+        private final String koreanName;
+        DayOfWeek(String koreanName) { this.koreanName = koreanName; }
+        public String getKoreanName() { return koreanName; }
     }
 
-    @Important
-    public void criticalMethod() {
+    enum OrderStatus {
+        PENDING, PAID, SHIPPED, DELIVERED;
+        public OrderStatus next() {
+            OrderStatus[] values = OrderStatus.values();
+            int next = this.ordinal() + 1;
+            return next < values.length ? values[next] : this;
+        }
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface NotNull {}
+
+    static class Member {
+        @NotNull private String name;
+        private String email;
+        Member(String name, String email) {
+            this.name  = name;
+            this.email = email;
+        }
+    }
+
+    static class LegacyService {
+        @Deprecated public String oldMethod() { return "구형 방식으로 처리됨"; }
+        public void newMethod() { System.out.println("새로운 방식으로 처리됨 (권장)"); }
     }
 }

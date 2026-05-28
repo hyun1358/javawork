@@ -6,24 +6,23 @@ public class Answer2 {
         s = s.next();
         System.out.println(s);
     }
-}
 
-enum State {
-    START {
-        public State next() {
-            return IN_PROGRESS;
-        }
-    },
-    IN_PROGRESS {
-        public State next() {
-            return END;
-        }
-    },
-    END {
-        public State next() {
-            return END;
-        }
-    };
-
-    public abstract State next();
+    enum State {
+        START {
+            public State next() {
+                return IN_PROGRESS;
+            }
+        },
+        IN_PROGRESS {
+            public State next() {
+                return END;
+            }
+        },
+        END {
+            public State next() {
+                return END;
+            }
+        };
+        public abstract State next();
+    }
 }

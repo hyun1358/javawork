@@ -1,47 +1,139 @@
 package week12.day2;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
+import java.net.*;
+import java.net.http.*;
+import java.nio.file.*;
 
 /**
- * [학습 예제] Week 12 Day 2 — HttpURLConnection 및 Files API 활용
- * 
- * [학습 핵심 이론: 구식 API와 현대 NIO의 만남]
- * 1. HttpURLConnection 활용법:
- *    - 비록 구식이지만 레거시 프로젝트나 가벼운 모듈에서 여전히 사용되는 기본 Connection 객체의 응답 코드 검증(200 OK 등)과 입력 바이트 처리 구조를 다룹니다.
- * 
- * 2. 가져온 데이터를 파일로 보관:
- *    - HTTP 통신으로 네트워크 너머에서 가져온 소중한 문자열 웹 데이터를 `java.nio.file.Files` 유틸을 활용해 내 하드디스크의 텍스트 파일로 영구 안전 보존하는 종합 실습을 진행합니다.
+ * [학습 예제] Week 12 Day 2 — HTTP 통신 완전 정복
+ *
+ * ★ 이 파일은 오늘 풀어야 할 연습 문제 5개의 핵심 기술을 모두 담고 있습니다.
+ *
+ * [문제별 학습 목표]
+ * - 문제 1: HttpClient GET — https://jsonplaceholder.typicode.com/users/1 요청
+ * - 문제 2: 응답 코드 확인 — statusCode() == 200 이면 본문 출력
+ * - 문제 3: HttpURLConnection — 구버전 API로 동일 GET 요청
+ * - 문제 4: 404 확인 — /users/9999 로 요청 → 404 응답 코드 확인
+ * - 문제 5: 결과 파일 저장 — 응답 본문을 "api_result.txt"로 저장
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * [핵심 이론 1 & 2] Java 11+ HttpClient (최신 방법)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  - HttpClient: Java 11부터 제공하는 현대적 HTTP 클라이언트
+ *  - HttpRequest.newBuilder().uri(URI).GET().build(): 요청 빌더 패턴
+ *  - client.send(request, BodyHandlers.ofString()): 동기 방식 전송
+ *  - response.statusCode(): HTTP 상태 코드 (200, 404 등)
+ *  - response.body(): 응답 본문 문자열
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * [핵심 이론 3] HttpURLConnection (구버전)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  - Java 1.1부터 있던 레거시 HTTP API
+ *  - URL → openConnection() → setRequestMethod("GET") → getResponseCode()
+ *  - 응답 읽기: getInputStream() → InputStreamReader → BufferedReader
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * [핵심 이론 5] HTTP 응답 결과 파일 저장
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  - Files.writeString(path, content): 한 줄로 파일 저장
  */
 public class Example {
+    static final String BASE_URL = "https://jsonplaceholder.typicode.com";
+
     public static void main(String[] args) throws Exception {
-        System.out.println("=== Lab 1: GET 요청 보내기 ===");
+
+        // ─────────────────────────────────────────────
+        // Lab 1: HttpClient GET 요청 (→ 문제 1 참고)
+        // ─────────────────────────────────────────────
+        System.out.println("=== Lab 1: HttpClient GET 요청 ===");
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users/1"))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("응답 코드: " + response.statusCode());
+        System.out.println("응답 본문 (첫 100자): "
+                + response.body().substring(0, Math.min(100, response.body().length())) + "...");
+
+        // ─────────────────────────────────────────────
+        // Lab 2: 응답 코드 200일 때만 본문 출력 (→ 문제 2 참고)
+        // ─────────────────────────────────────────────
+        System.out.println("\n=== Lab 2: 응답 코드 조건 분기 ===");
+        HttpRequest req2 = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/posts/1"))
+                .GET()
+                .build();
+        HttpResponse<String> res2 = client.send(req2, HttpResponse.BodyHandlers.ofString());
+
+        if (res2.statusCode() == 200) {
+            System.out.println("200 OK — 본문 출력:");
+            System.out.println("  " + res2.body().substring(0, Math.min(80, res2.body().length())));
+        } else {
+            System.out.println("오류 발생! 코드: " + res2.statusCode());
+        }
+
+        // ─────────────────────────────────────────────
+        // Lab 3: HttpURLConnection (구버전) (→ 문제 3 참고)
+        // ─────────────────────────────────────────────
+        System.out.println("\n=== Lab 3: HttpURLConnection (구버전 API) ===");
         try {
-            URL url = new URL("https://jsonplaceholder.typicode.com/posts/1");
+            URL url = new URL(BASE_URL + "/users/1");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            System.out.println("응답 코드: " + conn.getResponseCode());
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            System.out.println("내용: " + br.readLine());
+            int code = conn.getResponseCode();
+            System.out.println("응답 코드: " + code);
 
+            if (code == 200) {
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) sb.append(line);
+                System.out.println("본문 (첫 80자): " + sb.substring(0, Math.min(80, sb.length())));
+            }
             conn.disconnect();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("HttpURLConnection 오류: " + e.getMessage());
         }
 
-        System.out.println("\n=== Lab 2: java.nio.file.Files와 Paths를 이용한 파일 저장 ===");
-        runNioWriteFile();
-    }
+        // ─────────────────────────────────────────────
+        // Lab 4: 404 응답 확인 (→ 문제 4 참고)
+        // ─────────────────────────────────────────────
+        System.out.println("\n=== Lab 4: 404 응답 확인 ===");
+        HttpRequest req404 = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users/9999")) // 존재하지 않는 리소스
+                .GET()
+                .build();
+        HttpResponse<String> res404 = client.send(req404, HttpResponse.BodyHandlers.ofString());
 
-    public static void runNioWriteFile() throws Exception {
-        String data = "HTML Response data simulator";
-        // Files.writeString과 Paths.get을 이용하여 한 줄로 손쉽게 파일을 생성 및 저장합니다.
-        Files.writeString(Paths.get("download.txt"), data);
-        System.out.println("NIO API를 사용하여 download.txt를 생성하고 텍스트를 기록했습니다.");
+        System.out.println("응답 코드: " + res404.statusCode()); // 404 예상
+        if (res404.statusCode() == 404) {
+            System.out.println("404 Not Found — 리소스가 존재하지 않습니다.");
+        }
+
+        // ─────────────────────────────────────────────
+        // Lab 5: 응답 본문을 파일로 저장 (→ 문제 5 참고)
+        // ─────────────────────────────────────────────
+        System.out.println("\n=== Lab 5: API 결과 파일 저장 ===");
+        if (response.statusCode() == 200) {
+            Path outputPath = Paths.get("api_result.txt");
+            Files.writeString(outputPath, response.body());
+            System.out.println("api_result.txt 저장 완료!");
+            System.out.println("저장 경로: " + outputPath.toAbsolutePath());
+
+            // 저장 확인 (파일 첫 줄 읽기)
+            String firstLine = Files.readAllLines(outputPath).get(0);
+            System.out.println("저장된 첫 줄: " + firstLine);
+
+            // 뒷정리
+            Files.deleteIfExists(outputPath);
+        }
     }
 }

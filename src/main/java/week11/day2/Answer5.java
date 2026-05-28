@@ -7,4 +7,20 @@ public class Answer5 {
         ps.setStrategy(amt -> System.out.println("토스페이 " + amt + "원"));
         ps.pay(5000);
     }
+
+    interface PayStrategy {
+        void pay(int amt);
+    }
+
+    static class PaymentSystem {
+        PayStrategy strategy;
+
+        void setStrategy(PayStrategy s) {
+            strategy = s;
+        }
+
+        void pay(int amt) {
+            strategy.pay(amt);
+        }
+    }
 }

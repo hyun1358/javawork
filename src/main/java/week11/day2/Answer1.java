@@ -9,16 +9,16 @@ public class Answer1 {
         s.sort(list);
         System.out.println(list);
     }
-}
 
-class Sorter {
-    Comparator<Integer> comp;
+    static class Sorter {
+        Comparator<Integer> comp;
 
-    Sorter(Comparator<Integer> c) {
-        comp = c;
-    }
+        Sorter(Comparator<Integer> c) {
+            comp = c;
+        }
 
-    void sort(List<Integer> list) {
-        list.sort(comp);
+        void sort(List<Integer> list) {
+            list.sort(comp);
+        }
     }
 }

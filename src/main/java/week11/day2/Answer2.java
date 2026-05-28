@@ -8,32 +8,32 @@ public class Answer2 {
         ps.setStrategy(new NaverPay());
         ps.pay(2000);
     }
-}
 
-interface PayStrategy {
-    void pay(int amt);
-}
-
-class KakaoPay implements PayStrategy {
-    public void pay(int amt) {
-        System.out.println("카카오페이 " + amt + "원");
-    }
-}
-
-class NaverPay implements PayStrategy {
-    public void pay(int amt) {
-        System.out.println("네이버페이 " + amt + "원");
-    }
-}
-
-class PaymentSystem {
-    PayStrategy strategy;
-
-    void setStrategy(PayStrategy s) {
-        strategy = s;
+    interface PayStrategy {
+        void pay(int amt);
     }
 
-    void pay(int amt) {
-        strategy.pay(amt);
+    static class KakaoPay implements PayStrategy {
+        public void pay(int amt) {
+            System.out.println("카카오페이 " + amt + "원");
+        }
+    }
+
+    static class NaverPay implements PayStrategy {
+        public void pay(int amt) {
+            System.out.println("네이버페이 " + amt + "원");
+        }
+    }
+
+    static class PaymentSystem {
+        PayStrategy strategy;
+
+        void setStrategy(PayStrategy s) {
+            strategy = s;
+        }
+
+        void pay(int amt) {
+            strategy.pay(amt);
+        }
     }
 }

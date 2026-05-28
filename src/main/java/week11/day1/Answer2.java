@@ -4,18 +4,15 @@ public class Answer2 {
     public static void main(String[] args) {
         LazySingleton s1 = LazySingleton.getInstance();
     }
-}
 
-class LazySingleton {
-    private static LazySingleton instance;
-
-    private LazySingleton() {
-    }
-
-    public static synchronized LazySingleton getInstance() {
-        if (instance == null) {
-            instance = new LazySingleton();
+    static class LazySingleton {
+        private static LazySingleton instance;
+        private LazySingleton() {}
+        public static synchronized LazySingleton getInstance() {
+            if (instance == null) {
+                instance = new LazySingleton();
+            }
+            return instance;
         }
-        return instance;
     }
 }
