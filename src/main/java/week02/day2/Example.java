@@ -1,8 +1,18 @@
 package week02.day2;
 
 /**
- * [학습 예제] Week 02 Day 2 — switch 문
- * Lab1~Lab5를 순서대로 실행하며 각 개념을 익히세요.
+ * [학습 예제] Week 02 Day 2 — switch 조건문 활용
+ * 
+ * [학습 핵심 이론: switch 분기 처리 패턴]
+ * 1. 문자열(String) 비교 switch:
+ *    - JDK 7 버전부터 대소문자 구분이 명확한 문자열 비교가 가능해졌습니다.
+ * 
+ * 2. 다중 case 결합 (Fall-through 활용):
+ *    - break문을 의도적으로 생략하여 여러 개의 case가 동일한 실행 코드를 공유하도록 처리할 수 있습니다.
+ *    - 예: case "사과": case "배": -> 동일한 과일 처리 블록으로 이동.
+ * 
+ * 3. JDK 12+ Switch Expression:
+ *    - 화살표 연산자(`->`)를 활용하여 가독성을 극대화하고, 별도의 break 없이도 실행이 종료되는 모던 스위치 구문을 학습합니다.
  */
 public class Example {
     public static void main(String[] args) {

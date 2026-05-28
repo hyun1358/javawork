@@ -2,6 +2,14 @@ package week11.day1;
 
 /**
  * [학습 예제] Week 11 Day 1 — 팩토리 메서드 패턴 및 싱글톤 스레드 세이프
+ * 
+ * [학습 핵심 이론: 인스턴스 생성 제어 디자인 패턴]
+ * 1. 싱글톤 패턴 (Singleton Pattern)의 멀티스레드 위협:
+ *    - 단순히 `if (instance == null)` 조건으로 구현된 게으른 초기화(Lazy Initialization) 싱글톤은, 동시 다발적인 여러 스레드가 동시에 null 조건을 뚫고 들어오면 힙 영역에 인스턴스가 2개 이상 파생 생성되어 싱글톤 규칙이 깨집니다.
+ *    - 이를 해결하기 위해 `synchronized` 동기화 처리를 더하거나, 클래스 로딩 시점에 즉시 할당하는 'Eager Initialization', 혹은 'Bill Pugh Helper Class' 내부 정적 클래스 방식 등을 활용해야 완벽합니다.
+ * 
+ * 2. 팩토리 메서드 패턴 (Factory Method Pattern):
+ *    - 클라이언트 코드가 `new` 연산자로 인스턴스를 직접 구체적으로 찍어내지 않고, 객체 생성을 전담하는 팩토리 클래스나 메서드에게 대행 요청하는 유연한 생성 유틸 패턴입니다.
  */
 public class Example {
     public static void main(String[] args) {

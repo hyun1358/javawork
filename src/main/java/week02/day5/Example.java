@@ -3,7 +3,17 @@ package week02.day5;
 import java.util.Scanner;
 
 /**
- * [학습 예제] Week 02 Day 5 — 반복문 심화
+ * [학습 예제] Week 02 Day 5 — break와 continue 활용
+ * 
+ * [학습 핵심 이론: 반복 제어 실무 패턴]
+ * 1. break를 통한 조건 조기 탈출:
+ *    - 무한 루프 내에서 센티널(Sentinel) 값을 만나거나 비즈니스 검증 오류가 발생했을 때 즉각 루프를 정지시킵니다.
+ * 
+ * 2. continue를 이용한 무효 데이터 필터링:
+ *    - 홀수만 건너뛰거나 특정 조건의 가짜 데이터를 무시하고 다음 루프로 진행할 때 효과적입니다.
+ * 
+ * 3. 중첩 반복문 이름(Label) 지정:
+ *    - `outer:`와 같은 이름표를 사용해 내부 깊숙한 루프에서 바깥 루프 전체를 제어하는 고급 제어 흐름 기법을 실습합니다.
  */
 public class Example {
     public static void main(String[] args) {

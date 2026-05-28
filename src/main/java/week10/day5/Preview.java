@@ -4,6 +4,16 @@ import java.io.*;
 
 /**
  * [예습 파일] Week 10 Day 5 — 객체 직렬화 (Serialization)
+ * 
+ * [핵심 개념: 객체를 파일로 내보내는 바이트 변환]
+ * 1. 객체 직렬화 (Serialization):
+ *    - 힙(Heap) 메모리에 임시 상주해 복잡하게 얽혀 있는 자바 객체 인스턴스 정보(필드 값들)를 컴퓨터 파일로 저장하거나 네트워크로 전송할 수 있도록 납작한 바이트 흐름(byte array)으로 변환해 내는 작업입니다.
+ * 
+ * 2. 객체 역직렬화 (Deserialization):
+ *    - 파일에 저장되어 있던 납작한 바이트 데이터를 다시 읽어들여, 힙 메모리에 생생한 자바 객체 인스턴스로 원복 구축해 내는 마법 같은 역변환 작업입니다.
+ * 
+ * 3. Serializable 마커 인터페이스:
+ *    - 직렬화가 가능한 안전한 보안 클래스임을 보증하기 위해 JVM에 알리는 빈 표식(Marker) 인터페이스인 `java.io.Serializable`을 클래스 옆에 반드시 선언해주어야 에러 없이 수행됩니다.
  */
 public class Preview {
     public static void main(String[] args) throws Exception {

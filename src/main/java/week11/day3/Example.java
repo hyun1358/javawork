@@ -1,7 +1,14 @@
 package week11.day3;
 
 /**
- * [학습 예제] Week 11 Day 3 — 데코레이터 패턴 및 StringBuilder 빌더 패턴
+ * [학습 예제] Week 11 Day 3 — 데코레이터 패턴 및 StringBuilder 빌더
+ * 
+ * [학습 핵심 이론: 덧붙이는 동적 장식과 문자열 버퍼]
+ * 1. 데코레이터 패턴 (Decorator Pattern):
+ *    - 기존 클래스 원본 코드를 상속으로 뜯어고치거나 훼손하지 않으면서, 런타임에 추가적인 매력적인 기능 장식들(예: 커피 -> 우유 데코레이터 추가 -> 샷 추가)을 겉에 겹겹이 포장하듯 덧씌우는 유연한 패턴입니다.
+ * 
+ * 2. StringBuilder의 가공할 속도:
+ *    - 불변 String의 잦은 힙 파생 연산 낭비를 해결하기 위해, 내부에 가변 char[] 버퍼를 두고 `.append()` 메서드로 문자열 메모리 낭비 없이 고속으로 가공한 뒤 마지막에만 `.toString()`으로 전환해 수확하는 고마운 유틸리티 클래스입니다.
  */
 public class Example {
     public static void main(String[] args) {

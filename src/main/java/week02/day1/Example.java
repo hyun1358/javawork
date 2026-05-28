@@ -1,8 +1,18 @@
 package week02.day1;
 
 /**
- * [학습 예제] Week 02 Day 1 — if / else if / else
- * Lab1~Lab5를 순서대로 실행하며 각 개념을 익히세요.
+ * [학습 예제] Week 02 Day 1 — IF 조건문 기초
+ * 
+ * [학습 핵심 이론: 분기 처리를 위한 if 제어문]
+ * 1. 단일 if문:
+ *    - 조건식의 결과가 true일 때만 내부 블록의 코드를 실행하고, false이면 건너뜁니다.
+ * 
+ * 2. if-else문:
+ *    - 조건식이 true일 때와 false일 때 실행할 코드 블록을 확실하게 양자택일로 나눕니다.
+ * 
+ * 3. 다중 if-else if-else문:
+ *    - 여러 개의 독립된 조건들을 위에서부터 차례로 검사하여 참이 되는 첫 번째 블록만 실행하고 전체 조건문을 탈출합니다.
+ *    - 모든 조건이 만족하지 않을 때의 기본 실행 블록은 마지막 else 블록에 정의합니다.
  */
 public class Example {
     public static void main(String[] args) {

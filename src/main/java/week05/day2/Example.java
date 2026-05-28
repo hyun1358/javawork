@@ -1,90 +1,190 @@
 package week05.day2;
 
 /**
- * [학습 예제] Week 05 Day 2 — 생성자(Constructor)
- * Lab1~Lab5를 순서대로 실행하며 각 개념을 익히세요.
+ * [학습 예제] Week 05 Day 2 — 생성자(Constructor) 기초와 오버로딩 (Book 초기화, Movie의 this 필드 매핑, Phone 생성자 오버로딩, Computer 생성자 체이닝, Employee 일괄 초기화)
+ * 
+ * [학습 핵심 이론: 객체의 올바른 초기화 보장]
+ * 1. 생성자(Constructor)의 역할:
+ *    - 객체가 `new` 연산자로 생성될 때 최초로 호출되며, 멤버 변수(필드)를 유효한 값으로 초기화하는 역할을 담당합니다.
+ *    - 클래스 이름과 완전히 같아야 하고, 반환 타입(void 포함)을 적지 않습니다.
+ * 
+ * 2. this 키워드:
+ *    - 힙 메모리에 인스턴스화된 '자기 자신'을 가리키는 숨겨진 참조 주소 변수입니다.
+ *    - 생성자나 메서드 내에서 매개변수(Parameter)와 필드(Field)의 이름이 똑같아서 발생하는 식별자 모호성(Shadowing)을 해결합니다. (Problem 2 연계)
+ * 
+ * 3. 생성자 오버로딩 (Constructor Overloading):
+ *    - 전달받는 매개변수의 개수, 순서, 타입 시그니처에 따라 여러 생성자를 한 클래스 내에 정의할 수 있습니다. (Problem 3 연계)
+ * 
+ * 4. 생성자 체이닝 (Constructor Chaining, `this()`):
+ *    - 같은 클래스 내의 다른 생성자를 호출하여 중복 작성된 초기화 로직을 결합하고 누수를 방지합니다.
+ *    - 반드시 생성자 블록의 **첫 번째 줄(First Line)**에 기술되어야만 구문 오류가 발생하지 않습니다. (Problem 4 연계)
  */
 public class Example {
     public static void main(String[] args) {
         System.out.println("=== Week 05 Day 2 학습 예제 ===\n");
 
-        System.out.println("--- Lab1: 기본 생성자 ---");
+        System.out.println("--- Lab1: 생성자를 통한 Book 객체 필드 초기화 (Problem 1 연계) ---");
         Lab1.run();
-        System.out.println("\n[해설] 생성자를 하나도 안 만들면 자바가 자동으로 빈 생성자를 넣어줍니다.\n");
 
-        System.out.println("--- Lab2: 매개변수 생성자 ---");
+        System.out.println("\n--- Lab2: this 키워드로 생성자 매개변수-필드 이름 충돌 해결 (Problem 2 연계) ---");
         Lab2.run();
-        System.out.println("\n[해설] 객체 생성 시점에 데이터를 전달받아 필드를 초기화할 수 있습니다.\n");
 
-        System.out.println("--- Lab3: 생성자 오버로딩 ---");
+        System.out.println("\n--- Lab3: 매개변수 개수에 따른 생성자 오버로딩 (Problem 3 연계) ---");
         Lab3.run();
-        System.out.println("\n[해설] 매개변수의 개수나 타입이 다르면 여러 개의 생성자를 만들 수 있습니다.\n");
 
-        System.out.println("--- Lab4: this 키워드 ---");
+        System.out.println("\n--- Lab4: this()를 이용한 생성자 체이닝(기본값 자동 주입) (Problem 4 연계) ---");
         Lab4.run();
-        System.out.println("\n[해설] this는 객체 자신을 가리키며, 필드명과 매개변수명이 같을 때 구분하기 위해 사용합니다.\n");
 
-        System.out.println("--- Lab5: this() 생성자 체이닝 ---");
+        System.out.println("\n--- Lab5: 완성도 높은 생성자를 통한 Employee 객체 선언 (Problem 5 연계) ---");
         Lab5.run();
-        System.out.println("\n[해설] this()를 사용하면 한 생성자에서 다른 생성자를 호출하여 중복 코드를 줄일 수 있습니다.\n");
     }
 
-    static class Person {
+    // Problem 1: Book 클래스 정의
+    static class Book {
+        String title;
+        String author;
+        int price;
+
+        Book(String title, String author, int price) {
+            this.title = title;
+            this.author = author;
+            this.price = price;
+        }
+
+        void showBookInfo() {
+            System.out.println("제목: " + title + ", 저자: " + author + ", 가격: " + price + "원");
+        }
+    }
+
+    // Problem 2: Movie 클래스 정의
+    static class Movie {
+        String title;
+        String genre;
+
+        // this를 안 쓰면 title = title; 식은 매개변수가 매개변수 자신에 대입하는 효과만 납니다.
+        Movie(String title, String genre) {
+            this.title = title; // 이 인스턴스의 title 필드에 매개변수 title을 저장
+            this.genre = genre; // 이 인스턴스의 genre 필드에 매개변수 genre를 저장
+        }
+
+        void showMovieInfo() {
+            System.out.println("영화 제목: " + title + ", 장르: " + genre);
+        }
+    }
+
+    // Problem 3: Phone 클래스 정의
+    static class Phone {
+        String model;
+        String color;
+        int price;
+
+        // 생성자 1: 모델명만
+        Phone(String model) {
+            this.model = model;
+            this.color = "미정";
+            this.price = 0;
+        }
+
+        // 생성자 2: 모델명, 색상
+        Phone(String model, String color) {
+            this.model = model;
+            this.color = color;
+            this.price = 0;
+        }
+
+        // 생성자 3: 모델명, 색상, 가격
+        Phone(String model, String color, int price) {
+            this.model = model;
+            this.color = color;
+            this.price = price;
+        }
+
+        void showPhoneInfo() {
+            System.out.println("모델: " + model + ", 색상: " + color + ", 가격: " + price + "원");
+        }
+    }
+
+    // Problem 4: Computer 클래스 정의
+    static class Computer {
+        String brand;
+        String cpu;
+        int ram;
+
+        // 매개변수 1개짜리 생성자 (brand만 받음)
+        Computer(String brand) {
+            // this() 생성자 체이닝을 사용해 3개짜리 생성자를 첫 라인에서 위임 호출
+            // 기본 CPU는 "i5", RAM은 8로 설정
+            this(brand, "i5", 8); 
+        }
+
+        // 매개변수 3개짜리 생성자
+        Computer(String brand, String cpu, int ram) {
+            this.brand = brand;
+            this.cpu = cpu;
+            this.ram = ram;
+        }
+
+        void showComputerInfo() {
+            System.out.println("브랜드: " + brand + ", CPU: " + cpu + ", RAM: " + ram + "GB");
+        }
+    }
+
+    // Problem 5: Employee 클래스 정의
+    static class Employee {
         String name;
-        int age;
+        String department;
+        int salary;
 
-        // Lab1: 기본 생성자
-        Person() {
-            System.out.println("기본 생성자가 호출되었습니다.");
+        Employee(String name, String department, int salary) {
+            this.name = name;
+            this.department = department;
+            this.salary = salary;
         }
 
-        // Lab2, Lab4: 매개변수 생성자 + this
-        Person(String name, int age) {
-            this.name = name; // this.name은 필드, name은 매개변수
-            this.age = age;
-        }
-
-        // Lab3: 오버로딩 (이름만 받는 생성자)
-        Person(String name) {
-            this(name, 1); // Lab5: 다른 생성자 호출 (체이닝)
-        }
-
-        void showInfo() {
-            System.out.println("이름: " + name + ", 나이: " + age);
+        void showEmployeeInfo() {
+            System.out.println("이름: " + name + ", 부서: " + department + ", 급여: " + salary + "원");
         }
     }
 
     static class Lab1 {
         static void run() {
-            new Person();
+            Book book = new Book("자바의 정석", "남궁성", 30000);
+            book.showBookInfo();
         }
     }
 
     static class Lab2 {
         static void run() {
-            Person p = new Person("자바군", 25);
-            p.showInfo();
+            Movie movie = new Movie("어벤져스", "SF/액션");
+            movie.showMovieInfo();
         }
     }
 
     static class Lab3 {
         static void run() {
-            Person p1 = new Person("이름만");
-            Person p2 = new Person("둘다", 30);
-            p1.showInfo();
-            p2.showInfo();
+            Phone p1 = new Phone("갤럭시 S23");
+            Phone p2 = new Phone("갤럭시 S23", "크림");
+            Phone p3 = new Phone("갤럭시 S23", "라벤더", 1150000);
+
+            p1.showPhoneInfo();
+            p2.showPhoneInfo();
+            p3.showPhoneInfo();
         }
     }
 
     static class Lab4 {
         static void run() {
-            System.out.println("this 키워드를 통해 필드와 매개변수를 명확히 구분했습니다.");
+            Computer com = new Computer("삼성");
+            com.showComputerInfo(); // CPU: i5, RAM: 8GB 기본값 확인
         }
     }
 
     static class Lab5 {
         static void run() {
-            System.out.println("this()를 사용해 '이름만' 받는 생성자가 '둘다' 받는 생성자를 호출했습니다.");
+            Employee emp1 = new Employee("홍길동", "개발팀", 3500000);
+            Employee emp2 = new Employee("김철수", "인사팀", 2800000);
+            emp1.showEmployeeInfo();
+            emp2.showEmployeeInfo();
         }
     }
 }

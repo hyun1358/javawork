@@ -14,7 +14,11 @@ import java.util.*;
  *    - HashMap: 순서가 전혀 없음 (가장 빠른 성능)
  *    - TreeMap: 내부적으로 '키(Key)'를 기준으로 데이터를 자동 오름차순 정렬하여 관리
  *    - LinkedHashMap: 데이터를 넣은 '삽입 순서'를 그대로 유지
- */
+ 
+ * 
+ * [보충 실습 코드 구성]
+ * - TreeSet: 연습 문제 해결에 꼭 필요한 TreeSet 기술의 실제 실행 코드를 본문 하단에 [보충 Lab]으로 수록했습니다.
+*/
 public class Example {
     public static void main(String[] args) {
         System.out.println("=== Lab 1: Set을 활용한 집합 연산 ===");
@@ -58,7 +62,12 @@ public class Example {
         System.out.println("TreeMap 내용: " + tmap); 
         for (Integer key : tmap.keySet()) {
             System.out.println(key + "번 데이터: " + tmap.get(key));
-        }
+        
+        System.out.println("\n=== [보충 Lab] TreeSet을 이용한 자동 정렬 집합 ===");
+        // TreeSet은 삽입되는 원소들을 자동으로 정렬(오름차순)하여 보관하는 이진 탐색 트리 집합 자료구조입니다.
+        java.util.TreeSet<Integer> treeSet = new java.util.TreeSet<>(java.util.Arrays.asList(3, 1, 4, 2));
+        System.out.println("자동 정렬된 집합 구조: " + treeSet);
+}
 
         // 3) LinkedHashMap (입력한 삽입 순서 유지)
         System.out.println("\n[LinkedHashMap: 삽입 순서 유지]");

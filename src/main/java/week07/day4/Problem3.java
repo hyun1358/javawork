@@ -2,7 +2,6 @@ package week07.day4;
 
 import java.util.Scanner;
 
-import static week07.day4.Example.login;
 
 /**
  * [연습 문제 3] 예외에 정보 담기
