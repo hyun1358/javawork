@@ -6,6 +6,8 @@ package week02.day4;
  */
 public class Answer4 {
     public static void main(String[] args) {
+        // continue 문은 반복문 블록 내에서 나머지 코드를 실행하지 않고, 즉시 다음 반복(조건식이나 증감식)으로 건너뛰게 합니다.
+        // 예시처럼 3의 배수를 제외하고 출력하고 싶을 때 효과적으로 사용할 수 있습니다.
         for (int i = 1; i <= 20; i++) {
             if (i % 3 == 0) {
                 continue; // 3의 배수면 아래 코드를 건너뛰고 증감식(i++)으로 이동

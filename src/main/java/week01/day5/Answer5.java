@@ -7,6 +7,9 @@ import java.util.Scanner;
  */
 public class Answer5 {
     public static void main(String[] args) {
+        // nextInt()로 숫자를 읽으면 입력 버퍼에 개행 문자(엔터)가 남아 있게 됩니다.
+        // 그 직후 nextLine()을 호출하면 버퍼에 남은 엔터를 읽어버려 입력이 건너뛰어지는 현상이 발생합니다.
+        // 이를 방지하기 위해 빈 nextLine()을 호출하여 입력 버퍼를 비워주는 과정이 필수적입니다.
         Scanner sc = new Scanner(System.in);
 
         System.out.print("나이: ");

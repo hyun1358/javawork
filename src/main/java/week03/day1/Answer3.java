@@ -5,11 +5,15 @@ package week03.day1;
  * 문제: 배열 원소 역순으로 출력
  */
 public class Answer3 {
+    // 메인 메서드: 배열 요소를 역순으로 출력
     public static void main(String[] args) {
+        // 1부터 5까지의 정수를 담은 배열 생성
         int[] arr = {1, 2, 3, 4, 5};
 
         // 1. 역순 출력을 위해 인덱스를 length-1부터 0까지 감소시킵니다.
+        // 배열의 마지막 인덱스(길이 - 1)부터 시작하여 0까지 역순으로 순회
         for (int i = arr.length - 1; i >= 0; i--) {
+            // 각 요소를 공백으로 구분하여 한 줄에 출력
             System.out.print(arr[i] + " ");
         }
     }

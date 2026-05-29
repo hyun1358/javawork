@@ -8,6 +8,9 @@ import java.util.Scanner;
  */
 public class Answer5 {
     public static void main(String[] args) {
+        // 중첩 반복문을 활용한 소수 판별 알고리즘입니다.
+        // 바깥쪽 루프는 2부터 n까지의 숫자를 하나씩 검사하고,
+        // 안쪽 루프는 검사할 숫자 i가 자기 자신보다 작은 수(j)로 나누어 떨어지는지 확인하여 소수 여부를 가립니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("N을 입력하세요: ");
         int n = sc.nextInt();

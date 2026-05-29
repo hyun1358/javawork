@@ -3,6 +3,7 @@ package week09.day4;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -20,10 +21,17 @@ public class Problem3_2 {
         );
 
         // TODO: 전공(Major)을 Key로, 학생 이름(Name) 리스트를 Value로 갖는 Map을 만드세요.
-        Map<String, List<String>> majorMap = students.stream().collect(Collectors.groupingBy(Student::getMajor,Collectors.mapping(Student::getName,Collectors.toList())));
+        Map<String,List<String>> maps = students.stream().collect(Collectors.groupingBy(Student::getMajor, TreeMap::new,Collectors.mapping(Student::getName,Collectors.toList())));
 
-        System.out.println(majorMap);
-    }
+        for(Map.Entry<String,List<String>> entry : maps.entrySet())
+        {
+            System.out.println("전공: "+entry.getKey());
+            for(String s: entry.getValue())
+            {
+                System.out.println("- "+s);
+            }
+        }
+}
 
     static class Student {
         String major;

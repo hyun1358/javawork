@@ -39,6 +39,8 @@ public class Example {
                 Arrays.asList("A", "B"),
                 Arrays.asList("C", "D")
         );
+        System.out.println(nested);
+
         List<String> flat = nested.stream()
                 .flatMap(List::stream) // 리스트 안의 리스트들을 하나로 펼침
                 .collect(Collectors.toList());

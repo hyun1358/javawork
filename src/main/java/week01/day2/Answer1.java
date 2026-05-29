@@ -5,6 +5,8 @@ package week01.day2;
  */
 public class Answer1 {
     public static void main(String[] args) {
+        // 변수는 데이터를 담는 그릇이며, 각각의 자료형(타입)을 가집니다.
+        // 문자열은 String, 정수는 int, 실수는 double, 논리값은 boolean을 주로 사용합니다.
         String name = "홍길동";
         int age = 20;
         double height = 180.5;

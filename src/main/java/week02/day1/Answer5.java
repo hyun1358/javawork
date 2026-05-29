@@ -8,6 +8,9 @@ import java.util.Scanner;
  */
 public class Answer5 {
     public static void main(String[] args) {
+        // 세 수 중 가장 큰 값을 찾는 기본 알고리즘입니다.
+        // 첫 번째 값을 최대값(max)으로 가정하고, 이후의 값들과 각각 독립적으로(if문으로만) 비교하여 
+        // 기존 max보다 크면 max 값을 갱신해 줍니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("첫 번째 숫자: ");
         int n1 = sc.nextInt();

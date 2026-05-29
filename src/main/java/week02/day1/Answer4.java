@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer4 {
     public static void main(String[] args) {
+        // 나이 구간에 따라 적절한 분류를 찾아 출력합니다.
+        // 위에서부터 순서대로 조건에 부합하는지 필터링되므로, 논리적인 순서를 지키는 것이 매우 중요합니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("나이를 입력하세요: ");
         int age = sc.nextInt();

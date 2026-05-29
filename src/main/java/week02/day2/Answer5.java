@@ -8,6 +8,9 @@ import java.util.Scanner;
  */
 public class Answer5 {
     public static void main(String[] args) {
+        // Java 14부터 지원되는 새로운 switch 표현식(Switch Expression)입니다.
+        // 콜론(:) 대신 화살표(->)를 사용하여 코드가 간결해지고, break를 생략해도 되며,
+        // 평가된 결과를 변수(result)에 곧바로 대입할 수 있다는 강력한 장점이 있습니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("학점 입력(A~F): ");
         String grade = sc.next().toUpperCase();

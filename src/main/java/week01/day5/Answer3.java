@@ -7,6 +7,8 @@ import java.util.Scanner;
  */
 public class Answer3 {
     public static void main(String[] args) {
+        // Scanner를 사용하여 이름과 나이를 각각 입력받은 뒤, 
+        // 변수 age에 1을 더해 산술 연산 결과와 문자열을 결합하여 출력합니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("이름: ");
         String name = sc.nextLine();

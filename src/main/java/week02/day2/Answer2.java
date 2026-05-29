@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer2 {
     public static void main(String[] args) {
+        // 여러 개의 case에 대해 동일한 작업을 수행해야 할 경우, 의도적으로 break를 생략(Fall-through)할 수 있습니다.
+        // 이를 통해 코드를 훨씬 짧게 작성할 수 있습니다. (예: 3, 4, 5월 모두 "봄" 출력)
         Scanner sc = new Scanner(System.in);
         System.out.print("월을 입력하세요(1~12): ");
         int month = sc.nextInt();

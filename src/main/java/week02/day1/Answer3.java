@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer3 {
     public static void main(String[] args) {
+        // else if 문은 위에서부터 아래로 조건을 하나씩 확인하며, 가장 먼저 참이 되는 블록만 실행합니다.
+        // 따라서 조건의 범위가 겹칠 때는 좁은 범위나 가장 큰 수부터 비교하도록 작성해야 로직이 꼬이지 않습니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("점수를 입력하세요: ");
         int score = sc.nextInt();

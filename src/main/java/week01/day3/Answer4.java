@@ -5,6 +5,8 @@ package week01.day3;
  */
 public class Answer4 {
     public static void main(String[] args) {
+        // 복합 대입 연산자(+=, -= 등)는 연산과 대입을 동시에 수행하여 코드를 간결하게 만듭니다.
+        // money += 1000 은 money = money + 1000 과 같은 의미로 변수 값을 누적시키거나 감소시킬 때 자주 씁니다.
         int money = 5000;
         money += 1000;
         System.out.println("1000원 추가 후: " + money);

@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer1 {
     public static void main(String[] args) {
+        // switch 문은 특정 변수의 값과 일치하는 case로 분기하여 코드를 실행합니다.
+        // break 키워드를 만나면 switch 블록을 완전히 빠져나가며, 없다면 다음 case까지 계속 실행되므로 주의해야 합니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("요일 번호(1~7): ");
         int day = sc.nextInt();

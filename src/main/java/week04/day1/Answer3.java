@@ -2,12 +2,15 @@ package week04.day1;
 
 public class Answer3 {
 
+    // drawStars 메서드: 호출될 때마다 별 5개를 한 줄에 출력
     static void drawStars() {
         System.out.println("*****");
     }
 
+    // 메인 메서드: 작성된 메서드를 테스트
     public static void main(String[] args) {
         // 복사 붙여넣기 대신 메서드 이름만 호출!
+        // 중복 코드를 줄이고 가독성을 높이기 위해 메서드를 두 번 호출
         drawStars();
         drawStars();
 

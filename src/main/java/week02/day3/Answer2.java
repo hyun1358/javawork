@@ -6,6 +6,8 @@ package week02.day3;
  */
 public class Answer2 {
     public static void main(String[] args) {
+        // 반복문 안에서 if 문을 조합하여 특정 조건을 만족하는 데이터만 선별할 수 있습니다.
+        // 여기서는 i % 2 == 0 (짝수)일 때만 sum 변수에 i 값을 누적합산합니다.
         int sum = 0;
         for (int i = 1; i <= 100; i++) {
             if (i % 2 == 0) {

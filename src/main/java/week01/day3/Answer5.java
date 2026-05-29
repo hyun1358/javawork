@@ -5,6 +5,9 @@ package week01.day3;
  */
 public class Answer5 {
     public static void main(String[] args) {
+        // 증감 연산자(++, --)는 변수의 값을 1씩 증가시키거나 감소시킵니다.
+        // 후위형(x++)은 변수의 현재 값을 먼저 반환한 '후'에 값을 1 증가시키고,
+        // 전위형(++x)은 변수의 값을 먼저 1 증가시킨 '후'에 그 값을 반환합니다.
         int x = 10;
         System.out.println("x++ : " + (x++)); // 10 출력 후 11이 됨
         System.out.println("++x : " + (++x)); // 11에서 1증가한 12 출력

@@ -5,16 +5,23 @@ package week03.day1;
  * 문제: 배열에서 최댓값 찾기
  */
 public class Answer2 {
+    // 메인 메서드: 배열에서 최댓값을 찾는 로직 실행
     public static void main(String[] args) {
+        // 6개의 정수를 담은 배열 생성
         int[] arr = {12, 45, 7, 23, 56, 32};
+        // 최댓값을 저장할 변수를 배열의 첫 번째 요소로 초기화
         int max = arr[0]; // 첫 번째 요소를 최댓값으로 가정
 
+        // 배열의 두 번째 요소(인덱스 1)부터 끝까지 반복
         for (int i = 1; i < arr.length; i++) {
+            // 현재 검사 중인 요소가 현재까지의 최댓값보다 큰지 확인
             if (arr[i] > max) { // 현재 max보다 큰 값을 발견하면
+                // 더 큰 값을 찾았다면 최댓값 변수(max)를 갱신
                 max = arr[i];   // max 교체
             }
         }
 
+        // 최종적으로 찾아낸 최댓값 출력
         System.out.println("최댓값: " + max);
     }
 }

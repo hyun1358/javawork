@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer1 {
     public static void main(String[] args) {
+        // if 문은 괄호 안의 조건식이 참(true)일 때만 블록 { } 안의 코드를 실행합니다.
+        // score가 60 이상이면 "합격"을 출력하고, 그렇지 않으면(false인 경우) else 블록이 실행되어 "불합격"을 출력합니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("점수를 입력하세요: ");
         int score = sc.nextInt();

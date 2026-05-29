@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class Answer4_1 {
     public static void main(String[] args) {
+        // 이미 상세한 주석이 있습니다. 상한 제한 와일드카드 테스트를 시작합니다.
         // Integer는 Number의 자식 클래스이므로 대입 가능
         List<Integer> intList = Arrays.asList(1, 2, 3, 4, 5);
         

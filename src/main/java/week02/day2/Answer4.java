@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class Answer4 {
     public static void main(String[] args) {
+        // switch 문의 비교 조건에는 정수뿐만 아니라 char(문자), String(문자열)도 넣을 수 있습니다.
+        // 이 코드에서는 char 타입의 문자를 사용해 case에 매칭시키고 있습니다.
         Scanner sc = new Scanner(System.in);
         System.out.print("학점 입력(A~F): ");
         char grade = sc.next().toUpperCase().charAt(0);

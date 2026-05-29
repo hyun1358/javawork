@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class Answer3_1 {
     public static void main(String[] args) {
+        // 이미 상세한 주석이 있지만, 추가적인 설명을 달아봅니다. (제네릭스 큐 구현 확인)
         Queue<Integer> q = new Queue<>();
         
         // 큐에 순서대로 데이터 넣기 (10 -> 20 -> 30)

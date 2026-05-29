@@ -6,6 +6,8 @@ package week02.day4;
  */
 public class Answer1 {
     public static void main(String[] args) {
+        // while 문은 조건식이 참(true)인 동안 계속해서 블록을 반복 실행합니다.
+        // 반복 횟수가 불명확하거나 조건에 의존적일 때 많이 쓰이며, 반드시 루프 내부에 조건식을 false로 만들 수 있는 코드(증감식 등)가 포함되어야 합니다.
         int sum = 0;
         int i = 1;
 
