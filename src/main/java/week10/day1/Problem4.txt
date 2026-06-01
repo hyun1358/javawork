@@ -1,0 +1,113 @@
+[문제]
+t1 스레드가 1초간 쉬었다가 출력하도록 하고, 메인 스레드에서 t1.join()을 호출해 t1이 끝날 때까지 기다렸다가 종료 메시지를 출력하세요.
+
+[사용자 작성 코드]
+package week10.day1;
+
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        // TODO
+
+        Thread t1 = new test();
+        System.out.println("메인 작업 시작");
+        t1.start();
+        try
+        {
+            t1.join();
+        }
+        catch (InterruptedException e)
+        {
+            System.out.println("쓰레드 대기 오류");
+        }
+
+        System.out.println("메인 작업 끝");
+
+    }
+
+    static class test extends Thread
+    {
+        @Override
+        public void run()
+        {
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("쓰레드 슬립 오류");
+            }
+            
+            for(int i = 0; i < 100; i ++)
+                System.out.println(i);
+        }
+    }
+}
+
+[현재 코드 특징]
+- Thread 클래스를 상속받은 `test` 내부 클래스를 적절하게 설계하여 스레드 객체를 성공적으로 생성했습니다.
+- Thread.sleep(1000)을 run() 메서드 내부에 정확하게 구현하여 자식 스레드를 올바르게 잠재웠습니다.
+- t1.start() 후 t1.join()을 순서대로 호출하여 메인 스레드가 자식 스레드가 종료될 때까지 대기하고 종료되도록 동기화 흐름을 완벽히 완성했습니다.
+
+[Better Code]
+package week10.day1;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        Thread t1 = new TestThread();
+        System.out.println("메인 작업 시작");
+        
+        t1.start(); // 1. 자식 스레드를 먼저 비동기(동시)로 실행시킵니다.
+        
+        try {
+            t1.join(); // 2. 메인 스레드는 t1의 실행이 끝날 때까지 대기합니다.
+        } catch (InterruptedException e) {
+            System.out.println("메인 스레드 대기 중 에러 발생");
+        }
+
+        System.out.println("메인 작업 끝");
+    }
+
+    static class TestThread extends Thread {
+        @Override
+        public void run() {
+            try {
+                // 3. 1초간 쉬는 동작은 t1의 독립된 작업 영역인 run() 내부에서 실행되어야 합니다.
+                Thread.sleep(1000); 
+            } catch (InterruptedException e) {
+                System.out.println("쓰레드 슬립 오류");
+            }
+            
+            for (int i = 0; i < 100; i++) {
+                System.out.println(i);
+            }
+        }
+    }
+}
+
+[기술적 해설]
+1. Thread.sleep()의 작동 원리 (가장 중요)
+   - `Thread.sleep()`은 자바의 `static`(정적) 메서드입니다. 
+   - `t1.sleep(1000)`과 같이 인스턴스 참조 변수를 통해 호출하더라도, 컴파일러는 이를 `Thread.sleep(1000)`으로 변환합니다. 
+   - 즉, 이 코드를 실행하는 주체인 '메인 스레드'가 잠들게 됩니다.
+   - 자식 스레드(`t1`)가 백그라운드에서 대기하도록 하려면, 반드시 자식 스레드가 직접 실행하는 `run()` 메서드 내부에서 `Thread.sleep()`을 명시해 주어야 합니다.
+
+2. 비동기 실행 흐름의 최적화
+   - 올바른 비동기 처리를 위해서는 자식 스레드를 `t1.start()`로 먼저 출발시킨 후, 메인 스레드가 `t1.join()`을 호출해 기다려야 합니다.
+   - 기존의 방식은 `t1.start()` 전에 메인 스레드가 1초 동안 멈춰버려, 진정한 멀티스레딩의 이점(비동기 병렬 처리)을 살릴 수 없었습니다.
+
+3. 클래스 명명 규칙(Naming Convention)
+   - 자바에서 클래스 이름은 파스칼 케이스(PascalCase)를 준수하여 첫 글자를 대문자로 작성하는 것이 관례입니다. (`test` ➡️ `TestThread`)
+
+--------------------------------------------------
+[추가 보충 문제 및 모범 정답 결과]
+
+1. 보충 문제 파일명: Problem4_1.java (해결 및 검증 완료!)
+2. 보충 문제 모범 정답 파일명: Answer4_1.java
+- 스레드 A와 B를 병렬로 실행하고 메인 스레드에서 두 자식 스레드의 완료를 join()으로 순차 대기하는 구조를 아주 훌륭하고 모범적으로 직접 구현 완료했습니다.
+- 이로써 스레드의 비동기 실행 제어 및 메모리 호출 스택 제어의 정수를 완벽하게 터득하셨습니다.
+
+[최종 성적]
+- 수정 전 점수: 96점 / 100점
+- 보충 문제 합격 및 동기화 후 최종 점수: 100점 / 100점 (만점 합격!)

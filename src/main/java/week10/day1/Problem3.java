@@ -6,7 +6,25 @@ package week10.day1;
  * 출력하는 스레드 3개를 만들어 실행해보세요.
  */
 public class Problem3 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+
+        Thread t1 = new test();
+        Thread t2 = new test();
+        Thread t3 = new test();
+
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+
+    static class test extends Thread
+    {
+        @Override
+        public void run()
+        {
+            System.out.println("쓰레드 실행 이름:" + Thread.currentThread().getName());
+        }
     }
 }

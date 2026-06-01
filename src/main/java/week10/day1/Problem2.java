@@ -5,7 +5,22 @@ package week10.day1;
  * 문제: Runnable 인터페이스를 구현(또는 람다식)하여 1부터 5까지 출력하는 스레드를 실행하세요.
  */
 public class Problem2 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+
+        System.out.println("메인작업시작");
+        Runnable task = () ->
+        {
+            for(int i = 1; i <= 5; i++)
+            {
+                System.out.println(i);
+            }
+            System.out.println();
+        };
+        Thread t2 = new Thread(task);
+        t2.start();
+        System.out.println("메인 끝");
+
     }
 }
