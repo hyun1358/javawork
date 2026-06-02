@@ -8,5 +8,37 @@ package week10.day2;
 public class Problem4 {
     public static void main(String[] args) {
         // TODO
+        FrafficLight run = new FrafficLight();
+
+
+        Runnable task = () ->
+        {
+            int count = 0;
+            while (run.runnig)
+            {
+                count++;
+            }
+            System.out.println("count: "+count);
+        };
+
+        Thread t1 = new Thread(task);
+        t1.start();
+
+        try
+        {
+            Thread.sleep(100);
+            run.runningStop();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    static class FrafficLight
+    {
+        volatile boolean runnig = true;
+
+        public void runningStop() { runnig=false;};
     }
 }

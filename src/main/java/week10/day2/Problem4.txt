@@ -1,0 +1,101 @@
+[문제 4번 채점 및 가이드]
+
+1. [문제]
+- 한 스레드가 변경한 플래그 변수를 다른 스레드가 즉시 볼 수 있도록 volatile 키워드를 사용해 스레드 간 메모리 가시성 문제를 해결해 보세요.
+
+2. [사용자 작성 코드]
+package week10.day2;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        FrafficLight run = new FrafficLight();
+
+        Runnable task = () ->
+        {
+            int count = 0;
+            while (run.runnig)
+            {
+                count++;
+            }
+            System.out.println("count: "+count);
+        };
+
+        Thread t1 = new Thread(task);
+        t1.start();
+
+        try
+        {
+            Thread.sleep(100);
+            run.runningStop();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    static class FrafficLight
+    {
+        volatile boolean runnig = true;
+
+        public void runningStop() { runnig=false;};
+    }
+}
+
+3. [현재 코드 특징]
+- 변수 `runnig` 앞에 `volatile` 키워드를 완벽하게 사용하여 CPU 캐시 대신 메인 메모리에서 값을 항상 읽어오게 처리했습니다.
+- `while (run.runnig)`를 도는 백그라운드 스레드와 메인 스레드 간의 0.1초 딜레이 및 종료 메커니즘을 동기식 정석으로 훌륭히 조율해 냈습니다.
+- 최종 루프 횟수(`count`)를 멋지게 출력하도록 하여, 0.1초 동안 엄청난 횟수의 무한 루프가 돌고 있었음을 직관적으로 검증해 냈습니다.
+
+4. [Better Code (더 우아한 가이드)]
+- 기능적으로 100점 만점에 100점인 코드입니다! 단지 클래스와 변수명의 철자 오타를 바로잡아 가독성을 끌어올린 코드를 제안합니다.
+- `FrafficLight` -> `TrafficLight` (영단어 철자 교정)
+- `runnig` -> `running` (실행 중을 의미하는 올바른 철자)
+- `runningStop()` -> `stop()` (메서드 명을 조금 더 직관적으로 다듬음)
+
+[개선된 코드 예시]
+package week10.day2;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        TrafficLight trafficLight = new TrafficLight();
+
+        Runnable task = () -> {
+            int count = 0;
+            // 칠판의 신호를 보며 무한 루프
+            while (trafficLight.isRunning()) {
+                count++;
+            }
+            System.out.println("최종 루프 횟수: " + count);
+        };
+
+        Thread t1 = new Thread(task);
+        t1.start();
+
+        try {
+            // 메인 스레드가 0.1초 대기
+            Thread.sleep(100);
+            // 정지 신호 전송 (volatile 변수 값 false로 변경)
+            trafficLight.stop();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class TrafficLight {
+        // 정보의 시차를 없애주는 volatile 신호등 변수
+        private volatile boolean running = true;
+
+        public void stop() {
+            this.running = false;
+        }
+
+        public boolean isRunning() {
+            return this.running;
+        }
+    }
+}
+
+5. [기술적 해설]
+- **메모리 가시성**: `volatile`이 없으면 각 스레드는 성능상 CPU 캐시에 복사해 둔 옛날 정보를 보느라 메인의 변경 상태를 알지 못하는 정보 시차가 터집니다.
+- **신호 제어**: 이 구조는 실무에서 백그라운드 스레드를 충돌 없이 안전하고 부드럽게 정지(Graceful Shutdown)시킬 때 사용하는 핵심 디자인 패턴입니다.
