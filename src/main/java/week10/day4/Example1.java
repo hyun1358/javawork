@@ -17,7 +17,8 @@ public class Example1 {
         System.out.println("=== [실습 1] FileWriter 파일 생성 및 쓰기 예제 ===");
         
         // try-with-resources: 괄호 안에 선언된 스트림 객체는 블록이 끝나면 자동으로 close() 됩니다.
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("mydata.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("mydata.txt")))
+        {
             bw.write("안녕하세요!");
             bw.newLine(); // 운영체제(OS)에 맞춰 줄바꿈을 해줍니다.
             bw.write("두 번째 줄입니다.");
