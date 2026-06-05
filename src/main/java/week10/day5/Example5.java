@@ -2,6 +2,8 @@ package week10.day5;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class Example5 {
         students.add(new Student("박민준", 76));
 
         // CSV 파일 저장 시작
-        try (FileWriter fw = new FileWriter("students.csv")) {
+        try (FileWriter fw = new FileWriter("students.csv", Charset.forName("MS949"))) {
             fw.write("이름,점수\n"); // 헤더 타이틀 작성
             for (Student s : students) {
                 // 각 객체를 콤마로 연결한 문자열 한 줄로 번역해서 디스크에 씁니다.
@@ -47,7 +49,7 @@ public class Example5 {
 
         // CSV 저장 결과 읽어와서 출력 검증
         try {
-            List<String> csvLines = Files.readAllLines(Paths.get("students.csv"));
+            List<String> csvLines = Files.readAllLines(Paths.get("students.csv"),Charset.forName("MS949"));
             System.out.println("--- 저장된 CSV 파일 텍스트 전문 ---");
             for (String line : csvLines) {
                 System.out.println("  " + line);

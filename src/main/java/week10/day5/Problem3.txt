@@ -1,0 +1,119 @@
+[문제]
+Student의 민감한 정보 필드에 transient를 붙여 파일에 저장되지 않음을 확인하세요.
+
+[사용자 작성 코드]
+package week10.day5;
+
+import java.io.*;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("user.dat")))
+        {
+            User u = new User("홍길동","1234",30);
+            oos.writeObject(u);
+            System.out.println(u);
+            System.out.println("직렬화 완료");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("user.dat")))
+        {
+            User u = (User)ois.readObject();
+            System.out.println(u);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("클래스 못찾음");
+            e.printStackTrace();
+        }
+    }
+
+    static class User implements Serializable
+    {
+        String name;
+        transient String pw;
+
+        int age;
+
+        User(String name , String pw, int age) {this.name=name; this.pw=pw; this.age=age;}
+
+        @Override
+        public String toString()
+        {
+            return String.format("User{name = %s, pw = %s, age = %d}",this.name,this.pw,this.age);
+        }
+    }
+}
+
+[현재 코드 특징]
+- User 클래스를 설계하고, 비밀번호를 나타내는 필드(`pw`)에 `transient` 키워드를 선언하여 직렬화 대상에서 제외시켰습니다.
+- 하나의 실행 흐름 안에서 파일 출력(직렬화)과 파일 입력(역직렬화)을 함께 구현하여, 비밀번호 값 복원 시 `null`로 초기화되는 것을 직관적으로 성공 검증했습니다.
+
+[Better Code]
+package week10.day5;
+
+import java.io.*;
+
+public class Problem3 {
+    public static void main(String[] args) {
+        // 문제의 요구 사항인 Student 클래스를 기준으로 작성한 모범 코드 예시입니다.
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student_secure.dat"))) {
+            SecureStudent s = new SecureStudent("홍길동", 20, "myPassword123");
+            oos.writeObject(s);
+            System.out.println("-> 직렬화 저장 객체: " + s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student_secure.dat"))) {
+            SecureStudent loaded = (SecureStudent) ois.readObject();
+            System.out.println("-> 역직렬화 복원 객체: " + loaded);
+            System.out.println("-> [검증] 비밀번호 필드가 null인가? : " + (loaded.password == null));
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class SecureStudent implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    String name;
+    int age;
+    // transient 키워드가 들어간 필드는 직렬화 바이트 스트림 생성 시에 생략됩니다.
+    transient String password; 
+
+    SecureStudent(String name, int age, String password) {
+        this.name = name;
+        this.age = age;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SecureStudent{name='%s', age=%d, password='%s'}", name, age, password);
+    }
+}
+
+[기술적 해설]
+1. transient의 제어 범위
+   - `transient` 키워드가 붙은 멤버 변수는 JVM에 의해 직렬화 대상에서 강제 배제됩니다. 
+   - 따라서 외부 파일로 기록되거나 원격 서버로 전송할 때 노출될 염려가 없어 민감한 정보(비밀번호, 개인 인증키)를 보호할 수 있습니다.
+   
+2. 역직렬화 시 기본값 지정 이유
+   - 역직렬화 과정 시 파일에는 해당 필드의 값이 전혀 기록되어 있지 않으므로, 객체를 메모리에 재조립해 낼 때 자바 기본값 정책이 작동합니다.
+   - 참조 자료형(`String`, `Object` 등)의 경우 `null`로 할당되며, 기본 자료형(`int`, `double` 등)에 transient를 걸어둔 경우에는 `0` 또는 `0.0`으로 복원됩니다.
+
+--------------------------------------------------
+[최종 성적]
+- 최종 점수: 100점 / 100점 (합격!)

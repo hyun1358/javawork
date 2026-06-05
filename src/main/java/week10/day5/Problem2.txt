@@ -1,0 +1,75 @@
+[문제]
+Problem1에서 만든 파일을 읽어들여 Student 객체로 복원하고 출력하세요.
+
+[사용자 작성 코드]
+package week10.day5;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        // TODO
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.dat")))
+        {
+            Problem1.Student s = (Problem1.Student)ois.readObject();
+            System.out.println(s);
+            System.out.println("역직렬화 불러오기완료");
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("클래스를 못찾음");
+            throw new RuntimeException(e);
+        }
+        catch (IOException e)
+        {
+            System.out.println("IO오류");
+            e.printStackTrace();
+        }
+    }
+}
+
+[현재 코드 특징]
+- ObjectInputStream을 활용하여 파일(student.dat)로부터 바이너리 데이터를 안전하게 객체로 복원(역직렬화)했습니다.
+- 예외 상황(ClassNotFoundException, IOException)에 대한 catch 블록을 정교하게 나누어 작성했습니다.
+- Problem1에 캡슐화되어 있던 `Problem1.Student` 클래스를 정확하게 역지정하여 타입 캐스팅에 성공했습니다.
+
+[Better Code]
+package week10.day5;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class Problem2 {
+    public static void main(String[] args) {
+        // 1. Student 클래스가 패키지 내부에 독립적으로 존재하면 다른 클래스의 결합 없이 직접 호출하여 사용할 수 있습니다.
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.dat"))) {
+            
+            Student s = (Student) ois.readObject();
+            System.out.println(s);
+            System.out.println("역직렬화 불러오기완료");
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println("역직렬화할 클래스 정보를 찾을 수 없습니다.");
+        } catch (IOException e) {
+            System.out.println("파일 읽기 도중 입출력 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+    }
+}
+
+[기술적 해설]
+1. 역직렬화의 캐스팅 원리
+   - `ObjectInputStream.readObject()` 메서드는 파일로부터 복원된 객체를 최상위 타입인 `Object`로 반환합니다.
+   - 따라서 원본 데이터 형식을 복원하여 필드에 접근하려면 반드시 원본 클래스 타입인 `Student`로 다운캐스팅을 진행해 주어야 합니다.
+
+2. ClassNotFoundException 예외
+   - 바이너리 정보를 해석하여 JVM 메모리 위에 인스턴스로 조립할 때, 해당 객체의 설계도에 해당하는 클래스 파일(`.class`)이 프로그램 클래스패스 상에 로드될 수 있어야 합니다. 
+   - 클래스 설계 정보가 메모리에 올라와 있지 않거나 탐색할 수 없는 환경일 경우 이 예외가 발생하므로, 직렬화 처리 시에는 반드시 동반해서 처리해야 하는 예외 규격입니다.
+
+--------------------------------------------------
+[최종 성적]
+- 최종 점수: 100점 / 100점 (합격!)

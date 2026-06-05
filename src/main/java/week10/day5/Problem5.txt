@@ -1,0 +1,167 @@
+[문제]
+직렬화 대신, 객체의 데이터를 "이름,점수" 형태의 쉼표 문자열로 변환하여 텍스트 파일(csv)에 저장하는 코드를 작성하세요.
+
+[사용자 작성 코드]
+package week10.day5;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // TODO
+
+
+
+        try(FileWriter fw = new FileWriter("user.csv", Charset.forName("MS949")))
+        {
+            List<Problem5.Student> students = new ArrayList<>(Arrays.asList(
+                    new Problem5.Student("일길공","1111",21,70),
+                    new Problem5.Student("이길공","1234",23,50),
+                    new Problem5.Student("삼길공","14567",25,76),
+                    new Problem5.Student("사길공","4637",31,78),
+                    new Problem5.Student("오길공","45786i",61,90),
+                    new Problem5.Student("육길공","457745",31,60)
+            ));
+            fw.write("이름,패스워드,나이,스코어\n");
+            for(Student s : students)
+            {
+                fw.write(s.name+","+s.pw+","+s.age+","+s.score+"\n");
+            }
+            System.out.println("csv생성 완료");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+           List<String> students = Files.readAllLines(Path.of("user.csv"),Charset.forName("MS949"));
+           for(String s : students)
+           {
+               System.out.println(s);
+           }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    static class Student implements Serializable
+    {
+        String name;
+        transient String pw;
+        int age;
+        int score;
+
+        Student(String name,String pw, int age, int score)
+        {
+            this.name=name;
+            this.pw=pw;
+            this.age=age;
+            this.score=score;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("Student{name = %s, pw = %s, age = %d, score = %d",this.name,this.pw,this.age,this.score);
+        }
+    }
+}
+
+[현재 코드 특징]
+- 쉼표(,)와 개행문자(\n)를 사용한 수동 CSV 가공에 성공하였습니다.
+- 한글 깨짐을 예방하기 위해 파일 쓰기(FileWriter)와 파일 읽기(Files.readAllLines) 단계 모두 `Charset.forName("MS949")` 문자셋을 적용하여 안정적으로 호환시켰습니다.
+
+[Better Code]
+package week10.day5;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Problem5 {
+    public static void main(String[] args) {
+        String filename = "user.csv";
+
+        // 1. 글로벌 표준인 UTF-8 문자셋을 사용하고, 엑셀 깨짐을 극복하는 BOM(\ufeff)을 추가해 줍니다.
+        try (FileWriter fw = new FileWriter(filename, StandardCharsets.UTF_8)) {
+            List<CsvStudent> list = new ArrayList<>(Arrays.asList(
+                    new CsvStudent("일길공", "1111", 21, 70),
+                    new CsvStudent("이길공", "1234", 23, 50),
+                    new CsvStudent("삼길공", "14567", 25, 76),
+                    new CsvStudent("사길공", "4637", 31, 78)
+            ));
+
+            fw.write("\ufeff"); // UTF-8 BOM 쓰기 (엑셀 바로 열기 패치)
+            fw.write("이름,패스워드,나이,스코어\n");
+            for (CsvStudent s : list) {
+                fw.write(s.name + "," + s.pw + "," + s.age + "," + s.score + "\n");
+            }
+            System.out.println("-> CSV 파일 생성 완료!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 2. 불러올 때도 저장할 때 썼던 UTF-8로 해석해 줍니다.
+        try {
+            List<String> lines = Files.readAllLines(Path.of(filename), StandardCharsets.UTF_8);
+            System.out.println("--- 저장된 CSV 파일 출력 ---");
+            for (String line : lines) {
+                System.out.println("  " + line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class CsvStudent {
+    String name;
+    String pw;
+    int age;
+    int score;
+
+    CsvStudent(String name, String pw, int age, int score) {
+        this.name = name;
+        this.pw = pw;
+        this.age = age;
+        this.score = score;
+    }
+}
+
+[기술적 해설]
+1. MS949와 UTF-8 BOM의 차이
+   - `MS949`는 윈도우 환경 전용 한국어 텍스트 코드셋입니다. 한국어 윈도우용 엑셀에서는 잘 열리지만 맥(Mac)OS나 리눅스 등 유니코드를 기본으로 쓰는 시스템에서는 한글이 깨지는 부작용이 있습니다.
+   - `UTF-8`에 BOM(Byte Order Mark, `\ufeff`) 헤더를 붙여서 저장하면, 엑셀은 이 표식을 보고 UTF-8로 자동 감지해서 한글을 깨뜨리지 않고, 외부 다국어 환경의 리눅스나 타 서비스에서도 완벽하게 이식이 가능하므로 실무 표준으로 추천됩니다.
+
+2. CSV 구조와 쉼표(,)의 약속
+   - CSV(Comma-Separated Values)는 각 데이터를 쉼표로 가르고 줄을 나누어 엑셀이나 데이터베이스 같은 테이블 구조로 쉽게 맵핑할 수 있는 포맷입니다. 
+   - 이진 직렬화 파일은 타 프로그래밍 언어(Python, JS 등)나 범용 도구에서 구조를 직접 뜯어볼 수 없지만, CSV와 같은 텍스트 맵핑은 타 언어와의 뛰어난 이식성 및 범용성을 갖는다는 큰 이점이 있습니다.
+
+--------------------------------------------------
+[추가 보충 문제 및 모범 정답 결과]
+
+1. 보충 문제 파일명: Problem5_1.java
+2. 보충 문제 모범 정답 파일명: Answer5_1.java
+- UTF-8 인코딩 및 BOM(\ufeff)을 직접 다루어 엑셀 인코딩 깨짐을 범용적으로 해결하고 자바 콘솔에서도 에러 없이 읽어 들이는 실습을 추가해 두었습니다. 직접 도전해 보시길 권장합니다!
+
+--------------------------------------------------
+[최종 성적]
+- 최종 점수: 100점 / 100점 (합격!)
