@@ -1,0 +1,67 @@
+[문제]
+DBConnection 이라는 클래스를 싱글톤으로 구현하고 객체를 두 번 받아와 같은지 비교하세요.
+
+[사용자 작성 코드]
+package week11.day1;
+
+public class Problem1 {
+    public static void main(String[] args)
+    {
+        // TODO: 객체를 두 번 받아와 같은지 비교하세요.
+        DBConnection db1 = DBConnection.Instance;
+        DBConnection db2 = DBConnection.Instance;
+        System.out.println(db1==db2);
+    }
+
+    static class DBConnection
+    {
+        private static final DBConnection Instance = new DBConnection();;
+
+        private DBConnection() {
+            System.out.println("최조 1번 실행됨");
+        };
+
+        public DBConnection dbIntance() {
+            return Instance;
+        }
+    }
+}
+
+[현재 코드 특징]
+- Eager Initialization(즉시 초기화) 방식을 모방하여 싱글톤 인스턴스(`Instance`)를 static final로 선언하고 private 생성자를 두어 외부 생성을 막았습니다.
+- 그러나 바깥 클래스인 `Problem1` 내부에서 이너 클래스의 private 멤버인 `Instance`에 직접 접근하고 있어 싱글톤의 캡슐화 원칙이 약화되었습니다.
+- 단일 인스턴스를 얻어오는 `dbIntance` 메서드가 non-static(인스턴스 메서드)으로 선언되어 있어, 정작 외부에서 이 메서드를 호출하려면 `DBConnection` 객체를 먼저 생성해야 하는 구조적 모순이 발생합니다.
+- 중복 세미콜론(`;;`, `};`) 및 오타(`최조`, `dbIntance`)가 포함되어 있습니다.
+
+[Better Code]
+package week11.day1;
+
+public class Problem1 {
+    public static void main(String[] args) {
+        // public static 메서드를 통해 싱글톤 인스턴스를 안전하게 획득합니다.
+        DBConnection db1 = DBConnection.getInstance();
+        DBConnection db2 = DBConnection.getInstance();
+        System.out.println(db1 == db2); // true 출력 확인
+    }
+
+    static class DBConnection {
+        // 1. 단 하나의 정적 인스턴스를 클래스 로딩 시점에 생성합니다.
+        private static final DBConnection instance = new DBConnection();
+
+        // 2. 외부에서 new 키워드로 인스턴스를 무분별하게 생성하지 못하도록 생성자를 private으로 제한합니다.
+        private DBConnection() {
+            System.out.println("최초 1번 실행됨");
+        }
+
+        // 3. 외부에서 유일한 인스턴스에 접근할 수 있도록 해주는 public static getter 메서드를 제공합니다.
+        public static DBConnection getInstance() {
+            return instance;
+        }
+    }
+}
+
+[기술적 해설]
+싱글톤 패턴은 클래스의 인스턴스를 딱 하나만 생성되도록 보장하는 디자인 패턴입니다. 이를 올바르게 구현하려면 다음 세 가지 원칙이 지켜져야 합니다:
+1. **private 생성자**: 외부 클래스에서 `new` 연산자로 새로운 객체를 생성하는 것을 원천 차단합니다.
+2. **private static 인스턴스 변수**: 클래스 내부에서 유일한 인스턴스를 유지합니다.
+3. **public static 메서드 (getInstance)**: 이 메서드를 통해서만 객체의 레퍼런스를 가져갈 수 있게 통제해야 합니다. static 변수에 직접 접근하기보다 public static 메서드를 노출하는 것이 캡슐화 관점과 추후 로직 확장(예: 객체 생성 이력 로깅 등)에 훨씬 유리합니다.

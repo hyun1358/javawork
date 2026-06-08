@@ -1,0 +1,115 @@
+[문제]
+"circle", "rectangle"을 받아 알맞은 Shape 객체를 반환하는 ShapeFactory를 구현하세요.
+(단, Shape 인터페이스와 이를 구현하는 Circle, Rectangle 클래스를 직접 작성하세요.)
+
+[사용자 작성 코드]
+package week11.day1;
+
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Shape s1 = ShapeFactory.create("circle");
+        Shape s2 = ShapeFactory.create("rectangle");
+
+        s1.draw();
+        s2.draw();
+    }
+
+    static class Shape
+    {
+        void draw() {};
+    }
+
+    static class Circe extends Shape
+    {
+        void draw()
+        {
+            System.out.println("Circle 입니다.");
+        }
+    }
+
+    static class Rectangle extends Shape
+    {
+        void draw()
+        {
+            System.out.println("Rectangle 입니다.");
+        }
+    }
+
+    static class ShapeFactory
+    {
+        public static Shape create(String type)
+        {
+            if("Circle".equalsIgnoreCase(type))
+            {
+                return new Circe();
+            }
+            if("Rectangle".equalsIgnoreCase(type))
+            {
+                return new Rectangle();
+            }
+            throw new IllegalArgumentException("알 수 없는 도형: " + type);
+        }
+    }
+}
+
+[현재 코드 특징]
+- 문자열 식별자를 기반으로 동적으로 객체를 생성하여 반환해 주는 팩토리 클래스(`ShapeFactory`)의 골격을 잘 구현했습니다.
+- 그러나 문제의 조건인 "**Shape 인터페이스**와 이를 구현하는 클래스"를 만족하지 못하고, `Shape`를 일반 클래스(`static class`)로 선언한 후 상속(`extends`)받아 사용했습니다.
+- 클래스 이름에 오타(`Circe` -> `Circle`)가 존재합니다.
+- 잘못된 도형 입력에 대해 `throw new IllegalArgumentException` 예외를 던졌으나, 현재 진도(Week 11 Day 1)상 아직 예외 처리를 공식적으로 학습하지 않았다면 복잡한 예외를 직접 던지기보다 `null`을 반환하는 유연성을 제안할 수 있습니다.
+
+[Better Code]
+package week11.day1;
+
+public class Problem4 {
+    public static void main(String[] args) {
+        // Factory를 통해 결합도를 낮추며 다형성을 활용합니다.
+        Shape s1 = ShapeFactory.create("circle");
+        Shape s2 = ShapeFactory.create("rectangle");
+
+        if (s1 != null) s1.draw();
+        if (s2 != null) s2.draw();
+    }
+
+    // 1. 공통 규격을 정의하는 Shape 인터페이스 작성
+    interface Shape {
+        void draw();
+    }
+
+    // 2. Shape 인터페이스를 구현(implements)하는 구체 클래스 정의
+    static class Circle implements Shape {
+        @Override
+        public void draw() {
+            System.out.println("Circle 입니다.");
+        }
+    }
+
+    static class Rectangle implements Shape {
+        @Override
+        public void draw() {
+            System.out.println("Rectangle 입니다.");
+        }
+    }
+
+    // 3. 객체 생성 책임을 캡슐화한 ShapeFactory 클래스 작성
+    static class ShapeFactory {
+        public static Shape create(String type) {
+            // NullPointerException 방지를 위해 상수를 앞에 두어 equals를 비교하거나 equalsIgnoreCase를 사용합니다.
+            if ("circle".equalsIgnoreCase(type)) {
+                return new Circle();
+            }
+            if ("rectangle".equalsIgnoreCase(type)) {
+                return new Rectangle();
+            }
+            return null; // 알 수 없는 도형인 경우 일단 안전하게 null을 반환합니다.
+        }
+    }
+}
+
+[기술적 해설]
+팩토리 패턴(Simple Factory)은 객체의 생성 로직을 별도의 클래스(Factory)로 분리하고 캡슐화하는 패턴입니다.
+- **다형성 활용**: 메인 프로그램에서는 구체적인 클래스명(`Circle`, `Rectangle`)을 알 필요 없이 오직 공통 인터페이스(`Shape`) 타입으로만 다룹니다.
+- **결합도 완화**: 만약 새로운 도형(예: Triangle)이 추가되더라도 `main` 메서드는 수정할 필요 없이 팩토리 클래스의 생성 분기 로직과 신규 클래스만 추가하면 되므로 OCP(개방-폐쇄 원칙)를 달성하는 첫걸음이 됩니다.
+- **인터페이스 vs 클래스**: 공통의 규약만 정의하고 구현을 강제하고 싶을 때는 일반 클래스 상속보다 인터페이스(`interface`)를 활용하는 것이 훨씬 가볍고 객체지향적인 코드 디자인입니다.

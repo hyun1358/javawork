@@ -1,0 +1,81 @@
+[문제]
+User 객체를 만들 때 new User("admin", "1234") 대신 User.createAdmin("1234") 처럼 목적이 명확한 메서드로 생성되게 설계하세요.
+(단, id(String), password(String) 필드를 갖는 User 클래스를 직접 작성하세요.)
+
+[사용자 작성 코드]
+package week11.day1;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        // TODO
+        User u1 = User.createadminUser("admin");
+        User u2 = User.createGuest("gong","1234");
+
+    }
+
+    static class User
+    {
+        String id;
+        String password;
+
+        private User(String id, String pw)
+        {
+            this.id=id;
+            this.password=pw;
+        }
+
+        public static User createadminUser(String id)
+        {
+            return new User(id,"1234");
+        }
+
+        public static User createGuest(String id,String pw)
+        {
+            return new User(id,pw);
+        }
+    }
+}
+
+[현재 코드 특징]
+- 생성자(`User`)를 `private`으로 캡슐화하여 외부에서 직접적인 인스턴스 생성을 막고, 정적 메서드를 통해 객체를 얻어오도록 구현하여 정적 팩토리 메서드의 핵심 개념을 잘 인지하고 있습니다.
+- 그러나 문제의 요구사항인 `User.createAdmin("1234")` (패스워드를 파라미터로 입력하고 id는 자동으로 admin으로 고정)와 다르게, `createadminUser(String id)` 메서드를 만들어 아이디를 파라미터로 받고 패스워드를 `"1234"`로 고정시켰습니다.
+- 메서드 명명 시 낙타 표기법(CamelCase)이 제대로 지켜지지 않았습니다 (`createadminUser` -> `createAdminUser` 또는 `createAdmin`).
+
+[Better Code]
+package week11.day1;
+
+public class Problem5 {
+    public static void main(String[] args) {
+        // 생성의 목적과 비밀번호가 명확히 드러나는 정적 팩토리 메서드를 호출합니다.
+        User u1 = User.createAdmin("admin1234");
+        User u2 = User.createGuest("gong", "1234");
+    }
+
+    static class User {
+        private String id;
+        private String password;
+
+        // 1. 외부 생성 제어를 위해 생성자를 private으로 관리합니다.
+        private User(String id, String password) {
+            this.id = id;
+            this.password = password;
+        }
+
+        // 2. 관리자 생성을 위한 정적 팩토리 메서드 (비밀번호만 입력받아 admin 계정 구성)
+        public static User createAdmin(String password) {
+            return new User("admin", password);
+        }
+
+        // 3. 일반 게스트 생성을 위한 정적 팩토리 메서드
+        public static User createGuest(String id, String password) {
+            return new User(id, password);
+        }
+    }
+}
+
+[기술적 해설]
+정적 팩토리 메서드(Static Factory Method) 패턴은 `new`를 사용한 생성자 호출 대신, 클래스 내부에 정적 메서드를 만들어 인스턴스를 반환받는 패턴입니다.
+- **이름을 가질 수 있음**: 단순히 `new User(...)`라고 호출하면 매개변수 타입만으로 생성의 목적을 구분하기 힘듭니다. 반면 `createAdmin`, `createGuest` 처럼 이름을 붙여주면 어떤 목적으로 객체가 만들어지는지 즉각 파악이 가능합니다.
+- **매개변수 설계의 중요성**: 관리자 생성 메서드인 `createAdmin`은 비밀번호만 받으면 아이디는 알아서 `"admin"`으로 셋팅해주도록 만들어야 사용성이 향상되고 실수를 방지할 수 있습니다. 
+- **캡슐화 강화**: 필드(`id`, `password`)는 외부에서 마음대로 수정할 수 없도록 `private` 접근 제한자를 적용하는 것이 객체지향 설계의 표준입니다.

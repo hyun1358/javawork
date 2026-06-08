@@ -6,7 +6,24 @@ package week11.day1;
  * Configuration 이라는 enum 싱글톤을 구현하세요.
  */
 public class Problem3 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        Configuration c1 = Configuration.INSTENS;
+        Configuration c2 = Configuration.INSTENS;
+
+        System.out.println(c1==c2);
+        c1.getVersion();
+    }
+
+    enum Configuration
+    {
+        INSTENS;
+
+        private static final String version = "v1.0.0";
+
+        public void getVersion() {
+            System.out.println("버전: " + version);
+        }
     }
 }

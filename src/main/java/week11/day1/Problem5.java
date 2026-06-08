@@ -7,7 +7,33 @@ package week11.day1;
  * (단, id(String), password(String) 필드를 갖는 User 클래스를 직접 작성하세요.)
  */
 public class Problem5 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        User u1 = User.createadminUser("admin");
+        User u2 = User.createGuest("gong","1234");
+
+    }
+
+    static class User
+    {
+        String id;
+        String password;
+
+        private User(String id, String pw)
+        {
+            this.id=id;
+            this.password=pw;
+        }
+
+        public static User createadminUser(String id)
+        {
+            return new User(id,"1234");
+        }
+
+        public static User createGuest(String id,String pw)
+        {
+            return new User(id,pw);
+        }
     }
 }

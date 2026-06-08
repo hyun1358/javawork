@@ -1,0 +1,66 @@
+[문제]
+Enum을 사용하면 가장 안전한 싱글톤을 만들 수 있습니다. Configuration 이라는 enum 싱글톤을 구현하세요.
+
+[사용자 작성 코드]
+package week11.day1;
+
+public class Problem3 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Configuration c1 = Configuration.INSTENS;
+        Configuration c2 = Configuration.INSTENS;
+
+        System.out.println(c1==c2);
+        c1.getVersion();
+    }
+
+    enum Configuration
+    {
+        INSTENS;
+
+        private static final String version = "v1.0.0";
+
+        public void getVersion() {
+            System.out.println("버전: " + version);
+        }
+    }
+}
+
+[현재 코드 특징]
+- JVM 수준에서 단 하나의 인스턴스 생성을 강력히 보장하는 Enum 싱글톤의 기초적인 틀을 올바르게 구현했습니다.
+- Enum 상수의 스펠링 오타(`INSTENS` -> `INSTANCE`)가 존재합니다.
+- 상수 자체로 기능하는 Enum 내부에서 `version`을 `private static final` 필드로 선언하여 사용 중입니다. 이도 가능하지만, 단순 인스턴스 필드(`private final String version = "v1.0.0";`)로 사용하여 `INSTANCE`마다 관리하도록 구현하는 것이 일반적입니다.
+
+[Better Code]
+package week11.day1;
+
+public class Problem3 {
+    public static void main(String[] args) {
+        // Enum 상수를 획득하여 동일성을 비교합니다.
+        Configuration c1 = Configuration.INSTANCE;
+        Configuration c2 = Configuration.INSTANCE;
+
+        System.out.println(c1 == c2); // true 출력 확인
+        c1.printVersion();
+    }
+
+    // 1. Enum을 활용한 안전한 싱글톤 정의
+    enum Configuration {
+        INSTANCE; // JVM이 단 하나의 상수를 생성함을 보장합니다.
+
+        // 싱글톤 객체가 가질 필드 정의
+        private final String version = "v1.0.0";
+
+        // 외부에서 상태를 호출할 수 있는 비즈니스 메서드
+        public void printVersion() {
+            System.out.println("버전: " + version);
+        }
+    }
+}
+
+[기술적 해설]
+Enum(열거형) 싱글톤은 이펙티브 자바(Effective Java)의 저자 조슈아 블로크가 강력히 권장하는 싱글톤 구현 방식입니다.
+- **안전성**: 자바의 리플렉션 API를 이용해 private 생성자를 강제로 열어 인스턴스를 더 생성하려는 시도나, 직렬화/역직렬화 과정에서 새로운 인스턴스가 생성되는 취약점을 언어 사양 자체에서 원천 방어합니다.
+- **간결함**: 복잡한 `synchronized`나 `double-checked locking` 등을 구현하지 않아도 코드 몇 줄만으로 스레드 안전성(Thread-safe)을 보장받을 수 있습니다.
+- **명명법**: 열거형 상수는 관례상 대문자로 명명하며, 싱글톤을 대표하는 상수는 `INSTANCE`라고 지정하는 것이 일반적입니다.

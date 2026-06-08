@@ -1,0 +1,292 @@
+src\main\java\week08\day2\Example1.java:39: error: reached end of file while parsing
+}
+ ^
+src\main\java\week08\day2\Example6.java:39: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week08\day4\Example2.java:47: error: reached end of file while parsing
+}
+ ^
+src\main\java\week08\day4\Example6.java:32: error: <identifier> expected
+        System.out.println("\n[LinkedHashMap: 삽입 순서 유지]");
+                          ^
+src\main\java\week08\day4\Example6.java:32: error: illegal start of type
+        System.out.println("\n[LinkedHashMap: 삽입 순서 유지]");
+                           ^
+src\main\java\week08\day4\Example6.java:34: error: <identifier> expected
+        lmap.put(30, "삼십");
+                ^
+src\main\java\week08\day4\Example6.java:34: error: illegal start of type
+        lmap.put(30, "삼십");
+                 ^
+src\main\java\week08\day4\Example6.java:35: error: <identifier> expected
+        lmap.put(10, "십");
+                ^
+src\main\java\week08\day4\Example6.java:35: error: illegal start of type
+        lmap.put(10, "십");
+                 ^
+src\main\java\week08\day4\Example6.java:36: error: <identifier> expected
+        lmap.put(20, "이십");
+                ^
+src\main\java\week08\day4\Example6.java:36: error: illegal start of type
+        lmap.put(20, "이십");
+                 ^
+src\main\java\week08\day4\Example6.java:37: error: <identifier> expected
+        System.out.println("LinkedHashMap 내용: " + lmap); 
+                          ^
+src\main\java\week08\day4\Example6.java:37: error: illegal start of type
+        System.out.println("LinkedHashMap 내용: " + lmap); 
+                           ^
+src\main\java\week08\day4\Example6.java:38: error: illegal start of type
+        for (Integer key : lmap.keySet()) {
+        ^
+src\main\java\week08\day4\Example6.java:38: error: ';' expected
+        for (Integer key : lmap.keySet()) {
+                        ^
+src\main\java\week08\day4\Example6.java:38: error: <identifier> expected
+        for (Integer key : lmap.keySet()) {
+                                      ^
+src\main\java\week08\day4\Example6.java:38: error: ';' expected
+        for (Integer key : lmap.keySet()) {
+                                        ^
+src\main\java\week08\day4\Example6.java:43: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day1\Example2.java:116: error: ')' expected
+    }
+     ^
+src\main\java\week12\day1\Example2.java:118: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day1\Example3.java:116: error: ')' expected
+    }
+     ^
+src\main\java\week12\day1\Example3.java:118: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day1\Example4.java:76: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day1\Example5.java:74: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day3\Example1.java:64: error: unclosed string literal
+    ");
+    ^
+src\main\java\week12\day3\Example1.java:65: error: <identifier> expected
+        String extracted = raw.substring(colonIdx + 1, endIdx).trim();
+                        ^
+src\main\java\week12\day3\Example1.java:67: error: <identifier> expected
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                          ^
+src\main\java\week12\day3\Example1.java:67: error: illegal start of type
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                           ^
+src\main\java\week12\day3\Example1.java:76: error: <identifier> expected
+        System.out.println("파싱된 name: " + name);
+                          ^
+src\main\java\week12\day3\Example1.java:76: error: illegal start of type
+        System.out.println("파싱된 name: " + name);
+                           ^
+src\main\java\week12\day3\Example1.java:78: error: <identifier> expected
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                          ^
+src\main\java\week12\day3\Example1.java:78: error: illegal start of type
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                           ^
+src\main\java\week12\day3\Example1.java:83: error: <identifier> expected
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                          ^
+src\main\java\week12\day3\Example1.java:83: error: illegal start of type
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                           ^
+src\main\java\week12\day3\Example1.java:108: error: <identifier> expected
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                          ^
+src\main\java\week12\day3\Example1.java:108: error: illegal start of type
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                           ^
+src\main\java\week12\day3\Example1.java:109: error: <identifier> expected
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                          ^
+src\main\java\week12\day3\Example1.java:109: error: illegal start of type
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                           ^
+src\main\java\week12\day3\Example1.java:110: error: <identifier> expected
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                          ^
+src\main\java\week12\day3\Example1.java:110: error: illegal start of type
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                           ^
+src\main\java\week12\day3\Example1.java:136: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day3\Example2.java:67: error: unclosed string literal
+    ");
+    ^
+src\main\java\week12\day3\Example2.java:68: error: <identifier> expected
+        String extracted = raw.substring(colonIdx + 1, endIdx).trim();
+                        ^
+src\main\java\week12\day3\Example2.java:70: error: <identifier> expected
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                          ^
+src\main\java\week12\day3\Example2.java:70: error: illegal start of type
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                           ^
+src\main\java\week12\day3\Example2.java:79: error: <identifier> expected
+        System.out.println("파싱된 name: " + name);
+                          ^
+src\main\java\week12\day3\Example2.java:79: error: illegal start of type
+        System.out.println("파싱된 name: " + name);
+                           ^
+src\main\java\week12\day3\Example2.java:81: error: <identifier> expected
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                          ^
+src\main\java\week12\day3\Example2.java:81: error: illegal start of type
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                           ^
+src\main\java\week12\day3\Example2.java:86: error: <identifier> expected
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                          ^
+src\main\java\week12\day3\Example2.java:86: error: illegal start of type
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                           ^
+src\main\java\week12\day3\Example2.java:111: error: <identifier> expected
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                          ^
+src\main\java\week12\day3\Example2.java:111: error: illegal start of type
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                           ^
+src\main\java\week12\day3\Example2.java:112: error: <identifier> expected
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                          ^
+src\main\java\week12\day3\Example2.java:112: error: illegal start of type
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                           ^
+src\main\java\week12\day3\Example2.java:113: error: <identifier> expected
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                          ^
+src\main\java\week12\day3\Example2.java:113: error: illegal start of type
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                           ^
+src\main\java\week12\day3\Example2.java:139: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day3\Example3.java:63: error: unclosed string literal
+    ");
+    ^
+src\main\java\week12\day3\Example3.java:64: error: <identifier> expected
+        String extracted = raw.substring(colonIdx + 1, endIdx).trim();
+                        ^
+src\main\java\week12\day3\Example3.java:66: error: <identifier> expected
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                          ^
+src\main\java\week12\day3\Example3.java:66: error: illegal start of type
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                           ^
+src\main\java\week12\day3\Example3.java:75: error: <identifier> expected
+        System.out.println("파싱된 name: " + name);
+                          ^
+src\main\java\week12\day3\Example3.java:75: error: illegal start of type
+        System.out.println("파싱된 name: " + name);
+                           ^
+src\main\java\week12\day3\Example3.java:77: error: <identifier> expected
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                          ^
+src\main\java\week12\day3\Example3.java:77: error: illegal start of type
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                           ^
+src\main\java\week12\day3\Example3.java:82: error: <identifier> expected
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                          ^
+src\main\java\week12\day3\Example3.java:82: error: illegal start of type
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                           ^
+src\main\java\week12\day3\Example3.java:107: error: <identifier> expected
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                          ^
+src\main\java\week12\day3\Example3.java:107: error: illegal start of type
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                           ^
+src\main\java\week12\day3\Example3.java:108: error: <identifier> expected
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                          ^
+src\main\java\week12\day3\Example3.java:108: error: illegal start of type
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                           ^
+src\main\java\week12\day3\Example3.java:109: error: <identifier> expected
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                          ^
+src\main\java\week12\day3\Example3.java:109: error: illegal start of type
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                           ^
+src\main\java\week12\day3\Example3.java:135: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day3\Example4.java:58: error: unclosed string literal
+        int endIdx   = raw.indexOf("
+                                   ^
+src\main\java\week12\day3\Example4.java:62: error: unclosed string literal
+    ");
+    ^
+src\main\java\week12\day3\Example4.java:63: error: <identifier> expected
+        String extracted = raw.substring(colonIdx + 1, endIdx).trim();
+                        ^
+src\main\java\week12\day3\Example4.java:65: error: <identifier> expected
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                          ^
+src\main\java\week12\day3\Example4.java:65: error: illegal start of type
+        System.out.println("파싱된 id 값: " + idValue + " (타입: " + ((Object)idValue).getClass().getSimpleName() + ")");
+                           ^
+src\main\java\week12\day3\Example4.java:74: error: <identifier> expected
+        System.out.println("파싱된 name: " + name);
+                          ^
+src\main\java\week12\day3\Example4.java:74: error: illegal start of type
+        System.out.println("파싱된 name: " + name);
+                           ^
+src\main\java\week12\day3\Example4.java:76: error: <identifier> expected
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                          ^
+src\main\java\week12\day3\Example4.java:76: error: illegal start of type
+        System.out.println("※ 복잡한 JSON은 Gson/Jackson 라이브러리 사용 권장 (→ 문제 5 참고)");
+                           ^
+src\main\java\week12\day3\Example4.java:81: error: <identifier> expected
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                          ^
+src\main\java\week12\day3\Example4.java:81: error: illegal start of type
+        System.out.println("\n=== Lab 5: Gson / Jackson 라이브러리 ===");
+                           ^
+src\main\java\week12\day3\Example4.java:106: error: <identifier> expected
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                          ^
+src\main\java\week12\day3\Example4.java:106: error: illegal start of type
+        System.out.println("Gson:    new Gson().toJson(obj)  /  gson.fromJson(json, Class)");
+                           ^
+src\main\java\week12\day3\Example4.java:107: error: <identifier> expected
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                          ^
+src\main\java\week12\day3\Example4.java:107: error: illegal start of type
+        System.out.println("Jackson: mapper.writeValueAsString(obj)  /  mapper.readValue(json, Class)");
+                           ^
+src\main\java\week12\day3\Example4.java:108: error: <identifier> expected
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                          ^
+src\main\java\week12\day3\Example4.java:108: error: illegal start of type
+        System.out.println("Spring Boot는 Jackson을 기본 내장하여 자동으로 JSON 변환에 사용함");
+                           ^
+src\main\java\week12\day3\Example4.java:134: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day4\Example1.java:84: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day4\Example2.java:89: error: reached end of file while parsing
+}
+ ^
+src\main\java\week12\day4\Example4.java:82: error: class, interface, enum, or record expected
+}
+^
+src\main\java\week12\day4\Example5.java:101: error: reached end of file while parsing
+}
+ ^
+97 errors

@@ -6,7 +6,31 @@ package week11.day1;
  * 싱글톤 코드를 작성하세요.
  */
 public class Problem2 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // TODO
+        LaySington l1 = LaySington.getLaySington();
+        LaySington l2 = LaySington.getLaySington();
+        System.out.println(l1==l2);
+    }
+
+    static class LaySington
+    {
+        private static LaySington laySington;
+
+        private LaySington()
+        {
+            System.out.println("최초 1회 실행");
+        }
+
+        public static synchronized LaySington getLaySington()
+        {
+            if(laySington == null)
+            {
+                return laySington = new LaySington();
+            }
+            return laySington;
+        }
+
     }
 }

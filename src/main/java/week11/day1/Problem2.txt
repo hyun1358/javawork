@@ -1,0 +1,78 @@
+[문제]
+객체를 미리 만들지 않고, getInstance()가 처음 호출될 때 객체를 생성하는 싱글톤 코드를 작성하세요.
+
+[사용자 작성 코드]
+package week11.day1;
+
+public class Problem2 {
+    public static void main(String[] args)
+    {
+        // TODO
+        LaySington l1 = LaySington.getLaySington();
+        LaySington l2 = LaySington.getLaySington();
+        System.out.println(l1==l2);
+    }
+
+    static class LaySington
+    {
+        private static LaySington laySington;
+
+        private LaySington()
+        {
+            System.out.println("최초 1회 실행");
+        }
+
+        public static synchronized LaySington getLaySington()
+        {
+            if(laySington == null)
+            {
+                return laySington = new LaySington();
+            }
+            return laySington;
+        }
+
+    }
+}
+
+[현재 코드 특징]
+- 객체가 필요한 시점에 동적으로 초기화하는 Lazy Initialization(지연 초기화)을 잘 설계했습니다.
+- 멀티스레드 환경에서 발생할 수 있는 동시성 문제를 `synchronized` 키워드를 사용해 스레드 안전(Thread-Safe)하게 잘 방어했습니다.
+- 하지만 클래스명(`LaySington` -> `LazySingleton`)과 메서드명(`getLaySington` -> `getInstance` 또는 `getLazySingleton`)에 오타 및 네이밍 규칙 아쉬움이 있습니다.
+- `return laySington = new LaySington();` 처럼 변수 대입과 리턴을 한 줄에 결합하여 표현하여 가독성이 떨어집니다.
+
+[Better Code]
+package week11.day1;
+
+public class Problem2 {
+    public static void main(String[] args) {
+        // 올바른 작명 규칙을 따르는 정적 메서드를 호출하여 인스턴스를 가져옵니다.
+        LazySingleton l1 = LazySingleton.getInstance();
+        LazySingleton l2 = LazySingleton.getInstance();
+        System.out.println(l1 == l2); // true 출력 확인
+    }
+
+    // 1. 클래스 이름을 의도가 잘 드러나게 LazySingleton으로 수정합니다.
+    static class LazySingleton {
+        private static LazySingleton instance;
+
+        private LazySingleton() {
+            System.out.println("최초 1회 실행");
+        }
+
+        // 2. 메서드 이름을 표준 패턴(getInstance)에 맞춥니다.
+        // synchronized를 통해 멀티스레드 환경에서도 오직 하나의 인스턴스 생성을 보장합니다.
+        public static synchronized LazySingleton getInstance() {
+            if (instance == null) {
+                // 대입 연산과 리턴을 명확하게 분리하여 코드 가독성을 올립니다.
+                instance = new LazySingleton();
+            }
+            return instance;
+        }
+    }
+}
+
+[기술적 해설]
+지연 초기화 방식은 애플리케이션 시작 시점에 인스턴스를 무조건 생성하지 않고, 처음 호출되는 시점에 비로소 메모리에 올립니다. 
+- **장점**: 최초 호출 전까지는 메모리를 낭비하지 않습니다.
+- **주의점**: 멀티스레드 환경에서 여러 스레드가 동시에 `instance == null` 조건문을 통과하면 싱글톤 규칙이 깨질 수 있으므로, 반드시 정적 메서드에 `synchronized` 키워드를 걸어 스레드 안전성을 확보해야 합니다.
+- **가독성 팁**: `return instance = new LazySingleton();` 형식의 코드는 자바 컴파일러에선 허용되나, 동료 개발자가 읽을 때 대입이 먼저인지 리턴이 먼저인지 혼동할 수 있습니다. 한 줄에 하나의 연산만 기술하는 것이 모던 자바의 클린 코드 작성 팁입니다.
