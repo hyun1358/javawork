@@ -49,7 +49,9 @@ public class Example1 {
             Arrays.sort(arr);
             // 배열 뒤집기
             for (int i = 0, j = arr.length - 1; i < j; i++, j--) {
-                int tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+                int tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
             }
         }
     }
