@@ -32,7 +32,8 @@ public class Example2 {
     }
 
     // ─── 빌더 패턴: SqlBuilder ────────────────────────────
-    static class SqlBuilder {
+    static class SqlBuilder
+    {
         private StringBuilder sb = new StringBuilder();
 
         public SqlBuilder select(String cols)  { sb.append("SELECT ").append(cols).append(" "); return this; }

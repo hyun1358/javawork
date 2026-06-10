@@ -21,7 +21,8 @@ public class Preview {
     }
 }
 
-class User {
+class User
+{
     String name;
     int age;
     String address;

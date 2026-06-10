@@ -1,0 +1,137 @@
+[문제]
+Command 인터페이스(execute())를 만들고, LightOnCommand 클래스를 구현해보세요.
+
+[사용자 작성 코드]
+package week11.day3;
+
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        // TODO
+        Light l = new Light();
+
+        LightOnCommend on = new LightOnCommend(l);
+        LightOffCommend off = new LightOffCommend(l);
+
+        Remocont r = new Remocont();
+        r.setCommend(on);
+        r.pressBonten();
+
+        r.setCommend(off);
+        r.pressBonten();
+    }
+
+    interface Commend
+    {
+        void execute();
+    }
+
+    static class Light {
+        void on() {System.out.println("조명을 켭니다.");}
+
+        void off() {System.out.println("조명을 끕니다.");}
+    }
+
+    static class LightOnCommend implements Commend
+    {
+        private Light l;
+
+        LightOnCommend(Light l) {this.l=l;}
+        @Override
+        public void execute() { l.on(); }
+    }
+
+    static class LightOffCommend implements Commend
+    {
+        private Light l;
+
+        LightOffCommend(Light l) {this.l=l;}
+        @Override
+        public void execute() { l.off(); }
+    }
+
+    static class Remocont
+    {
+        Commend c;
+        void setCommend(Commend c) {this.c=c;}
+        void pressBonten() { c.execute(); }
+    }
+}
+
+[현재 코드 특징]
+- 커맨드 패턴(Command Pattern)의 구조를 정확하게 파악하고 구현하셨습니다.
+- 수신자(Light), 구체적인 명령 클래스들(LightOn, LightOff), 호출자(Remocont)를 나누어 객체 지향적으로 책임을 잘 분산시켰습니다.
+- 기능적으로 정상 동작하는 올바른 코드입니다.
+
+[Better Code]
+package week11.day3;
+
+public class Problem4 {
+    public static void main(String[] args)
+    {
+        Light light = new Light();
+
+        // 올바른 영문 표기로 변경하여 명확한 의미 전달
+        Command onCommand = new LightOnCommand(light);
+        Command offCommand = new LightOffCommand(light);
+
+        RemoteControl remote = new RemoteControl();
+        remote.setCommand(onCommand);
+        remote.pressButton();
+
+        remote.setCommand(offCommand);
+        remote.pressButton();
+    }
+
+    // Commend -> Command (명령)
+    interface Command
+    {
+        void execute();
+    }
+
+    static class Light {
+        void on() { System.out.println("조명을 켭니다."); }
+        void off() { System.out.println("조명을 끕니다."); }
+    }
+
+    // LightOnCommend -> LightOnCommand
+    static class LightOnCommand implements Command
+    {
+        private final Light light; // 불변 필드는 final 권장
+
+        LightOnCommand(Light light) { this.light = light; }
+        @Override
+        public void execute() { light.on(); }
+    }
+
+    // LightOffCommend -> LightOffCommand
+    static class LightOffCommand implements Command
+    {
+        private final Light light;
+
+        LightOffCommand(Light light) { this.light = light; }
+        @Override
+        public void execute() { light.off(); }
+    }
+
+    // Remocont -> RemoteControl, pressBonten -> pressButton
+    static class RemoteControl
+    {
+        private Command command; // 인스턴스 변수는 기본적으로 private 권장
+        
+        void setCommand(Command command) { this.command = command; }
+        void pressButton() { 
+            if (command != null) { // NullPointerException 방지
+                command.execute(); 
+            }
+        }
+    }
+}
+
+[기술적 해설]
+1. **표준 명명 규칙(Naming Convention) 준수**:
+   - `Commend`는 '추천하다' 혹은 '칭찬하다'라는 뜻에 가깝습니다. '명령'을 의미하는 올바른 단어인 **`Command`**로 표기해야 혼선을 줄일 수 있습니다.
+   - `Remocont` ➡️ **`RemoteControl`**, `pressBonten` ➡️ **`pressButton`**으로 더 직관적이고 표준적인 영어 표현을 쓰는 것이 실무 협업 시 가독성을 훨씬 높여줍니다.
+2. **필드 캡슐화 및 불변성(final)**:
+   - 변경될 일이 없는 `Light` 인스턴스 필드에 `final` 키워드를 부여함으로써 불변 객체로서 안정성을 확보할 수 있습니다.
+   - 호출자(`RemoteControl`)의 `command` 필드는 외부에서 직접 접근하여 변경하지 못하도록 `private`으로 캡슐화하는 것이 좋은 객체지향 설계 습관입니다.
