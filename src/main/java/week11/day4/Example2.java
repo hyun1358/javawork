@@ -25,6 +25,9 @@ public class Example2 {
 
         status = status.next(); // SHIPPED → 더 이상 없음 (자기 자신 유지)
         System.out.println("다음 상태: " + status);
+
+        status = status.next(); // SHIPPED → 더 이상 없음 (자기 자신 유지)
+        System.out.println("다음 상태: " + status);
     }
 
     enum OrderStatus {

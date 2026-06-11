@@ -15,6 +15,7 @@ package week11.day4;
  */
 public class Example4 {
     public static void main(String[] args) {
+
         System.out.println("\n=== Lab 4: @Deprecated ===");
         LegacyService service = new LegacyService();
         service.newMethod(); 

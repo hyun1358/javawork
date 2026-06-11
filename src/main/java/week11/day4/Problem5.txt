@@ -1,0 +1,121 @@
+[문제]
+어노테이션 필드 검증 로직 구현.
+Member 클래스의 @Notnull 어노테이션이 달린 필드의 값을 리플렉션으로 읽어와 null 검증을 수행하는 validateNotNull(Object obj) 메서드를 완성하세요.
+
+[사용자 작성 코드]
+package week11.day4;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        Member member = new Member(null,"test@ada.com");
+        validateNotNull(member);
+    }
+
+    static void validateNotNull(Object obj)
+    {
+        Field[] field = obj.getClass().getDeclaredFields();
+        for(Field f : field)
+        {
+            if(f.isAnnotationPresent(Notnull.class))
+            {
+                f.setAccessible(true);
+                try
+                {
+                  if(f.get(obj) == null)
+                  {
+                      System.out.println("검증 실패: name 필드는 Null 불가 입니다.");
+                  }
+                  else
+                  {
+                      System.out.println("검증 통과: name필드 ");
+                  }
+                }
+                catch(IllegalAccessException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface Notnull {}
+
+    static class Member
+    {
+        @Notnull private String name;
+        private String email;
+
+        Member(String name, String email) {this.name = name; this.email = email;}
+    }
+}
+
+[현재 코드 특징]
+- 리플렉션의 핵심인 `setAccessible(true)`를 적절히 활용하여 private 필드인 `name`에 성공적으로 접근하였습니다.
+- `f.get(obj)`를 통해 실제 인스턴스 내부의 필드 값을 올바르게 추출하여 null 검증 조건을 충족하였습니다.
+
+[Better Code]
+package week11.day4;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+
+public class Problem5 {
+    public static void main(String[] args)
+    {
+        Member member = new Member(null, "test@ada.com");
+        validateNotNull(member);
+    }
+
+    static void validateNotNull(Object obj)
+    {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            if (f.isAnnotationPresent(Notnull.class)) {
+                f.setAccessible(true);
+                try {
+                    Object value = f.get(obj);
+                    // 하드코딩된 "name" 대신 f.getName()을 활용하여 재사용성 극대화
+                    if (value == null) {
+                        System.out.println("검증 실패: '" + f.getName() + "' 필드는 null일 수 없습니다.");
+                    } else {
+                        System.out.println("검증 통과: '" + f.getName() + "' = " + value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface Notnull {}
+
+    static class Member
+    {
+        @Notnull private String name;
+        private String email;
+
+        Member(String name, String email) { this.name = name; this.email = email; }
+    }
+}
+
+[기술적 해설]
+1. 하드코딩 제거와 재사용성 향상:
+   - 사용자 코드에서는 메시지 출력 시 `"name 필드는..."` 형태로 특정 필드명이 하드코딩되어 있습니다. 
+   - 만약 `Member` 클래스에 다른 `@Notnull` 필드가 추가되거나, `Member`가 아닌 다른 객체를 검증할 때 이 메서드를 사용하면 여전히 `"name"`이라는 이름으로 잘못 출력됩니다.
+   - `f.getName()`을 사용하면 검사 중인 실제 필드명을 동적으로 가져올 수 있으므로, 어떤 클래스의 어떤 필드에도 적용할 수 있는 범용적인 검증 엔진이 됩니다.
+2. 중복 호출 최적화:
+   - `f.get(obj)`는 예외를 던질 수 있고 리플렉션 연산이 동반되므로, 이를 변수 `Object value = f.get(obj)`로 한 번 받아와 재사용하는 것이 성능 및 가독성 면에서 더 우수합니다.
