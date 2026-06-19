@@ -42,5 +42,7 @@ public class Example5 {
         System.out.println("  2. 보안: private 캡슐화 우회 → 내부 상태 노출 위험");
         System.out.println("  3. 타입 안전성: 컴파일 오류 감지 불가 → 런타임 에러 위험");
         System.out.println("  → 권장: Spring/JPA 같은 프레임워크 내부 코드에서만 활용");
+
+        //여기는 이해가잘 안가네 많이 쓰지말라는건가?
     }
 }

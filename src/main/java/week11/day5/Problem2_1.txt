@@ -1,0 +1,91 @@
+[문제]
+리플렉션을 사용하여 Person 객체의 private 필드인 `name`을 "이순신"으로, `age`를 35로 강제 변경(set)한 후, 원래 객체의 getter 메서드를 통해 출력해 보세요.
+
+[사용자 작성 코드]
+package week11.day5;
+
+import java.lang.reflect.Field;
+
+public class Problem2_1 {
+    public static void main(String[] args) throws Exception {
+        Person person = new Person("홍길동", 20);
+
+        // TODO: 리플렉션을 활용해 person 객체의 private 필드인 name을 "이순신", age를 35로 변경해 보세요.
+
+        Field nameF = person.getClass().getDeclaredField("name");
+        nameF.set(person,"이순신");
+        Field ageF = person.getClass().getDeclaredField("age");
+        ageF.set(person,35);
+
+
+        // 아래 출력 결과를 통해 값이 잘 변경되었는지 확인합니다.
+        System.out.println("이름: " + person.getName());
+        System.out.println("나이: " + person.getAge());
+    }
+
+    static class Person {
+        private String name;
+        private int age;
+
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() { return name; }
+        public int getAge() { return age; }
+    }
+}
+
+[현재 코드 특징]
+- 리플렉션을 사용하여 `Person` 객체의 `name`과 `age` 필드를 획득하고 값을 정확히 주입하는 데 성공했습니다.
+- 원래 다른 클래스의 `private` 필드를 수정할 때는 `setAccessible(true)`를 선언해야 하지만, 이 코드에서는 예외가 발생하지 않고 정상 실행됩니다.
+
+[Better Code]
+package week11.day5;
+
+import java.lang.reflect.Field;
+
+public class Problem2_1 {
+    public static void main(String[] args) throws Exception {
+        Person person = new Person("홍길동", 20);
+
+        // 1. name 필드 취득 후 private 접근 허용 및 수정
+        Field nameF = Person.class.getDeclaredField("name");
+        nameF.setAccessible(true); // 외부 클래스의 private 필드를 다룰 때를 대비한 안전장치
+        nameF.set(person, "이순신");
+
+        // 2. age 필드 취득 후 private 접근 허용 및 수정
+        Field ageF = Person.class.getDeclaredField("age");
+        ageF.setAccessible(true); // 외부 클래스의 private 필드를 다룰 때를 대비한 안전장치
+        
+        // primitive int 타입은 setInt()를 사용하는 것이 오토박싱을 피할 수 있어 더 빠르고 명확합니다.
+        ageF.setInt(person, 35); 
+
+        System.out.println("이름: " + person.getName());
+        System.out.println("나이: " + person.getAge());
+    }
+
+    static class Person {
+        private String name;
+        private int age;
+
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() { return name; }
+        public int getAge() { return age; }
+    }
+}
+
+[기술적 해설 (왜 setAccessible(true) 없이 실행이 잘 되었을까요?)]
+1. **내부 클래스(Nested Class)와 네스트메이트(Nestmates)**:
+   - `Person` 클래스는 `Problem2_1` 클래스의 **내부 정적 클래스(static nested class)**로 정의되어 있습니다.
+   - 자바 스펙상 감싸고 있는 클래스(Outer Class)와 내부 클래스(Inner/Nested Class)는 컴파일 시 하나의 실행 단위로 묶이며, 서로의 `private` 멤버에 직접 접근할 권한을 갖습니다.
+   - 특히 **Java 11** 버전부터는 **Nest-Based Access Control (네스트 기반 접근 제어)** 규격이 JVM에 도입되었습니다.
+   - 이에 따라 같은 파일 영역에 속한 클래스들(Nestmates)끼리는 리플렉션을 통해 `private` 멤버를 조작할 때도 `setAccessible(true)` 없이 곧바로 읽고 쓸 수 있도록 허용됩니다.
+2. **실무 권장 규칙**:
+   - 실무에서는 조작하려는 클래스들이 서로 다른 파일(다른 패키지나 외부 클래스)에 배치되는 경우가 대부분입니다. 이 경우에는 `setAccessible(true)`를 해주지 않으면 즉시 `IllegalAccessException`이 발생합니다.
+   - 따라서 보충 문제처럼 동일 파일 내부의 클래스가 아닐 경우를 대비해, 리플렉션으로 private 멤버를 건드릴 때는 관례적으로 항상 `setAccessible(true)`를 붙여 코딩하는 습관을 들이는 것이 좋습니다.
