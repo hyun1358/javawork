@@ -1,5 +1,6 @@
 package week12.day1;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -19,12 +20,13 @@ public class Example3 {
     public static void main(String[] args) {
         int PORT = 9000;
         System.out.println("=== accept() 구조 예제 ===");
-        /*
-         * try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-         *     Socket clientSocket = serverSocket.accept();
-         *     System.out.println("[서버] 접속 환영! 클라이언트: " + clientSocket.getInetAddress());
-         * }
-         */
+          try (ServerSocket serverSocket = new ServerSocket(PORT))
+          {
+              Socket clientSocket = serverSocket.accept();
+              System.out.println("[서버] 접속 환영! 클라이언트: " + clientSocket.getInetAddress());
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
         System.out.println("accept()는 클라이언트 접속 전까지 실행을 멈추고 기다리는 블로킹 메서드입니다.");
     }
 }

@@ -118,8 +118,7 @@ class PrintStrategy implements QueryExecutionStrategy {
 class UpperCaseStrategy implements QueryExecutionStrategy {
     @Override
     public void execute(String sql) {
-        // TODO: 전달받은 sql을 대문자로 변환하여 "[SQL 실행 (대문자)] : [대문자쿼리]" 형식으로 출력해 보세요.
-        
+        System.out.println("[SQL 실행 (대문자)] : " + sql.toUpperCase());
     }
 }
 
